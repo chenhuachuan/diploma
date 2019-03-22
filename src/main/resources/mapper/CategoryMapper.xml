@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jz1501.chenhc.diploma.tfbook.dao.CategoryMapper">
+
+    <resultMap type="Sort" id="all_category_name">
+        <id property="sortId" column="pid"/>
+        <result property="sortName" column="pname"/>
+        <result property="sortCount" column="pcount"/>
+        <result property="parentId" column="ppid"/>
+        <collection property="sortList" ofType="Sort">
+            <id property="sortId" column="sid"/>
+            <result property="sortName" column="sname"/>
+            <result property="sortCount" column="scount"/>
+            <result property="parentId" column="spid"/>
+
+            <collection property="sortList" ofType="Sort">
+                <id property="sortId" column="gsid"/>
+                <result property="sortName" column="gsname"/>
+                <result property="sortCount" column="gscount"/>
+                <result property="parentId" column="gspid"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <!-- 动态SQL -->
+    <sql id="all_Category_Column">
+        p.id pid,p.sort_name pname,p.sort_count pcount,p.parent_id ppid,s.id sid,s.sort_name sname,s.sort_count scount,s.parent_id spid,gs.id gsid,gs.sort_name gsname,gs.sort_count gscount,gs.parent_id gspid
+    </sql>
+    <!-- 手动映射 -->
+    <select id="selectAllCategoryName" resultMap="all_category_name">
+        SELECT
+        <include refid="all_Category_Column"/>
+        FROM tf_sort p
+        LEFT JOIN tf_sort s
+        ON p.id=s.parent_id
+        LEFT JOIN tf_sort gs
+        ON s.id=gs.parent_id
+        where p.parent_id=0
+    </select>
+
+
+    <resultMap id="parent_level" type="Sort">
+        <id property="sortId" column="pid"/>
+        <result property="sortName" column="pname"/>
+        <result property="sortCount" column="pcount"/>
+        <result property="parentId" column="ppid"/>
+    </resultMap>
+    <select id="selectParentLevel" resultMap="parent_level">
+        select id pid,sort_name pname,sort_count pcount,parent_id ppid from tf_sort where parent_id=0
+    </select>
+
+    <resultMap id="son_gs_level" type="Sort">
+        <id property="sortId" column="sid"/>
+        <result property="sortName" column="sname"/>
+        <result property="sortCount" column="scount"/>
+        <result property="parentId" column="spid"/>
+        <collection property="sortList" ofType="Sort">
+            <id property="sortId" column="gsid"/>
+            <result property="sortName" column="gsname"/>
+            <result property="sortCount" column="gscount"/>
+            <result property="parentId" column="gspid"/>
+        </collection>
+    </resultMap>
+    <select id="selectSecondLevelByParentId" resultMap="son_gs_level" parameterType="Integer">
+        select s.id sid,s.sort_name sname,s.sort_count scount,s.parent_id spid,gs.id gsid,gs.sort_name gsname,gs.sort_count gscount,gs.parent_id gspid FROM tf_sort s
+            LEFT JOIN tf_sort gs
+            on s.id=gs.parent_id
+            where s.parent_id=#{sparentId}
+    </select>
+
+    <resultMap id="first_second_level_map" type="Sort">
+        <id property="sortId" column="pid"/>
+        <result property="sortName" column="pname"/>
+        <result property="sortCount" column="pcount"/>
+        <result property="parentId" column="ppid"/>
+        <collection property="sortList" ofType="Sort">
+            <id property="sortId" column="sid"/>
+            <result property="sortName" column="sname"/>
+            <result property="sortCount" column="scount"/>
+            <result property="parentId" column="spid"/>
+        </collection>
+    </resultMap>
+    <select id="selectParentAndSonLevel" resultMap="first_second_level_map">
+        select p.id pid,p.sort_name pname,p.sort_count pcount,p.parent_id ppid,s.id sid,s.sort_name sname,s.sort_count scount,s.parent_id spid FROM tf_sort p
+            LEFT JOIN tf_sort s
+            on p.id=s.parent_id
+            where p.parent_id=0
+    </select>
+
+    <resultMap id="gs_parent_level" type="Sort">
+        <id property="sortId" column="gsid"/>
+        <result property="sortName" column="gsname"/>
+        <result property="sortCount" column="gscount"/>
+        <result property="parentId" column="gspid"/>
+    </resultMap>
+    <select id="selectGrandsonLevelBySpid" parameterType="Integer" resultMap="gs_parent_level">
+      select gs.id gsid,gs.sort_name gsname,gs.sort_count gscount,gs.parent_id gspid from tf_sort gs
+        where gs.parent_id=#{gsParentId}
+    </select>
+
+
+    <!--便签显示子分类-->
+    <select id="selectGrandsonSortName" resultMap="parent_level">
+        select g.id pid,g.sort_name pname,g.sort_count pcount,g.parent_id ppid from tf_sort p
+             left join tf_sort s
+             on p.id=s.parent_id
+             left join tf_sort g
+             on s.id=g.parent_id
+             where p.parent_id=0 and p.sort_name !='' ORDER BY RAND() LIMIT 15
+    </select>
+
+</mapper>

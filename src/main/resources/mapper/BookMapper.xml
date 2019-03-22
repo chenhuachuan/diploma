@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jz1501.chenhc.diploma.tfbook.dao.BookMapper">
+
+    <resultMap type="Book" id="all_columns_map">
+        <id column="id" property="bookId"/>
+        <result column="sort_id" property="sortId"/>
+        <result column="book_name" property="bookName"/>
+        <result column="author" property="author"/>
+        <result column="publish_company" property="publishCompany"/>
+        <result column="publish_time" property="publishTime"/>
+        <result column="word_count" property="wordCount"/>
+        <result column="kai_ben" property="kaiBen"/>
+        <result column="page_count" property="pageCount"/>
+        <result column="repertory" property="repertory"/>
+        <result column="book_price" property="bookPrice"/>
+        <result column="original_price" property="originalPrice"/>
+        <result column="isbn" property="isbn"/>
+        <result column="book_intro" property="bookIntro"/>
+        <result column="sale_count" property="saleCount"/>
+        <result column="img_url" property="imgUrl"/>
+        <result column="recommend" property="commend"/>
+    </resultMap>
+
+    <sql id="all_book_column">
+        id,sort_id,book_name,author,publish_company,publish_time,word_count,kai_ben,page_count,repertory,book_price,original_price,isbn,book_intro,sale_count,img_url,recommend
+    </sql>
+    <!-- 手动映射 -->
+    <select id="selectBookByPublishTime" resultMap="all_columns_map">
+        SELECT
+        <include refid="all_book_column"/>
+        FROM tf_book ORDER BY publish_time DESC LIMIT 0,3
+    </select>
+
+    <select id="selectBookByPublishTimeTwo" resultMap="all_columns_map">
+        SELECT
+        <include refid="all_book_column"/>
+        FROM tf_book ORDER BY publish_time DESC LIMIT 3,3
+    </select>
+    <!--end 新书上架-->
+
+    <!--编辑推荐-->
+    <select id="selectBookByRecommend" resultMap="all_columns_map">
+        select
+        <include refid="all_book_column"/>
+        from tf_book ORDER BY RAND() LIMIT 3
+    </select>
+
+    <!--热销图书-->
+    <select id="selectBooksBySaleCount" resultMap="all_columns_map">
+        select
+        <include refid="all_book_column"/>
+        from tf_book ORDER BY sale_count desc limit 0, 5
+    </select>
+
+    <!--今日特价-->
+    <select id="selectBooksBySpecialPrice" resultMap="all_columns_map">
+        select
+        <include refid="all_book_column"/>
+        from tf_book where sale_count >3 ORDER BY RAND() LIMIT 4
+    </select>
+
+
+</mapper>

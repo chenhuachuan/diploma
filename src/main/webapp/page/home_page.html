@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>首页</title>
+    <!-- Bootstrap -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="../css/home_page.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <!-- 引入JQuery  bootstrap.js-->
+    <script type="text/javascript" src="../js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+    <!--引入图标库-->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!--首页 轮播图-->
+<div id="myCarousel" class="carousel slide">
+    <!-- 轮播（Carousel）指标 -->
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <!-- 轮播（Carousel）项目 -->
+    <div class="carousel-inner">
+        <div class="item active">
+            <img src="../image/lb/lb1.jpg" width="100%" height="100%" alt="First slide">
+            <div class="carousel-caption"><strong><font color="red" size="8px;">标题 1</font></strong></div>
+        </div>
+        <div class="item">
+            <img src="../image/lb/lb2.jpg" width="100%" height="100%" alt="Second slide">
+            <div class="carousel-caption"><strong><font color="red" size="8px;">标题 2</font></strong></div>
+        </div>
+        <div class="item">
+            <img src="../image/lb/lb3.jpg" width="100%" height="100%" alt="Third slide">
+            <div class="carousel-caption"><strong><font color="red" size="8px;">标题 3</font></strong></div>
+        </div>
+    </div>
+    <!-- 轮播（Carousel）导航 -->
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+
+<!--导航栏-->
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">网页导航</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="../page/main.html">个人主页</a></li>
+                <li><a href="#">成为会员</a></li>
+                <li><a href="../page/levelpage1/allbooksort.html">全部商品分类</a></li>
+                <li><a href="#">个性推荐</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        TF-Book<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">购物车</a></li>
+                        <li><a href="#">我的订单</a></li>
+                        <li><a href="#">我的收藏</a></li>
+                        <li><a href="#">我的地址</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">我的评论</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">帮助中心</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#">我要出书</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="../page/regist.html"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                <li><a href="../page/login.html"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--导航结束-->
+<!--左边：网站图标  中：搜索框   右边：购物车，订单-->
+<div class="input-group col-md-5 col-center-search" style="positon:relative;">
+    <input type="text" class="form-control" placeholder="请输入图书名"/>
+    <span class="input-group-btn">
+            <button class="btn btn-info btn-search">搜索</button>
+        </span>
+
+</div>
+
+<!--分类展示-->
+<div style="padding-top: 30px;width: 100%;height: 300px">
+    <div class="col-sm-6 col-md-10" style="width: 50%;">
+        <h4 style="margin-left: 10px;">图书分类</h4>
+        <ol>
+            <li>小说</li>
+            <ol>
+                <li><a href="#">校园</a></li>
+                <li>青春</li>
+                <li>玄幻</li>
+                <li>武侠</li>
+            </ol>
+            <li>历史</li>
+            <ol>
+                <li>中国近代史</li>
+                <li>中国古代史</li>
+            </ol>
+            <li>文学</li>
+            <li>经典</li>
+        </ol>
+    </div>
+    <div class="col-sm-6 col-md-10" style="width: 50%;">
+        <h4 style="margin-left: 10px;">排行榜</h4>
+        <ol>
+            <li>小说</li>
+            <li>历史</li>
+            <li>文学</li>
+            <li>经典</li>
+        </ol>
+    </div>
+</div>
+<br/>
+<br/>
+<br/>
+<!--部分模块展示-->
+<div class="row" style="padding-top: 50px;"><!--面板-->
+    <div class="col-sm-3 col-md-4">
+        <div class="panel panel-danger" style="width: 480px; height: 200px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">面板标题</h3>
+            </div>
+            <div class="panel-body">
+                <p>床前明月光，疑是地上霜。举头望明月，低头思故乡。</p>
+                <p>床前明月光，疑是地上霜。举头望明月，低头思故乡。</p>
+                <p>床前明月光，疑是地上霜。举头望明月，低头思故乡。</p>
+            </div>
+            <div class="panel-footer">不知道该面板能做什么</div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-4">
+        <div class="panel panel-primary" style="width: 480px; height: 200px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">面板标题</h3>
+            </div>
+            <div class="panel-body">书本价格</div>
+            <table class="table">
+                <th>产品</th>
+                <th>价格</th>
+                <tr>
+                    <td>产品 A</td>
+                    <td>200</td>
+                </tr>
+            </table>
+            <div class="panel-footer">面板脚注</div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-4">
+        <div class="panel panel-warning" style="width: 480px; height: 200px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">面板标题</h3>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">免费域名注册</li>
+                <li class="list-group-item"><a href="#">我是链接...</a></li>
+                <li class="list-group-item"><a href="#">点我链接到...</a></li>
+            </ul>
+            <div class="panel-footer">面板脚注</div>
+        </div>
+    </div>
+</div>
+<h2>分页</h2>
+<ul class="pagination">
+    <li><a href="#">&laquo;</a></li>
+    <li class="active"><a href="#">1</a></li>
+    <li class="disabled"><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li><a href="#">&raquo;</a></li>
+</ul>
+
+
+</body>
+</html>

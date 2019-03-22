@@ -1,0 +1,3 @@
+server:
+  port: 8991
+  context-path: /tfbook_dev

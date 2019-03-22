@@ -1,0 +1,16 @@
+.col-center-search {
+    width: 60%;
+    height: 30px;
+    float: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.col-left-img {
+    width: 160px;
+    height: 30px;
+    margin-left: 10px;
+    position: absolute;
+    z-index: 1;
+}

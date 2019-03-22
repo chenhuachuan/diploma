@@ -1,0 +1,16 @@
+body {
+    background: url("../image/beauty/bg1.jpg") no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+}
+
+#login_box {
+    padding: 40px;
+    border-radius: 15px; /*div圆角*/
+    background: #56666B;
+    color: #fff;
+}
+
+#login_title {
+    color: #000000;
+}

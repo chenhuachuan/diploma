@@ -71,7 +71,21 @@
     <script type="text/javascript">
         $("#page_load_contrller_data_div").load('${pageContext.request.contextPath}/category/all_category_name.do');
     </script>
+
 </div>
+
+<div class="container-fluid" id="search_div_all"
+     style="width: 350px; height: 49px;position: absolute;margin-left: 900px">
+    <div>
+        <form class="navbar-form navbar-right" role="search" style="position: relative;">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">搜索</button>
+        </form>
+    </div>
+</div>
+
 <!-- script-for-nav -->
 <script>
     $("span.menu").click(function () {

@@ -5,13 +5,14 @@
     <div class="head-nav">
         <span class="menu"></span>
         <ul class="megamenu skyblue">
-            <li><a class="color1" href="home.jsp">Home</a></li>
+            <li><a class="color1" href="../pages/home.jsp">Home</a></li>
             <%--一级分类--%>
             <%-- <c:forEach items="${sortsList}" var="par_sort">--%>
 
             <c:forEach items="${sortsList}" var="par_sort">
                 <!--小说-->
-                <li class="grid"><a class="color${par_sort.sortId}" href="categories.jsp">${par_sort.sortName}</a>
+                <li class="grid"><a class="color${par_sort.sortId}"
+                                    href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=${par_sort.sortId}">${par_sort.sortName}</a>
                     <div class="megapanel">
                         <div class="row">
                             <c:forEach var="son_sort" items="${par_sort.sortList}">
@@ -22,11 +23,6 @@
                                         <c:forEach items="${son_sort.sortList}" var="gs_sort">
                                             <a href="#"><span class="label label-info">${gs_sort.sortName}</span></a>
                                         </c:forEach>
-                                            <%-- <ul>
-                                                 <c:forEach var="gs_sort" items="${grandson_Sorts}">
-                                                 <li><a href="categories.jsp">${gs_sort.sortName}</a></li>
-                                                 </c:forEach>
-                                             </ul>--%>
                                     </div>
                                 </div>
                             </c:forEach>
@@ -125,17 +121,15 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    /*if(jspType=='detail'){
+        $("#search_div_all").css(display,none);
+    }else{
+        $("#search_div_all").css(display,'');
+    }
+*/
+</script>
 
-<div class="container-fluid" style="width: 350px; height: 49px;position: absolute;margin-left: 900px">
-    <div>
-        <form class="navbar-form navbar-right" role="search" style="position: relative;">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search">
-            </div>
-            <button type="submit" class="btn btn-default">搜索</button>
-        </form>
-    </div>
-</div>
 
 <%--
 

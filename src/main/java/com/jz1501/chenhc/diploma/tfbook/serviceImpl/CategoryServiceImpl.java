@@ -45,4 +45,14 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Sort> queryRandomTagsName() {
         return categoryMapper.selectGrandsonSortName();
     }
+
+    @Override
+    public List<Sort> queryAllSecondSortNameByparSortId(Integer parSortId) {
+        return categoryMapper.selectSecondSortNameById(parSortId);
+    }
+
+    @Override
+    public List<Sort> querySecondPageTags(Integer parSortId) {
+        return categoryMapper.selectSecondPageTags(parSortId);
+    }
 }

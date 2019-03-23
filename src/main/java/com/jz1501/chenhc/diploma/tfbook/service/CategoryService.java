@@ -19,4 +19,13 @@ public interface CategoryService {
 
     //标签内子分类
     public List<Sort> queryRandomTagsName();
+
+    //二级分类信息
+
+    public List<Sort> queryAllSecondSortNameByparSortId(Integer parSortId);
+
+    public List<Sort> querySecondPageTags(Integer parSortId);
+
+
+
 }

@@ -24,4 +24,11 @@ public interface CategoryMapper {
     //标签子分类
     public List<Sort> selectGrandsonSortName();
 
+    //二级
+
+    public List<Sort> selectSecondSortNameById(Integer parSortId);
+
+    //tags
+    public List<Sort> selectSecondPageTags(Integer parSortId);
+
 }

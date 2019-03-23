@@ -60,5 +60,50 @@
         from tf_book where sale_count >3 ORDER BY RAND() LIMIT 4
     </select>
 
+    <!--二级分类-->
+    <select id="selectSecondBooksById" resultMap="all_columns_map">
+        select
+        b.id,b.sort_id,b.book_name,b.author,b.publish_company,b.publish_time,b.word_count,b.kai_ben,b.page_count,b.repertory,b.book_price,b.original_price,b.isbn,b.book_intro,b.sale_count,b.img_url,b.recommend
+        from tf_sort p join tf_sort s on p.id=s.parent_id
+        join tf_sort g on s.id=g.parent_id
+        join tf_book b on g.id=b.sort_id
+        where
+        <if test="parSortId!=null and parSortId!=''">
+            p.id=#{parSortId}
+        </if>
+        <if test="sonSortId!=null and sonSortId!=''">
+            s.id=#{sonSortId}
+        </if>
+        <if test="granSortId!=null and granSortId!=''">
+            g.id=#{granSortId}
+        </if>
+        limit #{pageIndex},#{pageSize}
+    </select>
+    <!--总条数-->
+    <select id="selectAllCountBySortId" resultType="Integer">
+        select count(1)
+        from tf_sort p
+        join tf_sort s on p.id=s.parent_id
+        join tf_sort g on s.id=g.parent_id
+        join tf_book b on g.id=b.sort_id
+        where
+        <if test="parSortId!= null and parSortId!=''">
+            p.id=#{parSortId}
+        </if>
+        <if test="sonSortId!= null and sonSortId!=''">
+            s.id=#{sonSortId}
+        </if>
+        <if test="granSortId!= null and granSortId!=''">
+            g.id=#{granSortId}
+        </if>
+    </select>
+
+    <!--三级页面-->
+    <select id="selectBookDetailsByBookid" parameterType="String" resultMap="all_columns_map">
+        select
+        <include refid="all_book_column"/>
+        from tf_book where id=#{bookId}
+    </select>
+
 
 </mapper>

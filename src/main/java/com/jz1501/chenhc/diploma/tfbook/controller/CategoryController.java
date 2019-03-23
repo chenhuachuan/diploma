@@ -17,7 +17,6 @@ public class CategoryController {
 
     @RequestMapping("/all_category_name")
     public String queryAllCategoryName(Model model) {
-
         List<Sort> sorts = categoryService.queryAllCategoryName();
         model.addAttribute("sortsList", sorts);
         return "forward:/pages/innerpage/category_navigation.jsp";
@@ -54,7 +53,6 @@ public class CategoryController {
 
     /**
      * 首页标签 分类名称
-     *
      * @param model
      * @return
      */

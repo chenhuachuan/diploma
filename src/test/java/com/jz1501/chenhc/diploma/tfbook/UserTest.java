@@ -1,6 +1,5 @@
 package com.jz1501.chenhc.diploma.tfbook;
 
-import com.jz1501.chenhc.diploma.tfbook.entity.Book;
 import com.jz1501.chenhc.diploma.tfbook.entity.Sort;
 import com.jz1501.chenhc.diploma.tfbook.entity.User;
 import com.jz1501.chenhc.diploma.tfbook.service.BookService;
@@ -61,8 +60,7 @@ public class UserTest extends TestTfBookDemo {
 
     @Test
     public void getUUID() {
-        for (int i = 0; i < 5; i++) {
-
+        for (int i = 0; i < 15; i++) {
             System.out.println(UUID.randomUUID().toString().replace("-", ""));
 
         }
@@ -71,9 +69,9 @@ public class UserTest extends TestTfBookDemo {
 
     @Test
     public void testBookModel() {
-        List<Book> books = bookService.newBookShelves();
-        for (Book book : books) {
-            System.out.println("图书：" + book.getBookName() + "上架时间" + book.getPublishTime());
+        List<Sort> sorts = categoryService.queryAllCategoryName();
+        for (Sort sort : sorts) {
+            System.out.println(sort.getSortId());
         }
     }
 

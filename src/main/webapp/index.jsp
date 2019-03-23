@@ -1,7 +1,9 @@
-<%@page pageEncoding="UTF-8" contentType="text/html; utf-8" %>
+<%@page pageEncoding="UTF-8" contentType="text/html; utf-8" isErrorPage="true" %>
 <html>
-<body>
-<h2>Hello World!</h2>
+<head>
+    <title>error page</title>
+</head>
+<body style="background-image: url('../image/beauty/bg16.jpg')">
 <h2>李庆肖是个大宝贝</h2>
 <h2>中国</h2>
 <h2>陈华川是个大傻逼</h2>

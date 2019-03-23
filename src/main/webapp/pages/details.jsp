@@ -1,11 +1,12 @@
 <%@page isELIgnored="false" pageEncoding="UTF-8" contentType="text/html; UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE HTML>
 <html>
 <head>
     <title>Book Detail</title>
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
-    <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="../pages/css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+    <link href="../pages/css/style.css" rel="stylesheet" type="text/css" media="all"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,18 +18,17 @@
         window.scrollTo(0, 1);
     } </script>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <script src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/easing.js"></script>
-    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
-    <link href="css/megamenu.css" rel="stylesheet" type="text/css" media="all"/>
-    <script src="js/menu_jquery.js"></script>
-    <link rel="stylesheet" href="css/etalage.css">
-    <script src="js/jquery.easydropdown.js"></script>
+    <script src="../pages/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../pages/js/easing.js"></script>
+    <link rel="stylesheet" href="../pages/css/flexslider.css" type="text/css" media="screen"/>
+    <link href="../pages/css/megamenu.css" rel="stylesheet" type="text/css" media="all"/>
+    <script src="../pages/js/menu_jquery.js"></script>
+    <link rel="stylesheet" href="../pages/css/etalage.css">
+    <script src="../pages/js/jquery.easydropdown.js"></script>
     <!-- etale -->
-    <script src="js/jquery.etalage.min.js"></script>
+    <script src="../pages/js/jquery.etalage.min.js"></script>
     <script>
         jQuery(document).ready(function ($) {
-
             $('#etalage').etalage({
                 thumb_image_width: 300,
                 thumb_image_height: 400,
@@ -52,7 +52,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="images/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="../pages/images/logo.png" alt=""/></a>
                 </div>
                 <%-- user login and regsit jsp--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -65,12 +65,12 @@
 
 
 <%--分类导航--%>
-<div class="head-bann" id="page_load_contrller_detail_div">
+<div class="head-bann" id="page_load_contrller_categr_div">
     <script type="text/javascript">
-        $("#page_load_contrller_detail_div").load('${pageContext.request.contextPath}/category/all_category_name.do');
+        //var jspType="detail";
+        $("#page_load_contrller_categr_div").load('${pageContext.request.contextPath}/category/all_category_name.do');
     </script>
 </div>
-
 <%--<div class="container">
     <div class="head-nav">
     <!-- megamenu -->
@@ -438,15 +438,27 @@
 <div class="details">
     <div class="container">
         <div class="row single">
+
+            <%--当前位置--%>
+            <div style="padding-bottom: 5px;">
+                <ul class="breadcrumb">
+                    您现在的位置:&nbsp;
+                    <li><a href="${pageContext.request.contextPath }/pages/home.jsp">图书</a></li>
+                    <li class="active"><a href="#">小说</a></li>
+                    <li class="active"><a href="#">图书详情</a></li>
+                </ul>
+            </div>
+            <%--图书详情--%>
             <div class="col-md-9">
                 <div class="single_left">
-
                     <div class="grid images_3_of_2">
                         <ul id="etalage">
                             <li>
                                 <a href="optionallink.html">
-                                    <img class="etalage_thumb_image" src="images/d1.jpg" class="img-responsive"/>
-                                    <img class="etalage_source_image" src="images/d1.jpg" class="img-responsive"
+                                    <img class="etalage_thumb_image" src="..${bookDetails.imgUrl}"
+                                         class="img-responsive"/>
+                                    <img class="etalage_source_image" src="..${bookDetails.imgUrl}"
+                                         class="img-responsive"
                                          title=""/>
                                 </a>
                             </li>
@@ -465,29 +477,43 @@
                         </ul>
                         <div class="clearfix"></div>
                     </div>
+
                     <div class="desc1 span_3_of_2">
-                        <h3>soluta nobis eleifend option</h3>
-                        <p>Rs. 999 <a href="#">click for offer</a></p>
+                        <h3>${bookDetails.bookName}</h3>
+                        <span>作者：${bookDetails.author}著&nbsp;&nbsp;&nbsp;&nbsp;出版社:${bookDetails.publishCompany}
+                            &nbsp;&nbsp;&nbsp;&nbsp;出版时间：
+                             <fmt:formatDate value="${bookDetails.publishTime}" pattern="yyyy-MM-dd"/><br/>
+                           ISBN: ${bookDetails.isbn}&nbsp;&nbsp;&nbsp;&nbsp;
+                            开本：${bookDetails.kaiBen}
+                        </span>
+
+                        <p>￥.${bookDetails.bookPrice} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <font color="gray" size="4px;">￥.${bookDetails.originalPrice}</font>
+                            &nbsp;&nbsp;<a href="#">click for offer</a></p>
                         <div class="det_nav">
                             <h4>related styles :</h4>
                             <ul>
-                                <li><a href="#"><img src="images/1.jpg" class="img-responsive" alt=""/></a></li>
-                                <li><a href="#"><img src="images/12.jpg" class="img-responsive" alt=""/></a></li>
-                                <li><a href="#"><img src="images/3.jpg" class="img-responsive" alt=""/></a></li>
-                                <li><a href="#"><img src="images/ss2.jpg" class="img-responsive" alt=""/></a></li>
+                                <li><a href="#"><img src="../pages/images/1.jpg" class="img-responsive" alt=""/></a>
+                                </li>
+                                <li><a href="#"><img src="../pages/images/12.jpg" class="img-responsive" alt=""/></a>
+                                </li>
+                                <li><a href="#"><img src="../pages/images/3.jpg" class="img-responsive" alt=""/></a>
+                                </li>
+                                <li><a href="#"><img src="../pages/images/ss2.jpg" class="img-responsive" alt=""/></a>
+                                </li>
                             </ul>
                         </div>
                         <div class="det_nav1">
-                            <h4>Select a size :</h4>
+                            <h4>购买数量:</h4>
                             <div class=" sky-form col col-4">
                                 <ul>
-                                    <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>L</label>
+                                    <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>1</label>
                                     </li>
-                                    <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>S</label>
+                                    <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>2</label>
                                     </li>
-                                    <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>M</label>
+                                    <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>3</label>
                                     </li>
-                                    <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>XL</label>
+                                    <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>4</label>
                                     </li>
                                 </ul>
                             </div>
@@ -501,21 +527,21 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="single-bottom1">
-                    <h6>Details</h6>
-                    <p class="prod-desc">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
-                        euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-                        quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo
-                        consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie
-                        consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio
-                        dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla
-                        facilisi. Nam liber tempor cum soluta nobis eleifend option</p>
+                    <h6>图书介绍</h6>
+                    <p class="prod-desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        ${bookDetails.bookIntro}
+                    </p>
+                    <h6>编辑推荐</h6>
+                    <p class="prod-desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        ${bookDetails.commend}
+                    </p>
                 </div>
                 <div class="single-bottom2">
-                    <h6>Related Products</h6>
+                    <h6>相关图书</h6>
                     <div class="product">
                         <div class="product-desc">
                             <div class="product-img">
-                                <img src="images/12.jpg" class="img-responsive " alt=""/>
+                                <img src="../pages/images/12.jpg" class="img-responsive " alt=""/>
                             </div>
                             <div class="prod1-desc">
                                 <h5><a class="product_link" href="#">Excepteur sint</a></h5>
@@ -534,7 +560,7 @@
                     <div class="product">
                         <div class="product-desc">
                             <div class="product-img">
-                                <img src="images/9.jpg" class="img-responsive " alt=""/>
+                                <img src="../pages/images/9.jpg" class="img-responsive " alt=""/>
                             </div>
                             <div class="prod1-desc">
                                 <h5><a class="product_link" href="#">Excepteur sint</a></h5>
@@ -553,7 +579,7 @@
                     <div class="product">
                         <div class="product-desc">
                             <div class="product-img">
-                                <img src="images/8.jpg" class="img-responsive " alt=""/>
+                                <img src="../pages/images/8.jpg" class="img-responsive " alt=""/>
                             </div>
                             <div class="prod1-desc">
                                 <h5><a class="product_link" href="#">Excepteur sint</a></h5>
@@ -571,7 +597,11 @@
                     </div>
                 </div>
             </div>
+
+            <%--右侧--%>
             <div class="col-md-3 span_1_of_right">
+                <%--Tags--%>
+                <%--
                 <section class="sky-form">
                     <div class="product_right">
                         <h3 class="m_2">Categories</h3>
@@ -606,127 +636,113 @@
                         </select>
                         <label class="spo"></label>
                     </div>
-
                 </section>
+                 --%>
+
+                <%--热销图书--%>
                 <div class="sellers">
-                    <h3 class="m_2">Best sellers</h3>
+                    <h3 class="m_2">热销图书</h3>
                     <div class="best">
-                        <div class="icon">
-                            <img src="images/sh.jpg" class="img-responsive" alt=""/>
-                        </div>
-                        <div class="data">
-                            <h4><a href="#">Sample Item Title Goes Here</a></h4>
-                            <p>$120.00</p>
-                            <h5>$120.00</h5>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="best">
-                        <div class="icon">
-                            <img src="images/sh.jpg" class="img-responsive" alt=""/>
-                        </div>
-                        <div class="data">
-                            <h4><a href="#">Sample Item Title Goes Here</a></h4>
-                            <p>$120.00</p>
-                            <h5>$120.00</h5>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="best">
-                        <div class="icon">
-                            <img src="images/sh.jpg" class="img-responsive" alt=""/>
-                        </div>
-                        <div class="data">
-                            <h4><a href="#">Sample Item Title Goes Here</a></h4>
-                            <p>$120.00</p>
-                            <h5>$120.00</h5>
-                        </div>
+                        <c:forEach items="${sellHotBooks}" var="book" varStatus="num">
+                            <c:if test="${num.index+1<=3}">
+                                <div>
+                                    <h4><font color="red">${num.index+1}.</font></h4>
+                                </div>
+                            </c:if>
+                            <c:if test="${num.index+1>3}">
+                                <div>
+                                    <h4>${num.index+1}.</h4>
+                                </div>
+                            </c:if>
+                            <div class="icon">
+                                <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${book.bookId}">
+                                    <img src="..${book.imgUrl}" class="img-responsive" alt="" width="74px;"
+                                         height="74px;"/>
+                                </a>
+                            </div>
+                            <div class="data">
+                                <h4><a href="#">${book.bookName}</a></h4>
+                                <p>原价：￥${book.originalPrice}</p>
+                                <h5>现价：￥${book.bookPrice}</h5>
+                            </div>
+                        </c:forEach>
                         <div class="clearfix"></div>
                     </div>
                 </div>
 
                 <div class="sellers">
                     <h3 class="m_2">Tags</h3>
-                    <div class="tags">
-                        <ul>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                            <li><a href="#">Tag,</a></li>
-                        </ul>
+                    <div class="tags" id="tags_book_detail_div">
+                        <script type="text/javascript">
+                            $("#tags_book_detail_div").load('${pageContext.request.contextPath}/category/recommendSortTags.do');
+                        </script>
                     </div>
                 </div>
+
+                <%--今日特价--%>
                 <section class="sky-form">
                     <div class="sellers">
-                        <h3 class="m_2">Special Offers</h3>
+                        <h3 class="m_2">今日特价</h3>
                         <section class="slider">
                             <div class="flexslider">
                                 <ul class="slides">
-                                    <li>
-                                        <div class="tittle">
-                                            <img src="images/shoe.jpg" class="img-responsive" alt=""/>
-                                            <h6>Item Title Here</h6>
-                                            <p>Lorem ipsum dolor sit amet,</p>
-                                            <p>Lorem ipsum dolor sit amet,</p>
-                                            <p>Lorem ipsum dolor sit amet,</p>
-                                            <a class="show1" href="#">SHOW ME MORE</a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="tittle">
-                                            <img src="images/shoe.jpg" class="img-responsive" alt=""/>
-                                            <h6>Item Title Here</h6>
-                                            <p>Lorem ipsum dolor sit amet,</p>
-                                            <p>Lorem ipsum dolor sit amet,</p>
-                                            <p>Lorem ipsum dolor sit amet,</p>
-                                            <a class="show1" href="#">SHOW ME MORE</a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="tittle">
-                                            <img src="images/shoe.jpg" class="img-responsive" alt=""/>
-                                            <h6>Item Title Here</h6>
-                                            <p>Lorem ipsum dolor sit amet,</p>
-                                            <p>Lorem ipsum dolor sit amet,</p>
-                                            <p>Lorem ipsum dolor sit amet,</p>
-                                            <a class="show1" href="#">SHOW ME MORE</a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="tittle">
-                                            <img src="images/shoe.jpg" class="img-responsive" alt=""/>
-                                            <h6>Item Title Here</h6>
-                                            <p>Lorem ipsum dolor sit amet,</p>
-                                            <p>Lorem ipsum dolor sit amet,</p>
-                                            <p>Lorem ipsum dolor sit amet,</p>
-                                            <a class="show1" href="#">SHOW ME MORE</a>
-                                        </div>
-                                    </li>
+                                    <c:forEach items="${tadaysBooks}" var="tbook">
+                                        <li>
+                                            <div class="tittle">
+                                                <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${tbook.bookId}">
+                                                    <img src="..${tbook.imgUrl}" class="img-responsive" alt=""/>
+                                                </a><br/>
+                                                <center>
+                                                    <h6>${tbook.bookName}</h6>
+                                                    <p>原价:￥${tbook.originalPrice}</p>
+                                                    <p style="font-size: 22px;"><font
+                                                            color="red">现价:￥${tbook.bookPrice}</font></p>
+                                                    <p>立志读遍天下书！</p>
+                                                    <a class="show1" href="#">ADD TO CART</a>
+                                                </center>
+                                            </div>
+                                        </li>
+                                    </c:forEach>
+
+                                    <%-- <li>
+                                         <div class="tittle">
+                                             <img src="images/shoe.jpg" class="img-responsive" alt=""/>
+                                             <h6>Item Title Here</h6>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <a class="show1" href="#">SHOW ME MORE</a>
+                                         </div>
+                                     </li>
+                                     <li>
+                                         <div class="tittle">
+                                             <img src="images/shoe.jpg" class="img-responsive" alt=""/>
+                                             <h6>Item Title Here</h6>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <a class="show1" href="#">SHOW ME MORE</a>
+                                         </div>
+                                     </li>
+                                     <li>
+                                         <div class="tittle">
+                                             <img src="images/shoe.jpg" class="img-responsive" alt=""/>
+                                             <h6>Item Title Here</h6>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <a class="show1" href="#">SHOW ME MORE</a>
+                                         </div>
+                                     </li>--%>
                                 </ul>
                             </div>
                         </section>
 
                         <!-- FlexSlider -->
-                        <script defer src="js/jquery.flexslider.js"></script>
+                        <script defer src="../pages/js/jquery.flexslider.js"></script>
                         <script type="text/javascript">
                             $(function () {
-                                SyntaxHighlighter.all();
+                                //SyntaxHighlighter.all();
                             });
                             $(window).load(function () {
                                 $('.flexslider').flexslider({
@@ -741,8 +757,77 @@
 
                     </div>
                 </section>
+                <%--
+                 <section class="sky-form">
+                     <div class="sellers">
+                         <h3 class="m_2">Special Offers</h3>
+                         <section class="slider">
+                             <div class="flexslider">
+                                 <ul class="slides">
+                                     <li>
+                                         <div class="tittle">
+                                             <img src="images/shoe.jpg" class="img-responsive" alt=""/>
+                                             <h6>Item Title Here</h6>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <a class="show1" href="#">SHOW ME MORE</a>
+                                         </div>
+                                     </li>
+                                     <li>
+                                         <div class="tittle">
+                                             <img src="images/shoe.jpg" class="img-responsive" alt=""/>
+                                             <h6>Item Title Here</h6>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <a class="show1" href="#">SHOW ME MORE</a>
+                                         </div>
+                                     </li>
+                                     <li>
+                                         <div class="tittle">
+                                             <img src="images/shoe.jpg" class="img-responsive" alt=""/>
+                                             <h6>Item Title Here</h6>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <a class="show1" href="#">SHOW ME MORE</a>
+                                         </div>
+                                     </li>
+                                     <li>
+                                         <div class="tittle">
+                                             <img src="images/shoe.jpg" class="img-responsive" alt=""/>
+                                             <h6>Item Title Here</h6>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <p>Lorem ipsum dolor sit amet,</p>
+                                             <a class="show1" href="#">SHOW ME MORE</a>
+                                         </div>
+                                     </li>
+                                 </ul>
+                             </div>
+                         </section>
 
+                         <!-- FlexSlider -->
+                         <script defer src="js/jquery.flexslider.js"></script>
+                         <script type="text/javascript">
+                             $(function () {
+                                 //SyntaxHighlighter.all();
+                             });
+                             $(window).load(function () {
+                                 $('.flexslider').flexslider({
+                                     animation: "slide",
+                                     start: function (slider) {
+                                         $('body').removeClass('loading');
+                                     }
+                                 });
+                             });
+                         </script>
+                         <!-- FlexSlider -->
 
+                     </div>
+                 </section>
+ --%>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -752,10 +837,7 @@
 <!-- footer -->
 <div class="footer">
     <div class="container">
-        <p>Copyright &copy; 2015.Company name All rights reserved.More Templates <a href="http://www.cssmoban.com/"
-                                                                                    target="_blank"
-                                                                                    title="模板之家">模板之家</a> - Collect from
-            <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
+        <p>Copyright &copy; 2019.chenhc All rights reserved !</p>
     </div>
 </div>
 <!-- footer -->

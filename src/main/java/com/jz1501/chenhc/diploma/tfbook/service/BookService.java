@@ -18,4 +18,19 @@ public interface BookService {
 
     //今日特价
     public List<Book> todaysPriceBooks();
+
+    //二级目录
+    //所有图书
+    public List<Book> queryAllBooksBySortId(Integer parSortId, Integer sonSortId, Integer granSortId, Integer pageIndex, Integer pageSize);
+
+    //总页数
+    public Integer queryTotalPages(Integer parSortId, Integer sonSortId, Integer granSortId, Integer pageSize);
+
+    //总条数
+    public Integer queryAllBooksCount(Integer parSortId, Integer sonSortId, Integer granSortId);
+
+    //三级--图书详情
+    public Book queryBookDetailsByBookId(String bookId);
+
+
 }

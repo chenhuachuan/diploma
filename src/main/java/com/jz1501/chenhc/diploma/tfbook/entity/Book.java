@@ -8,7 +8,7 @@ import java.util.Date;
 public class Book implements Serializable {
     private String bookId;
     private String bookName;
-    private String sortId;
+    private Integer sortId;
     private String author;
     private String publishCompany;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -36,7 +36,7 @@ public class Book implements Serializable {
         this.originalPrice = originalPrice;
     }
 
-    public Book(String bookId, String bookName, String sortId, String author, String publishCompany, Date publishTime, Integer wordCount, Integer pageCount, String kaiBen, Integer repertory, Double bookPrice, Double originalPrice, String isbn, Integer saleCount, String imgUrl, String bookIntro, String commend) {
+    public Book(String bookId, String bookName, Integer sortId, String author, String publishCompany, Date publishTime, Integer wordCount, Integer pageCount, String kaiBen, Integer repertory, Double bookPrice, Double originalPrice, String isbn, Integer saleCount, String imgUrl, String bookIntro, String commend) {
         this.bookId = bookId;
         this.bookName = bookName;
         this.sortId = sortId;
@@ -95,11 +95,11 @@ public class Book implements Serializable {
         this.bookName = bookName;
     }
 
-    public String getSortId() {
+    public Integer getSortId() {
         return sortId;
     }
 
-    public void setSortId(String sortId) {
+    public void setSortId(Integer sortId) {
         this.sortId = sortId;
     }
 
@@ -208,7 +208,7 @@ public class Book implements Serializable {
         this.imgUrl = imgUrl;
     }
 
-    public Book(String bookId, String bookName, String sortId, String author, String publishCompany, Date publishTime, Integer wordCount, Integer pageCount, String kaiBen, Integer repertory, Double bookPrice, String isbn, Integer saleCount, String imgUrl, String bookIntro, String commend) {
+    public Book(String bookId, String bookName, Integer sortId, String author, String publishCompany, Date publishTime, Integer wordCount, Integer pageCount, String kaiBen, Integer repertory, Double bookPrice, String isbn, Integer saleCount, String imgUrl, String bookIntro, String commend) {
 
         this.bookId = bookId;
         this.bookName = bookName;

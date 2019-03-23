@@ -81,7 +81,9 @@
         </collection>
     </resultMap>
     <select id="selectParentAndSonLevel" resultMap="first_second_level_map">
-        select p.id pid,p.sort_name pname,p.sort_count pcount,p.parent_id ppid,s.id sid,s.sort_name sname,s.sort_count scount,s.parent_id spid FROM tf_sort p
+        select p.id pid,p.sort_name pname,p.sort_count pcount,p.parent_id ppid,s.id sid,s.sort_name sname,s.sort_count
+        scount,s.parent_id spid
+        FROM tf_sort p
             LEFT JOIN tf_sort s
             on p.id=s.parent_id
             where p.parent_id=0
@@ -108,5 +110,30 @@
              on s.id=g.parent_id
              where p.parent_id=0 and p.sort_name !='' ORDER BY RAND() LIMIT 15
     </select>
+
+    <!--二级分类-->
+    <select id="selectSecondSortNameById" parameterType="Integer" resultMap="first_second_level_map">
+        SELECT
+            p.id pid,p.sort_name pname,p.sort_count pcount,p.parent_id ppid,
+            s.id sid,s.sort_name sname,s.sort_count scount,s.parent_id spid
+            FROM tf_sort gs
+            LEFT JOIN tf_sort p
+            ON gs.id=p.parent_id
+            LEFT JOIN tf_sort s
+            ON p.id=s.parent_id
+            where gs.id=#{parSortId}
+    </select>
+
+    <!--tags-->
+    <select id="selectSecondPageTags" parameterType="Integer" resultMap="gs_parent_level">
+        select gs.id gsid,gs.sort_name gsname,gs.sort_count gscount,gs.parent_id gspid
+            FROM tf_sort p
+            LEFT JOIN tf_sort s
+            ON p.id=s.parent_id
+            LEFT JOIN tf_sort gs
+            ON s.id=gs.parent_id
+            where p.id=#{parSortId} LIMIT 12
+    </select>
+
 
 </mapper>

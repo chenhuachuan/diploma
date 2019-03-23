@@ -40,4 +40,63 @@ public class BookServiceImpl implements BookService {
     public List<Book> todaysPriceBooks() {
         return bookMapper.selectBooksBySpecialPrice();
     }
+
+    /**
+     * 分页查 所有图书
+     *
+     * @param parSortId
+     * @param sonSortId
+     * @param granSortId
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public List<Book> queryAllBooksBySortId(Integer parSortId, Integer sonSortId, Integer granSortId, Integer pageIndex, Integer pageSize) {
+        Integer curPage = (pageIndex - 1) * pageSize;
+        return bookMapper.selectSecondBooksById(parSortId, sonSortId, granSortId, curPage, pageSize);
+    }
+
+    /**
+     * 计算总页数 totalPage
+     *
+     * @return
+     */
+    @Override
+    public Integer queryTotalPages(Integer parSortId, Integer sonSortId, Integer granSortId, Integer pageSize) {
+        //总页数
+        Integer totalPage;
+        //总条数
+        Integer allCount = bookMapper.selectAllCountBySortId(parSortId, sonSortId, granSortId);
+        if (allCount % pageSize == 0) {
+            totalPage = allCount / pageSize;
+        } else {
+            totalPage = allCount / pageSize + 1;
+        }
+        return totalPage;
+    }
+
+    /**
+     * 总条数
+     *
+     * @param parSortId
+     * @param sonSortId
+     * @param granSortId
+     * @return
+     */
+    @Override
+    public Integer queryAllBooksCount(Integer parSortId, Integer sonSortId, Integer granSortId) {
+        return bookMapper.selectAllCountBySortId(parSortId, sonSortId, granSortId);
+    }
+
+    /**
+     * 图书详情
+     *
+     * @param bookId
+     * @return
+     */
+    @Override
+    public Book queryBookDetailsByBookId(String bookId) {
+        return bookMapper.selectBookDetailsByBookid(bookId);
+    }
 }

@@ -3,6 +3,7 @@ package com.jz1501.chenhc.diploma.tfbook.serviceImpl;
 import com.jz1501.chenhc.diploma.tfbook.dao.CategoryMapper;
 import com.jz1501.chenhc.diploma.tfbook.entity.Sort;
 import com.jz1501.chenhc.diploma.tfbook.service.CategoryService;
+import com.whalin.MemCached.MemCachedClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,44 +16,116 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired(required = false)
     private CategoryMapper categoryMapper;
+    @Autowired
+    private MemCachedClient memCachedClient;
 
     @Override
+    //@ReadThroughAssignCache(assignedKey = "com.jz1501.chenhc.diploma.tfbook.serviceImpl.CategoryServiceImpl.queryAllCategoryName", namespace = "category", expiration = 0)
     public List<Sort> queryAllCategoryName() {
-        return categoryMapper.selectAllCategoryName();
+        String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
+        String method = Thread.currentThread().getStackTrace()[1].getMethodName();
+        Object sorts = memCachedClient.get(clazz + ":" + method);
+        if (sorts == null) {
+            sorts = categoryMapper.selectAllCategoryName();
+            memCachedClient.add(clazz + ":" + method, sorts);
+        }
+        return (List<Sort>) sorts;
     }
 
     @Override
+    //@ReadThroughAssignCache(assignedKey = "com.jz1501.chenhc.diploma.tfbook.serviceImpl.CategoryServiceImpl.queryAllFirstLevelSortName",namespace = "category")
     public List<Sort> queryAllFirstLevelSortName() {
-        return categoryMapper.selectParentLevel();
+        String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
+        String method = Thread.currentThread().getStackTrace()[1].getMethodName();
+        Object sorts = memCachedClient.get(clazz + ":" + method);
+        if (sorts == null) {
+            sorts = categoryMapper.selectParentLevel();
+            memCachedClient.add(clazz + ":" + method, sorts);
+        }
+        return (List<Sort>) sorts;
     }
 
     @Override
+    // @ReadThroughAssignCache(assignedKey = "com.jz1501.chenhc.diploma.tfbook.serviceImpl.CategoryServiceImpl.queryAllSecondLevelByParentId:Integer sparentId",namespace = "category")
     public List<Sort> queryAllSecondLevelByParentId(Integer sparentId) {
-        return categoryMapper.selectSecondLevelByParentId(sparentId);
+        String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
+        String method = Thread.currentThread().getStackTrace()[1].getMethodName();
+        String key = clazz + ":" + method + ":Integer" + sparentId;
+        Object sorts = memCachedClient.get(key);
+        if (sorts == null) {
+            sorts = categoryMapper.selectSecondLevelByParentId(sparentId);
+            memCachedClient.add(key, sorts);
+        }
+        return (List<Sort>) sorts;
     }
 
     @Override
+    //@ReadThroughAssignCache(assignedKey = "com.jz1501.chenhc.diploma.tfbook.serviceImpl.CategoryServiceImpl.queryFirstAndSecondLevel",namespace = "category")
     public List<Sort> queryFirstAndSecondLevel() {
-        return categoryMapper.selectParentAndSonLevel();
+        String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
+        String method = Thread.currentThread().getStackTrace()[1].getMethodName();
+        String key = clazz + ":" + method;
+        Object sorts = memCachedClient.get(key);
+        if (sorts == null) {
+            sorts = categoryMapper.selectParentAndSonLevel();
+            memCachedClient.add(key, sorts);
+        }
+        return (List<Sort>) sorts;
     }
 
     @Override
+    //@ReadThroughAssignCache(assignedKey = "com.jz1501.chenhc.diploma.tfbook.serviceImpl.CategoryServiceImpl.queryAllGrandsonLevelBygspid:Integer gsparentId",namespace = "category")
     public List<Sort> queryAllGrandsonLevelBygspid(Integer gsparentId) {
-        return categoryMapper.selectGrandsonLevelBySpid(gsparentId);
+        String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
+        String method = Thread.currentThread().getStackTrace()[1].getMethodName();
+        String key = clazz + ":" + method + ":Integer" + gsparentId;
+        Object sorts = memCachedClient.get(key);
+        if (sorts == null) {
+            sorts = categoryMapper.selectGrandsonLevelBySpid(gsparentId);
+            memCachedClient.add(key, sorts);
+        }
+        return (List<Sort>) sorts;
     }
 
     @Override
+    //@ReadThroughAssignCache(assignedKey = "com.jz1501.chenhc.diploma.tfbook.serviceImpl.CategoryServiceImpl.queryRandomTagsName",namespace = "category")
     public List<Sort> queryRandomTagsName() {
-        return categoryMapper.selectGrandsonSortName();
+        String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
+        String method = Thread.currentThread().getStackTrace()[1].getMethodName();
+        String key = clazz + ":" + method;
+        Object sorts = memCachedClient.get(key);
+        if (sorts == null) {
+            sorts = categoryMapper.selectGrandsonSortName();
+            memCachedClient.add(key, sorts);
+        }
+        return (List<Sort>) sorts;
     }
 
     @Override
+    //@ReadThroughAssignCache(assignedKey = "com.jz1501.chenhc.diploma.tfbook.serviceImpl.CategoryServiceImpl.queryAllSecondSortNameByparSortId:Integer parSortId",namespace = "category")
     public List<Sort> queryAllSecondSortNameByparSortId(Integer parSortId) {
-        return categoryMapper.selectSecondSortNameById(parSortId);
+        String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
+        String method = Thread.currentThread().getStackTrace()[1].getMethodName();
+        String key = clazz + ":" + method + ":Integer" + parSortId;
+        Object sorts = memCachedClient.get(key);
+        if (sorts == null) {
+            sorts = categoryMapper.selectSecondSortNameById(parSortId);
+            memCachedClient.add(key, sorts);
+        }
+        return (List<Sort>) sorts;
     }
 
     @Override
+    //@ReadThroughAssignCache(assignedKey = "com.jz1501.chenhc.diploma.tfbook.serviceImpl.CategoryServiceImpl.querySecondPageTags:Integer parSortId",namespace = "cateogry")
     public List<Sort> querySecondPageTags(Integer parSortId) {
-        return categoryMapper.selectSecondPageTags(parSortId);
+        String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
+        String method = Thread.currentThread().getStackTrace()[1].getMethodName();
+        String key = clazz + ":" + method + ":Integer" + parSortId;
+        Object sorts = memCachedClient.get(key);
+        if (sorts == null) {
+            sorts = categoryMapper.selectSecondPageTags(parSortId);
+            memCachedClient.add(key, sorts);
+        }
+        return (List<Sort>) sorts;
     }
 }

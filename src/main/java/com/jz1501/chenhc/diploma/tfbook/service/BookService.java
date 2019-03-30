@@ -32,5 +32,7 @@ public interface BookService {
     //三级--图书详情
     public Book queryBookDetailsByBookId(String bookId);
 
+    //相似推荐
+    public List<Book> querySimilarityBooksBySortId(Integer sortId, String bookId);
 
 }

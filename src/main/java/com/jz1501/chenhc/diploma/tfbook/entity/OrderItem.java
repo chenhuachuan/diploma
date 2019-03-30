@@ -9,6 +9,9 @@ public class OrderItem implements Serializable {
     private Integer count;
     private Double littleCount;
 
+    //关系属性
+    private Book book;
+
     public OrderItem() {
     }
 
@@ -19,6 +22,23 @@ public class OrderItem implements Serializable {
         this.orderId = orderId;
         this.count = count;
         this.littleCount = littleCount;
+    }
+
+    public OrderItem(String itemId, String bookId, String orderId, Integer count, Double littleCount, Book book) {
+        this.itemId = itemId;
+        this.bookId = bookId;
+        this.orderId = orderId;
+        this.count = count;
+        this.littleCount = littleCount;
+        this.book = book;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     @Override

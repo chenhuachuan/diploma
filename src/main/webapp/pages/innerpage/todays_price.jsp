@@ -5,13 +5,16 @@
     <c:forEach items="${lowPriceBooks}" var="book">
         <li>
             <div class="tittle">
-                <img src="..${book.imgUrl}" class="img-responsive" alt=""/><br/>
+                <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${book.bookId}">
+                    <img src="..${book.imgUrl}" class="img-responsive" alt=""/></a><br/>
                 <center>
-                    <h6>${book.bookName}</h6>
+                    <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${book.bookId}">
+                        <h6> ${book.bookName}</h6></a>
                     <p>原价:￥${book.originalPrice}</p>
                     <p style="font-size: 22px;"><font color="red">现价:￥${book.bookPrice}</font></p>
                     <p>立志读遍天下书！</p>
-                    <a class="show1" href="#">ADD TO CART</a>
+                    <a class="show1" href="${pageContext.request.contextPath}/cart/addToCart.do?bookId=${book.bookId}">ADD
+                        TO CART</a>
                 </center>
             </div>
         </li>

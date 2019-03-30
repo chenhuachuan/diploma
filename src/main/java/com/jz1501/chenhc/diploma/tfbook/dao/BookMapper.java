@@ -30,4 +30,8 @@ public interface BookMapper {
     //三级页面
     public Book selectBookDetailsByBookid(String bookId);
 
+    //相似图书
+    public List<Book> selectSimilarityBooksById(@Param("sortId") Integer sortId, @Param("bookId") String bookId);
+
+
 }

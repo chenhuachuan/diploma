@@ -3,9 +3,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Home</title>
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
-    <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <title>Buy</title>
+    <link href="../pages/css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+    <link href="../pages/css/style.css" rel="stylesheet" type="text/css" media="all"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,15 +17,16 @@
         window.scrollTo(0, 1);
     } </script>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <script src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/easing.js"></script>
-    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
-    <link href="css/megamenu.css" rel="stylesheet" type="text/css" media="all"/>
-    <link rel="stylesheet" href="css/etalage.css">
-    <script src="js/jquery.easydropdown.js"></script>
-    <script src="js/menu_jquery.js"></script>
+    <script src="../pages/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../pages/js/easing.js"></script>
+    <link rel="stylesheet" href="../pages/css/flexslider.css" type="text/css" media="screen"/>
+    <link href="../pages/css/megamenu.css" rel="stylesheet" type="text/css" media="all"/>
+    <link rel="stylesheet" href="../pages/css/etalage.css">
+    <script src="../pages/js/jquery.easydropdown.js"></script>
+    <script src="../pages/js/menu_jquery.js"></script>
     <!-- etale -->
-    <script src="js/jquery.etalage.min.js"></script>
+    <script src="../pages/js/jquery.etalage.min.js"></script>
+    <script src="../pages/js/home.js"></script>
     <script>
         jQuery(document).ready(function ($) {
 
@@ -36,7 +37,7 @@
                 source_image_height: 1000,
                 show_hint: true,
                 click_callback: function (image_anchor, instance_id) {
-                    alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');
+                    //alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');
                 }
             });
 
@@ -52,7 +53,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="images/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="../pages/images/logo.png" alt=""/></a>
                 </div>
 
                 <%-- user login and regsit jsp--%>
@@ -66,7 +67,7 @@
 </div>
 
 <!-- megamenu -->
-<script type="text/javascript" src="js/megamenu.js"></script>
+<script type="text/javascript" src="../pages/js/megamenu.js"></script>
 <script>
     $(document).ready(function () {
         $(".megamenu").megamenu();
@@ -575,63 +576,72 @@
 <div class="container">
     <div class="main">
         <div class="shoping_bag">
-            <h4><img src="images/small.jpg">my shopping shoe / <span> 11 item</span></h4>
+            <h4><img src="../pages/images/small.jpg">my shopping book / <span> 11 item</span></h4>
             <ul class="s_art">
-                <li><img src="images/art1.png"></li>
+                <li><img src="../pages/images/art1.png"></li>
                 <li><span> 11 item</span></li>
             </ul>
             <div class="clearfix"></div>
         </div>
-        <div class="shoping_bag1">
-            <div class="shoping_left">
-                <div class="shoping1_of_1">
-                    <img src="images/7.jpg" class="img-responsive" alt=""/>
+        <c:forEach items="${sessionScope.showCart}" var="map" varStatus="order_item">
+            <c:set var="totalPurchaseCount" value="${totalPurchaseCount+map.value.count}"></c:set>
+            <div class="shoping_bag1">
+                <div class="shoping_left">
+                    <div class="shoping1_of_1">
+                        <img src="..${map.value.book.imgUrl}" class="img-responsive" alt=""/>
+                    </div>
+                    <div class="shoping1_of_2">
+                        <h4><a href="#">${map.value.book.bookName}</a></h4>
+                            <%--<span>购买数量: <b>xl</b>&nbsp;&nbsp; 数量 <b>${purCount}</b> | code :1175</span>--%>
+                        <span>购买数量: <b>${map.value.count}</b>&nbsp;&nbsp; | 单价 : ${map.value.book.bookPrice}</span>
+                        <ul class="s_icons">
+                            <li><a href="#"><img src="../pages/images/s_icon1.png" alt=""></a></li>
+                            <li><a href="#"><img src="../pages/images/s_icon2.png" alt=""></a></li>
+                            <li><a href="#"><img src="../pages/images/s_icon3.png" alt=""></a></li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
-                <div class="shoping1_of_2">
-                    <h4><a href="#">men runnig shoe</a></h4>
-                    <span>size <b>xl</b>&nbsp;&nbsp; qty <b>1</b> | code :1175</span>
-                    <ul class="s_icons">
-                        <li><a href="#"><img src="images/s_icon1.png" alt=""></a></li>
-                        <li><a href="#"><img src="images/s_icon2.png" alt=""></a></li>
-                        <li><a href="#"><img src="images/s_icon3.png" alt=""></a></li>
-                    </ul>
+                <div class="shoping_right">
+                    <p>优惠：￥${sessionScope.perMoney} &nbsp;<span> 小计:￥${map.value.littleCount}</span></p>
                 </div>
                 <div class="clearfix"></div>
             </div>
+        </c:forEach>
+        <input type="text" value="${totalPurchaseCount}" name="totalPurchaseCount" id="total_order_count"
+               style="display: none;">
+        <div class="shoping_bag1">
+            <div class="shoping_left">
+                <h2><a href="#"><img src="../pages/images/gift.jpg">服务</a> <span><%--￥. 25--%></span></h2>
+            </div>
             <div class="shoping_right">
-                <p>35% off &nbsp;<span> Rs. 1,899</span></p>
+                <p>快递 &nbsp;<a href="#">free</a>&nbsp;<span> ￥ 0</span></p>
+                <p>其他 &nbsp;<span> ￥ 0</span></p>
+                <p>小计 &nbsp;<span> ￥ 0</span></p>
             </div>
             <div class="clearfix"></div>
         </div>
         <div class="shoping_bag1">
             <div class="shoping_left">
-                <h2><a href="#"><img src="images/gift.jpg">gift wrap </a> <span> for rs. 25</span></h2>
+                <h2><a href="#"><img src="../pages/images/login.jpg">使用 </a> <span> 优惠券</span></h2>
             </div>
             <div class="shoping_right">
-                <p>sub total &nbsp;<span> Rs. 1,899</span></p>
-                <p>vat collected &nbsp;<span> Rs. 91</span></p>
-                <p>delivery &nbsp;<a href="#">free</a>&nbsp;<span> Rs. 0</span></p>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <div class="shoping_bag1">
-            <div class="shoping_left">
-                <h2><a href="#"><img src="images/login.jpg">login </a> <span> to apply coupons</span></h2>
-            </div>
-            <div class="shoping_right">
-                <p>coupon discount &nbsp;<span class="color"> Rs. 0</span></p>
+                <p>优惠券 &nbsp;<span class="color"> ￥ 0</span></p>
             </div>
             <div class="clearfix"></div>
         </div>
         <div class="shoping_bag2">
             <div class="shoping_left">
-                <a class="btn1" href="details.jsp">place order</a>
+                <a class="btn1" href="#">立即购买</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a class="btn1"
+                   href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=1">继续购物</a>
             </div>
             <div class="shoping_right">
-                <p class="tot">total &nbsp;<span class="color"> Rs. 2,109</span></p>
+                <p class="tot">总计 &nbsp;<span class="color"> ￥. ${sessionScope.totalMoney}</span></p>
             </div>
             <div class="clearfix"></div>
         </div>
+
     </div>
 </div>
 <!-- footer -->

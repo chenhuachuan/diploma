@@ -146,12 +146,15 @@ public class BookController {
         List<Sort> sorts = categoryService.queryRandomTagsName();
         //今日特价
         List<Book> tadaysBooks = bookService.todaysPriceBooks();
+        //相似推荐
+        List<Book> similarityBooks = bookService.querySimilarityBooksBySortId(book.getSortId(), bookId);
 
         //图书信息
         model.addAttribute("bookDetails", book);
         model.addAttribute("sellHotBooks", sellHotBooks);
         model.addAttribute("tadaysBooks", tadaysBooks);
         model.addAttribute("randomSortNames", sorts);
+        model.addAttribute("similarityBooks", similarityBooks);
 
         return "forward:/pages/details.jsp";
     }

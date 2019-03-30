@@ -105,5 +105,11 @@
         from tf_book where id=#{bookId}
     </select>
 
-
+    <!--相似推荐-->
+    <select id="selectSimilarityBooksById" resultMap="all_columns_map">
+        SELECT
+        <include refid="all_book_column"/>
+        FROM `tf_book`
+        where sort_id=#{sortId} and id!=#{bookId} ORDER BY sale_count desc , publish_time desc LIMIT 4
+    </select>
 </mapper>

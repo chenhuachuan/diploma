@@ -15,14 +15,16 @@
             </div>
         </c:if>
         <div class="icon">
-            <a href="#">
+            <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${book.bookId}">
                 <img src="..${book.imgUrl}" class="img-responsive" alt="" width="74px;" height="74px;"/>
             </a>
         </div>
         <div class="data">
-            <h4><a href="#">${book.bookName}</a></h4>
-            <p>$68.00</p>
-            <h5>$${book.bookPrice}</h5>
+            <h4>
+                <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${book.bookId}">${book.bookName}</a>
+            </h4>
+            <p>￥.68.00</p>
+            <h5>￥.${book.bookPrice}</h5>
         </div>
     </c:forEach>
     <div class="clearfix"></div>

@@ -6,7 +6,8 @@
  *
  * Copyright (c) 2007 George Smith
  * Licensed under the MIT License:
- *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.opensource.org/licenses/mit-lice
+ *   nse.php
  */
 
 // t: current time, b: begInnIng value, c: change In value, d: duration

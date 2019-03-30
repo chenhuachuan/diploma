@@ -85,6 +85,12 @@
         </form>
     </div>
 </div>
+<div>
+    <a class="show-more" href="#">我的购物车</a>
+    <a class="cart-order" href="#">购物车</a>
+
+</div>
+
 
 <!-- script-for-nav -->
 <script>

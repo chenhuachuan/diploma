@@ -5,8 +5,11 @@
     <c:forEach items="${newbooks}" var="book">
         <li>
             <div class="biseller-column">
-                <img src="..${book.imgUrl}" class="img-responsive" alt="" class="veiw-img"/>
-                <a href="#"><i class="new"></i></a>
+                <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${book.bookId}">
+                    <img src="..${book.imgUrl}" class="img-responsive" alt="" class="veiw-img"/>
+                </a>
+                <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${book.bookId}"><i
+                        class="new"></i></a>
                 <div class="biseller-name">
                     <h4>${book.bookName} &nbsp;&nbsp;&nbsp;&nbsp;${book.author}</h4>
                     <p>$${book.bookPrice} <a href="#">add to cart</a></p>

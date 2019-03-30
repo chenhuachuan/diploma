@@ -17,5 +17,6 @@ function getNewShelvesBooks() {
     $("#new_books_shelves_div").load('${pageContext.request.contextPath}/book/newBookShelves.do');
 }
 */
+var total_order_count = $("#total_order_count").val();
 
 

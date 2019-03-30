@@ -4,8 +4,10 @@
     <c:forEach items="${editor_books}" var="ebook">
         <li>
             <div class="biseller-column">
-                <img src="..${ebook.imgUrl}" class="img-responsive" alt="">
-                <a href="#"><i class="new"></i></a>
+                <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${ebook.bookId}">
+                    <img src="..${ebook.imgUrl}" class="img-responsive" alt=""></a>
+                <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${ebook.bookId}"><i
+                        class="new"></i></a>
                 <div class="biseller-name">
                     <h4>${ebook.bookName}</h4>
                     <p>$${ebook.bookPrice}</p>

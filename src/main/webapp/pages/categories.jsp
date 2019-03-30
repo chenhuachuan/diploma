@@ -17,7 +17,7 @@
         window.scrollTo(0, 1);
     } </script>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <script src="../pages/js/jquery.min.js" type="text/javascript"></script>
+    <script src="../js/jquery-1.10.1.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="../pages/js/easing.js"></script>
     <link rel="stylesheet" href="../pages/css/flexslider.css" type="text/css" media="screen"/>
     <link href="../pages/css/megamenu.css" rel="stylesheet" type="text/css" media="all"/>
@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="../pages/css/etalage.css">
     <script src="../pages/js/jquery.easydropdown.js"></script>
     <script src="../pages/js/jquery.etalage.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../pages/js/home.js"></script>
     <script>
         jQuery(document).ready(function ($) {
             $('#etalage').etalage({
@@ -82,7 +84,7 @@
     </script>
 </div>
 <%--搜索框--%>
-<div class="container-fluid" id="search_div_all"
+<%--<div class="container-fluid" id="search_div_all"
      style="width: 350px; height: 49px;position: absolute;margin-left: 900px">
     <div>
         <form class="navbar-form navbar-right" role="search" style="position: relative;">
@@ -92,6 +94,56 @@
             <button type="submit" class="btn btn-default">搜索</button>
         </form>
     </div>
+    <div style="margin-left: 450px;">
+        <a class="show-more" href="#">购物车</a>
+        <a class="show-more" href="#">我的订单</a>
+    </div>
+</div>--%>
+
+<div style="padding: 20px 380px 5px 300px;">
+    <form class="bs-example bs-example-form" role="form">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">下拉菜单
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a href="#">功能</a>
+                            </li>
+                            <li>
+                                <a href="#">功能2</a>
+                            </li>
+                            <li>
+                                <a href="#">其他</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">分离的链接</a>
+                            </li>
+                        </ul>
+                        <button type="submit" class="btn btn-default" style="width: 80px;">搜索</button>
+                    </div><!-- /btn-group -->
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+            <div class="col-lg-4">
+                <span>
+                    <a href="${pageContext.request.contextPath}/pages/buy.jsp" class="btn btn-danger"
+                       style="width:110px;">
+                        &nbsp;购物车 &nbsp;&nbsp;<span class="badge">0</span>
+                    </a>
+                    <a href="#" class="btn btn-danger" style="width:110px;text-align: center">
+                        我的订单
+                    </a>
+                    <%--<button type="button" class="btn btn-danger" style="width:100px;">我的订单</button>--%>
+                </span>
+            </div>
+
+        </div><!-- /.row -->
+    </form>
 </div>
 
 
@@ -236,12 +288,15 @@
                                                 <img src="..${tbook.imgUrl}" class="img-responsive" alt=""/>
                                             </a><br/>
                                             <center>
-                                                <h6>${tbook.bookName}</h6>
+                                                <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${tbook.bookId}">
+                                                    <h6>${tbook.bookName}</h6></a>
                                                 <p>原价:￥${tbook.originalPrice}</p>
                                                 <p style="font-size: 22px;"><font
                                                         color="red">现价:￥${tbook.bookPrice}</font></p>
                                                 <p>立志读遍天下书！</p>
-                                                <a class="show1" href="#">ADD TO CART</a>
+                                                <a class="show1"
+                                                   href="${pageContext.request.contextPath}/cart/addToCart.do?bookId=${tbook.bookId}">ADD
+                                                    TO CART</a>
                                             </center>
                                         </div>
                                     </li>

@@ -7,6 +7,7 @@
     <title>Book Detail</title>
     <link href="../pages/css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
     <link href="../pages/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,13 +19,15 @@
         window.scrollTo(0, 1);
     } </script>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <script src="../pages/js/jquery.min.js"></script>
+    <script src="../js/jquery-1.10.1.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="../pages/js/easing.js"></script>
     <link rel="stylesheet" href="../pages/css/flexslider.css" type="text/css" media="screen"/>
     <link href="../pages/css/megamenu.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="../pages/css/num_input.css" rel="stylesheet" type="text/css"/>
     <script src="../pages/js/menu_jquery.js"></script>
     <link rel="stylesheet" href="../pages/css/etalage.css">
     <script src="../pages/js/jquery.easydropdown.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
     <!-- etale -->
     <script src="../pages/js/jquery.etalage.min.js"></script>
     <script>
@@ -463,16 +466,17 @@
                                 </a>
                             </li>
                             <li>
-                                <img class="etalage_thumb_image" src="images/d2.jpg" class="img-responsive"/>
-                                <img class="etalage_source_image" src="images/d2.jpg" class="img-responsive" title=""/>
+                                <img class="etalage_thumb_image" src="..${bookDetails.imgUrl}" class="img-responsive"/>
+                                <img class="etalage_source_image" src="..${bookDetails.imgUrl}" class="img-responsive"
+                                     title=""/>
                             </li>
                             <li>
-                                <img class="etalage_thumb_image" src="images/d3.jpg" class="img-responsive"/>
-                                <img class="etalage_source_image" src="images/d3.jpg" class="img-responsive"/>
+                                <img class="etalage_thumb_image" src="..${bookDetails.imgUrl}" class="img-responsive"/>
+                                <img class="etalage_source_image" src="..${bookDetails.imgUrl}" class="img-responsive"/>
                             </li>
                             <li>
-                                <img class="etalage_thumb_image" src="images/d4.jpg" class="img-responsive"/>
-                                <img class="etalage_source_image" src="images/d4.jpg" class="img-responsive"/>
+                                <img class="etalage_thumb_image" src="..${bookDetails.imgUrl}" class="img-responsive"/>
+                                <img class="etalage_source_image" src="..${bookDetails.imgUrl}" class="img-responsive"/>
                             </li>
                         </ul>
                         <div class="clearfix"></div>
@@ -493,108 +497,157 @@
                         <div class="det_nav">
                             <h4>related styles :</h4>
                             <ul>
-                                <li><a href="#"><img src="../pages/images/1.jpg" class="img-responsive" alt=""/></a>
+                                <li><a href="#"><img src="..${bookDetails.imgUrl}" class="img-responsive" alt=""/></a>
                                 </li>
-                                <li><a href="#"><img src="../pages/images/12.jpg" class="img-responsive" alt=""/></a>
+                                <li><a href="#"><img src="..${bookDetails.imgUrl}" class="img-responsive" alt=""/></a>
                                 </li>
-                                <li><a href="#"><img src="../pages/images/3.jpg" class="img-responsive" alt=""/></a>
+                                <li><a href="#"><img src="..${bookDetails.imgUrl}" class="img-responsive" alt=""/></a>
                                 </li>
-                                <li><a href="#"><img src="../pages/images/ss2.jpg" class="img-responsive" alt=""/></a>
+                                <li><a href="#"><img src="..${bookDetails.imgUrl}" class="img-responsive" alt=""/></a>
                                 </li>
                             </ul>
                         </div>
-                        <div class="det_nav1">
-                            <h4>购买数量:</h4>
-                            <div class=" sky-form col col-4">
-                                <ul>
-                                    <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>1</label>
-                                    </li>
-                                    <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>2</label>
-                                    </li>
-                                    <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>3</label>
-                                    </li>
-                                    <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>4</label>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="btn_form">
-                            <a href="buy.jsp">buy</a>
-                        </div>
-                        <a href="#"><span>login to save in wishlist </span></a>
+                        <form id="add_tocart_formid" method="post"
+                              action="${pageContext.request.contextPath}/cart/addToCart.do" role="form">
+                            <div class="det_nav1">
+                                <h4>购买数量:</h4>
+                                <div class=" sky-form col col-4">
+                                    <div class="input-group spinner">
+                                        <input type="text" class="form-control" name="purCount" value="1"
+                                               id="purchase_count_input" onblur="setInputDefaultValue()"/>
+                                        <input type="text" name="bookId" value="${bookDetails.bookId}" id="bookId_input"
+                                               style="display: none;"/>
+                                        <div class="input-group-btn-vertical">
+                                            <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i>
+                                            </button>
+                                            <button class="btn btn-default" type="button"><i
+                                                    class="fa fa-caret-down"></i></button>
+                                        </div>
+                                    </div>
 
+                                    <script type="text/javascript">
+                                        (function ($) {
+                                            $('.spinner .btn:first-of-type').on('click', function () {
+                                                $('#purchase_count_input').val(parseInt($('#purchase_count_input').val(), 10) + 1);
+                                            });
+                                            $('.spinner .btn:last-of-type').on('click', function () {
+                                                var inv = $('#purchase_count_input').val();
+                                                if (inv == 'NaN' || inv == '') {
+                                                    $('#purchase_count_input').text(1);
+                                                    $('#purchase_count_input').val(1);
+                                                }
+                                                if (inv > 1) {
+                                                    $('#purchase_count_input').val(parseInt($('#purchase_count_input').val(), 10) - 1);
+                                                }
+                                            });
+                                        })(jQuery);
+
+                                        function setInputDefaultValue() {
+                                            var inv = $('#purchase_count_input').val();
+                                            var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
+                                            if (!re.test(inv)) {
+                                                $('#purchase_count_input').val(1);
+                                                return false;
+                                            }
+                                        }
+                                    </script>
+                                    <%--<ul>
+                                        <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>1</label>
+                                        </li>
+                                        <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>2</label>
+                                        </li>
+                                        <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>3</label>
+                                        </li>
+                                        <li><label class="checkbox"><input type="checkbox" name="checkbox"><i></i>4</label>
+                                        </li>
+                                    </ul>--%>
+                                </div>
+                            </div>
+                            <div class="btn_form">
+                                <button type="submit" class="btn btn-info">加入购物车</button>
+                                <%-- <a href="">加入购物车</a>--%>
+                                <a href="../pages/buy.jsp">立即购买</a>
+                            </div>
+                        </form>
+                        <a href="#"><span style="font-size:medium">加入收藏 </span></a>
                     </div>
+
                     <div class="clearfix"></div>
                 </div>
                 <div class="single-bottom1">
                     <h6>图书介绍</h6>
-                    <p class="prod-desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <p class="prod-desc" style="text-indent:2em;">
                         ${bookDetails.bookIntro}
                     </p>
-                    <h6>编辑推荐</h6>
-                    <p class="prod-desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <h6 style="padding-top: 15px;">编辑推荐</h6>
+                    <p class="prod-desc" style="text-indent:2em;">
                         ${bookDetails.commend}
                     </p>
                 </div>
                 <div class="single-bottom2">
                     <h6>相关图书</h6>
-                    <div class="product">
-                        <div class="product-desc">
-                            <div class="product-img">
-                                <img src="../pages/images/12.jpg" class="img-responsive " alt=""/>
+                    <c:forEach items="${similarityBooks}" var="sim_books">
+                        <div class="product">
+                            <div class="product-desc">
+                                <div class="product-img">
+                                    <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${sim_books.bookId}">
+                                        <img src="..${sim_books.imgUrl}" class="img-responsive " alt=""/></a>
+                                </div>
+                                <div class="prod1-desc">
+                                    <h5><a class="product_link"
+                                           href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${sim_books.bookId}">${sim_books.bookName}-<font
+                                            size="2px;">${sim_books.author}</font></a></h5>
+                                    <p class="product_descr" style="text-indent:2em;">${sim_books.bookIntro}</p>
+                                </div>
+                                <div class="clearfix"></div>
                             </div>
-                            <div class="prod1-desc">
-                                <h5><a class="product_link" href="#">Excepteur sint</a></h5>
-                                <p class="product_descr"> Vivamus ante lorem, eleifend nec interdum non, ullamcorper et
-                                    arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
-                                    inceptos himenaeos. </p>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="product_price">
-                            <span class="price-access">$597.51</span>
-                            <button class="button1"><span>Add to cart</span></button>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="product">
-                        <div class="product-desc">
-                            <div class="product-img">
-                                <img src="../pages/images/9.jpg" class="img-responsive " alt=""/>
-                            </div>
-                            <div class="prod1-desc">
-                                <h5><a class="product_link" href="#">Excepteur sint</a></h5>
-                                <p class="product_descr"> Vivamus ante lorem, eleifend nec interdum non, ullamcorper et
-                                    arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
-                                    inceptos himenaeos. </p>
+                            <div class="product_price">
+                                <span class="price-access">￥.${sim_books.bookPrice}</span>
+                                <button class="button1"><span>加入购物车</span></button>
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="product_price">
-                            <span class="price-access">$597.51</span>
-                            <button class="button1"><span>Add to cart</span></button>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="product">
-                        <div class="product-desc">
-                            <div class="product-img">
-                                <img src="../pages/images/8.jpg" class="img-responsive " alt=""/>
-                            </div>
-                            <div class="prod1-desc">
-                                <h5><a class="product_link" href="#">Excepteur sint</a></h5>
-                                <p class="product_descr"> Vivamus ante lorem, eleifend nec interdum non, ullamcorper et
-                                    arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
-                                    inceptos himenaeos. </p>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="product_price">
-                            <span class="price-access">$597.51</span>
-                            <button class="button1"><span>Add to cart</span></button>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
+                    </c:forEach>
+                    <%--
+                                        <div class="product">
+                                            <div class="product-desc">
+                                                <div class="product-img">
+                                                    <img src="../pages/images/9.jpg" class="img-responsive " alt=""/>
+                                                </div>
+                                                <div class="prod1-desc">
+                                                    <h5><a class="product_link" href="#">Excepteur sint</a></h5>
+                                                    <p class="product_descr"> Vivamus ante lorem, eleifend nec interdum non, ullamcorper et
+                                                        arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+                                                        inceptos himenaeos. </p>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="product_price">
+                                                <span class="price-access">$597.51</span>
+                                                <button class="button1"><span>加入购物车</span></button>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="product">
+                                            <div class="product-desc">
+                                                <div class="product-img">
+                                                    <img src="../pages/images/8.jpg" class="img-responsive " alt=""/>
+                                                </div>
+                                                <div class="prod1-desc">
+                                                    <h5><a class="product_link" href="#">Excepteur sint</a></h5>
+                                                    <p class="product_descr"> Vivamus ante lorem, eleifend nec interdum non, ullamcorper et
+                                                        arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+                                                        inceptos himenaeos. </p>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="product_price">
+                                                <span class="price-access">$597.51</span>
+                                                <button class="button1"><span>加入购物车</span></button>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        --%>
                 </div>
             </div>
 
@@ -693,12 +746,15 @@
                                                     <img src="..${tbook.imgUrl}" class="img-responsive" alt=""/>
                                                 </a><br/>
                                                 <center>
-                                                    <h6>${tbook.bookName}</h6>
+                                                    <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${tbook.bookId}">
+                                                        <h6>${tbook.bookName}-<font size="1px;"
+                                                                                    color="#000000">${tbook.author}</font>
+                                                        </h6></a>
                                                     <p>原价:￥${tbook.originalPrice}</p>
                                                     <p style="font-size: 22px;"><font
                                                             color="red">现价:￥${tbook.bookPrice}</font></p>
                                                     <p>立志读遍天下书！</p>
-                                                    <a class="show1" href="#">ADD TO CART</a>
+                                                    <a class="show1" href="#">加入购物车</a>
                                                 </center>
                                             </div>
                                         </li>

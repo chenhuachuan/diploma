@@ -16,7 +16,8 @@
         </c:if>
         <div class="icon">
             <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${book.bookId}">
-                <img src="..${book.imgUrl}" class="img-responsive" alt="" width="74px;" height="74px;"/>
+                <img src="${pageContext.request.contextPath}${book.imgUrl}" class="img-responsive" alt="" width="74px;"
+                     height="74px;"/>
             </a>
         </div>
         <div class="data">

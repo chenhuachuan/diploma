@@ -4,35 +4,49 @@
 <html>
 <head>
     <title>Home</title>
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
-    <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="${pageContext.request.contextPath}/pages/css/bootstrap.css" rel="stylesheet" type="text/css"
+          media="all">
+    <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"
+          media="all">
+    <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet"
+          type="text/css" media="all">
+    <link href="${pageContext.request.contextPath}/pages/css/style.css" rel="stylesheet" type="text/css" media="all"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <script src="${pageContext.request.contextPath}/pages/js/jquery-1.10.2.js" type="text/javascript"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/pages/js/easing.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/flexslider.css" type="text/css"
+          media="screen"/>
+    <link href="${pageContext.request.contextPath}/pages/css/megamenu.css" rel="stylesheet" type="text/css"
+          media="all"/>
+    <link href="${pageContext.request.contextPath}/pages/css/form.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="${pageContext.request.contextPath}/pages/css/slider.css" rel="stylesheet" type="text/css"/>
+    <link href="${pageContext.request.contextPath}/pages/css/font-awesome/css/font-awesome.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="${pageContext.request.contextPath}/pages/css/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/pages/js/megamenu.js"></script>
+    <script src="${pageContext.request.contextPath}/pages/js/menu_jquery.js"></script>
+    <script src="${pageContext.request.contextPath}/pages/js/jquery.easydropdown.js"></script>
+    <script src="${pageContext.request.contextPath}/pages/js/jquery.etalage.min.js"></script>
+    <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/pages/js/jquery.flexisel.js"></script>
+    <script defer src="${pageContext.request.contextPath}/pages/js/jquery.flexslider.js"></script>
+
     <script type="application/x-javascript"> addEventListener("load", function () {
         setTimeout(hideURLbar, 0);
     }, false);
-
     function hideURLbar() {
         window.scrollTo(0, 1);
-    } </script>
-    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <script src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/easing.js"></script>
-    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
-    <link href="css/megamenu.css" rel="stylesheet" type="text/css" media="all"/>
-    <link href="css/form.css" rel="stylesheet" type="text/css" media="all"/>
-    <script type="text/javascript" src="js/megamenu.js"></script>
-    <script>$(document).ready(function () {
-        $(".megamenu").megamenu();
-    });</script>
-    <script src="js/menu_jquery.js"></script>
-    <script src="js/jquery.easydropdown.js"></script>
-    <script src="js/jquery.etalage.min.js"></script>
-    <%--    <script type="text/javascript" src="js/home.js"></script>--%>
+    }
+    </script>
     <script>
+        $(document).ready(function () {
+            $(".megamenu").megamenu();
+        });
         jQuery(document).ready(function ($) {
-
             $('#etalage').etalage({
                 thumb_image_width: 300,
                 thumb_image_height: 400,
@@ -43,7 +57,6 @@
                     alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');
                 }
             });
-
         });
     </script>
 
@@ -55,7 +68,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="images/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/pages/images/logo.png" alt=""/></a>
                 </div>
                 <%-- user login and regsit jsp--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -74,35 +87,53 @@
 
 </div>
 
-<div class="container-fluid" id="search_div_all"
-     style="width: 350px; height: 49px;position: absolute;margin-left: 900px">
-    <div>
-        <form class="navbar-form navbar-right" role="search" style="position: relative;">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search">
+<%--搜索框--%>
+<div style="padding: 20px 380px 5px 300px;">
+    <form class="bs-example bs-example-form" role="form">
+        <div class="row">
+            <div class="col-lg-8 pull-left">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">下拉菜单
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a href="#">功能</a>
+                            </li>
+                            <li>
+                                <a href="#">功能2</a>
+                            </li>
+                            <li>
+                                <a href="#">其他</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">分离的链接</a>
+                            </li>
+                        </ul>
+                        <button type="submit" class="btn btn-default" style="width: 80px;">搜索</button>
+                    </div><!-- /btn-group -->
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+            <div class="col-lg-4 pull-right">
+                <span>
+                    <a href="${pageContext.request.contextPath}/pages/buy.jsp" class="btn btn-danger"
+                       style="width:110px;">
+                        &nbsp;购物车 &nbsp;&nbsp;<span class="badge">0</span>
+                    </a>
+                    <a href="#" class="btn btn-danger" style="width:110px;text-align: center">
+                        我的订单
+                    </a>
+                    <%--<button type="button" class="btn btn-danger" style="width:100px;">我的订单</button>--%>
+                </span>
             </div>
-            <button type="submit" class="btn btn-default">搜索</button>
-        </form>
-    </div>
+
+        </div><!-- /.row -->
+    </form>
 </div>
-<div>
-    <a class="show-more" href="#">我的购物车</a>
-    <a class="cart-order" href="#">购物车</a>
-
-</div>
-
-
-<!-- script-for-nav -->
-<script>
-    $("span.menu").click(function () {
-        $(".head-nav ul").slideToggle(300, function () {
-            // Animation complete.
-        });
-    });
-</script>
-<!-- script-for-nav -->
-
-
+<%--
 <div class="banner">
     <div class="container">
         <div class="col-md-6">
@@ -115,6 +146,103 @@
         <div class="clearfix"></div>
     </div>
 </div>
+--%>
+
+<!-- BEGIN 轮播图 -->
+<div class="page-slider margin-bottom-35">
+    <div id="carousel-example-generic" class="carousel slide carousel-slider">
+        <!-- 序号 -->
+        <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+        </ol>
+
+        <!-- 四张轮播 -->
+        <div class="carousel-inner" role="listbox">
+            <!-- 第一张图-->
+            <div class="item carousel-item-four active">
+                <div class="container">
+                    <div class="carousel-position-four text-center">
+                        <h2 class="margin-bottom-20 animate-delay carousel-title-v3 border-bottom-title text-uppercase"
+                            data-animation="animated fadeInDown">
+                            Tones of <br/><span class="color-red-v2">Shop UI Features</span><br/> designed
+                        </h2>
+                        <p class="carousel-subtitle-v2" data-animation="animated fadeInUp">Lorem ipsum dolor sit amet
+                            constectetuer diam <br/>
+                            adipiscing elit euismod ut laoreet dolore.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第二张 -->
+            <div class="item carousel-item-five">
+                <div class="container">
+                    <div class="carousel-position-four text-center">
+                        <h2 class="animate-delay carousel-title-v4" data-animation="animated fadeInDown">
+                            Unlimted
+                        </h2>
+                        <p class="carousel-subtitle-v2" data-animation="animated fadeInDown">
+                            Layout Options
+                        </p>
+                        <p class="carousel-subtitle-v3 margin-bottom-30" data-animation="animated fadeInUp">
+                            Fully Responsive
+                        </p>
+                        <a class="carousel-btn" href="#" data-animation="animated fadeInUp">See More Details</a>
+                    </div>
+                    <img class="carousel-position-five animate-delay hidden-sm hidden-xs"
+                         src="${pageContext.request.contextPath}/pages/images/shop-slider/slide2/price.png" alt="Price"
+                         data-animation="animated zoomIn">
+                </div>
+            </div>
+
+            <!-- 第三张 -->
+            <div class="item carousel-item-six">
+                <div class="container">
+                    <div class="carousel-position-four text-center">
+                            <span class="carousel-subtitle-v3 margin-bottom-15" data-animation="animated fadeInDown">
+                                Full Admin &amp; Frontend
+                            </span>
+                        <p class="carousel-subtitle-v4" data-animation="animated fadeInDown">
+                            eCommerce UI
+                        </p>
+                        <p class="carousel-subtitle-v3" data-animation="animated fadeInDown">
+                            Is Ready For Your Project
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第四张 -->
+            <div class="item carousel-item-seven">
+                <div class="center-block">
+                    <div class="center-block-wrap">
+                        <div class="center-block-body">
+                            <h2 class="carousel-title-v1 margin-bottom-20" data-animation="animated fadeInDown">
+                                The most <br/>
+                                wanted bijouterie
+                            </h2>
+                            <a class="carousel-btn" href="#" data-animation="animated fadeInUp">But It Now!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control carousel-control-shop" href="#carousel-example-generic" role="button"
+           data-slide="prev">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+        </a>
+        <a class="right carousel-control carousel-control-shop" href="#carousel-example-generic" role="button"
+           data-slide="next">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </a>
+    </div>
+</div>
+<!-- END 轮播图 -->
+
 
 
 <!-- header -->
@@ -206,7 +334,7 @@
 
                 });
             </script>
-            <script type="text/javascript" src="js/jquery.flexisel.js"></script>
+
             <%--end  新书上架--%>
 
 
@@ -318,7 +446,6 @@
                          </div>
  --%>
                 </div>
-                <script type="text/javascript" src="js/jquery.flexisel.js"></script>
                 <div class="clearfix"></div>
 
             </div>
@@ -393,7 +520,6 @@
                     </section>
 
                     <!-- FlexSlider -->
-                    <script defer src="js/jquery.flexslider.js"></script>
                     <script type="text/javascript">
                         $(function () {
                             //SyntaxHighlighter.all();
@@ -429,7 +555,8 @@
                 <li>
                     <div class="testimonials-grid">
                         <div class="col-xs-5 testimonials-grid-left">
-                            <img src="../image/author/liucx.jpg" alt=" " class="img-responsive"/>
+                            <img src="${pageContext.request.contextPath}/image/author/liucx.jpg" alt=" "
+                                 class="img-responsive"/>
                         </div>
                         <div class="col-xs-7 testimonials-grid-right">
                             <div class="rating">
@@ -447,7 +574,8 @@
                 <li>
                     <div class="testimonials-grid">
                         <div class="col-xs-5 testimonials-grid-left">
-                            <img src="../image/author/yuh.jpg" alt=" " class="img-responsive"/>
+                            <img src="${pageContext.request.contextPath}/image/author/yuh.jpg" alt=" "
+                                 class="img-responsive"/>
                         </div>
                         <div class="col-xs-7 testimonials-grid-right">
                             <div class="rating">
@@ -465,7 +593,8 @@
                 <li>
                     <div class="testimonials-grid">
                         <div class="col-xs-5 testimonials-grid-left">
-                            <img src="../image/author/luy.jpg" alt=" " class="img-responsive"/>
+                            <img src="${pageContext.request.contextPath}/image/author/luy.jpg" alt=" "
+                                 class="img-responsive"/>
                         </div>
                         <div class="col-xs-7 testimonials-grid-right">
                             <div class="rating">
@@ -508,12 +637,11 @@
 
                 });
             </script>
-            <script type="text/javascript" src="js/jquery.flexisel.js"></script>
+
         </div>
     </div>
 </div>
 <!-- //testimonials -->
-
 
 <!-- footer -->
 <div class="footer">
@@ -523,5 +651,14 @@
 </div>
 <!-- footer -->
 
+<!-- script-for-nav -->
+<script>
+    $("span.menu").click(function () {
+        $(".head-nav ul").slideToggle(300, function () {
+            // Animation complete.
+        });
+    });
+</script>
+<!-- script-for-nav -->
 </body>
 </html>

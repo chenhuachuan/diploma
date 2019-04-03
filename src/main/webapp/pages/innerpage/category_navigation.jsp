@@ -5,7 +5,7 @@
     <div class="head-nav">
         <span class="menu"></span>
         <ul class="megamenu skyblue">
-            <li><a class="color1" href="../pages/home.jsp">Home</a></li>
+            <li><a class="color1" href="${pageContext.request.contextPath}/pages/home.jsp">Home</a></li>
             <%--一级分类--%>
             <%-- <c:forEach items="${sortsList}" var="par_sort">--%>
 

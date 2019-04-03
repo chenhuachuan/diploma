@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jz1501.chenhc.diploma.tfbook.dao.AddressDao">
+    <sql id="address_column">
+        id addressId,receive_name receiveName,addr_name addrName,zipcode zipCode,receive_tel receiveTel,user_id userId,
+        nick_addr_name nickAddrName,nick_addr_id nickAddrId,province_addr provNameAddr,city_addr cityNameAddr,
+        area_addr areaNameAddr
+    </sql>
+    <select id="selectAddressById" resultType="Address">
+        select
+        <include refid="address_column"/>
+        from tf_address
+        where user_id=#{userId} and nick_addr_id=#{nickAddrId}
+    </select>
+
+    <select id="selectAddressByUserId" resultType="Address">
+        select
+        <include refid="address_column"/>
+        from tf_address
+        where user_id=#{userId}
+    </select>
+
+
+    <insert id="insertNewAddress" parameterType="Address">
+        insert into tf_address(id,receive_name,addr_name,zipcode,receive_tel,user_id,nick_addr_name,nick_addr_id,
+        province_addr,city_addr,area_addr)
+        values(#{addressId},#{receiveName},#{addrName},#{zipCode},#{receiveTel},#{userId},#{nickAddrName},#{nickAddrId},
+        #{provNameAddr},#{cityNameAddr},#{areaNameAddr})
+    </insert>
+
+</mapper>

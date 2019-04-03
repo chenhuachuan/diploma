@@ -37,6 +37,7 @@ public class UserController extends PropertiesEditor {
         try {
             userService.regist(user);
             session.setAttribute("CurrentUser", user);
+            session.setAttribute("loginFlag", "true");
             return "redirect:/pages/home.jsp";
         } catch (Exception e) {
             return "redirect:/pages/regist.jsp";
@@ -59,23 +60,32 @@ public class UserController extends PropertiesEditor {
             //邮箱存在
             User dbUser = userService.login(email, password);
             if (dbUser != null) {
-                session.setAttribute("CurrentUser", dbUser);
-                session.setAttribute("loginErrorInfo", "登录成功！");
-                return "forward:/pages/home.jsp";
+                Object forceLoginFlag = session.getAttribute("forceLogin");
+                if (forceLoginFlag != null) {
+                    //去结算
+                    session.setAttribute("CurrentUser", dbUser);
+                    return "forward:/cart/purchase/checkOrder.do";
+                } else {
+                    session.setAttribute("CurrentUser", dbUser);
+                    session.setAttribute("loginErrorInfo", "登录成功！");
+                    return "forward:/pages/home.jsp";//去首页
+                }
             } else {
                 //密码错误
                 session.setAttribute("loginErrorInfo", "亲，密码输入错误！");
-                return "redirect:/pages/home.jsp";
+                return "redirect:/pages/login.jsp";
             }
         } else {
             session.setAttribute("loginErrorInfo", "亲，请核对邮箱地址！");
-            return "redirect:/pages/home.jsp";
+            return "redirect:/pages/login.jsp";
         }
     }
 
     @RequestMapping(value = "/logout")
     public String userLogOut(HttpSession session) {
         session.removeAttribute("CurrentUser");
+        session.removeAttribute("loginErrorInfo");
+        session.removeAttribute("forceLogin");
         return "redirect:/pages/home.jsp";
     }
 

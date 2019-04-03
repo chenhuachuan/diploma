@@ -12,7 +12,6 @@
     <script type="application/x-javascript"> addEventListener("load", function () {
         setTimeout(hideURLbar, 0);
     }, false);
-
     function hideURLbar() {
         window.scrollTo(0, 1);
     } </script>
@@ -47,6 +46,7 @@
 
 </head>
 <body>
+
 <!-- header -->
 <div class="header">
     <div class="top_bg">
@@ -74,7 +74,6 @@
     });
 </script>
 <!-- megamenu -->
-
 
 <%--分类导航--%>
 <div class="head-bann" id="page_load_contrller_buy_div">
@@ -554,6 +553,9 @@
 	</div>
 
 --%>
+<!-- header end -->
+
+
 
 <!-- script-for-nav -->
 <script>
@@ -568,18 +570,18 @@
 
 <div class="banner1">
     <div class="container">
+
     </div>
 </div>
-
 
 <!-- header -->
 <div class="container">
     <div class="main">
         <div class="shoping_bag">
-            <h4><img src="../pages/images/small.jpg">my shopping book / <span> 11 item</span></h4>
+            <h4><img src="../pages/images/small.jpg">购物车： / <span>4</span></h4>
             <ul class="s_art">
                 <li><img src="../pages/images/art1.png"></li>
-                <li><span> 11 item</span></li>
+                <li><span> 11 本</span></li>
             </ul>
             <div class="clearfix"></div>
         </div>
@@ -631,13 +633,13 @@
             <div class="clearfix"></div>
         </div>
         <div class="shoping_bag2">
-            <div class="shoping_left">
-                <a class="btn1" href="#">立即购买</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a class="btn1"
-                   href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=1">继续购物</a>
+            <div class="shoping_left"><%--../pages/checkout.jsp--%>
+                <a class="btn1" href="${pageContext.request.contextPath}/cart//purchase/checkOrder.do">结算</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a class="btn1" href="javascript:;" onClick="javascript:history.back(-1);">继续购物</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <%-- <a class="btn1" href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=1">继续购物</a>--%>
             </div>
             <div class="shoping_right">
-                <p class="tot">总计 &nbsp;<span class="color"> ￥. ${sessionScope.totalMoney}</span></p>
+                <p class="tot">总计 &nbsp;<span class="color"> ￥ ${sessionScope.totalMoney}</span></p>
             </div>
             <div class="clearfix"></div>
         </div>

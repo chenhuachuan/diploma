@@ -6,7 +6,7 @@
         <li>
             <div class="tittle">
                 <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${book.bookId}">
-                    <img src="..${book.imgUrl}" class="img-responsive" alt=""/></a><br/>
+                    <img src="${pageContext.request.contextPath}${book.imgUrl}" class="img-responsive" alt=""/></a><br/>
                 <center>
                     <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${book.bookId}">
                         <h6> ${book.bookName}</h6></a>

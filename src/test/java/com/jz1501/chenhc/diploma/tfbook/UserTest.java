@@ -60,7 +60,7 @@ public class UserTest extends TestTfBookDemo {
 
     @Test
     public void getUUID() {
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 3; i++) {
             System.out.println(UUID.randomUUID().toString().replace("-", ""));
 
         }

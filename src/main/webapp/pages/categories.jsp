@@ -84,21 +84,6 @@
     </script>
 </div>
 <%--搜索框--%>
-<%--<div class="container-fluid" id="search_div_all"
-     style="width: 350px; height: 49px;position: absolute;margin-left: 900px">
-    <div>
-        <form class="navbar-form navbar-right" role="search" style="position: relative;">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search">
-            </div>
-            <button type="submit" class="btn btn-default">搜索</button>
-        </form>
-    </div>
-    <div style="margin-left: 450px;">
-        <a class="show-more" href="#">购物车</a>
-        <a class="show-more" href="#">我的订单</a>
-    </div>
-</div>--%>
 
 <div style="padding: 20px 380px 5px 300px;">
     <form class="bs-example bs-example-form" role="form">

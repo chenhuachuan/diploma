@@ -35,7 +35,7 @@ body a {
     -moz-background-size: cover;
     -o-background-size: cover;
     -ms-background-size: cover;
-    min-height: 520px;
+    min-height: 240px;
 }
 
 .logo {

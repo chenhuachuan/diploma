@@ -23,8 +23,8 @@ public class WebConfigure extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/cart/purchase/**")
-                .excludePathPatterns("/user/**", "/book/**", "/category/**", "/cascade/**", "/code/**", "/cache/**");//
+                .addPathPatterns("/cart/purchase/**", "/user/person/**")
+                .excludePathPatterns("/book/**", "/category/**", "/cascade/**", "/code/**", "/cache/**");//
     }
 
 }

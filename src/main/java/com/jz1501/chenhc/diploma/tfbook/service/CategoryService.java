@@ -10,7 +10,10 @@ public interface CategoryService {
 
     public List<Sort> queryAllFirstLevelSortName();
 
-    public List<Sort> queryAllSecondLevelByParentId(Integer sparentId);
+    //查询分类信息
+    public List<Sort> queryAllSecondLevelByParentId_V2(Integer parSortId, Integer sonSortId, Integer granSortId);
+
+    public List<Sort> queryAllSecondLevelByParentId(Integer parSortId);
 
     //3
     public List<Sort> queryFirstAndSecondLevel();

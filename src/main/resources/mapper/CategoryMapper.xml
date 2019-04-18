@@ -61,11 +61,47 @@
             <result property="parentId" column="gspid"/>
         </collection>
     </resultMap>
+
     <select id="selectSecondLevelByParentId" resultMap="son_gs_level" parameterType="Integer">
-        select s.id sid,s.sort_name sname,s.sort_count scount,s.parent_id spid,gs.id gsid,gs.sort_name gsname,gs.sort_count gscount,gs.parent_id gspid FROM tf_sort s
-            LEFT JOIN tf_sort gs
+        select s.id sid,s.sort_name sname,s.sort_count scount,s.parent_id spid,
+        gs.id gsid,gs.sort_name gsname,gs.sort_count gscount,gs.parent_id gspid
+        from tf_sort s
+        join tf_sort gs
+        on s.id=gs.parent_id
+        where s.parent_id=#{parSortId}
+    </select>
+
+    <select id="selectSecondLevelByParentId_V2" resultMap="all_category_name">
+        select
+        p.id pid,p.sort_name pname,p.sort_count pcount,p.parent_id ppid,
+        s.id sid,s.sort_name sname,s.sort_count scount,s.parent_id spid,
+        gs.id gsid,gs.sort_name gsname,gs.sort_count gscount,gs.parent_id gspid
+        FROM tf_sort p
+        <!--   <if test="parSortId!=null and sonSortId!=null and sonSortId!='' and granSortId==null">
+               p.id pid,p.sort_name pname,p.sort_count pcount,p.parent_id ppid,
+               s.id sid,s.sort_name sname,s.sort_count scount,s.parent_id spid
+               FROM tf_sort p
+           </if>
+           <if test="parSortId!=null and parSortId!='' and sonSortId==null">
+               p.id pid,p.sort_name pname,p.sort_count pcount,p.parent_id ppid,
+               s.id sid,s.sort_name sname,s.sort_count scount,s.parent_id spid,
+               gs.id gsid,gs.sort_name gsname,gs.sort_count gscount,gs.parent_id gspid
+               FROM tf_sort p
+           </if>-->
+        JOIN tf_sort s
+        ON p.id=s.parent_id
+        JOIN tf_sort gs
             on s.id=gs.parent_id
-            where s.parent_id=#{sparentId}
+        where
+        <if test="parSortId!=null and parSortId!='' and sonSortId==null">
+            p.id=#{parSortId}
+        </if>
+        <if test="parSortId!=null and sonSortId!=null and sonSortId!='' and granSortId==null">
+            p.id=#{parSortId} AND s.id=#{sonSortId}
+        </if>
+        <if test="parSortId!=null and sonSortId!=null and granSortId!=null and granSortId!=null">
+            p.id=#{parSortId} AND s.id=#{sonSortId} AND gs.id=#{granSortId}
+        </if>
     </select>
 
     <resultMap id="first_second_level_map" type="Sort">

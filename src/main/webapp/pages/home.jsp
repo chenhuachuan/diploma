@@ -68,7 +68,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/pages/images/logo.png" alt=""/></a>
+                    <a href="../pages/home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo.png" alt=""/></a>
                 </div>
                 <%-- user login and regsit jsp--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -89,39 +89,22 @@
 
 <%--搜索框--%>
 <div style="padding: 20px 380px 5px 300px;">
-    <form class="bs-example bs-example-form" role="form">
+    <form class="bs-example bs-example-form" role="form"
+          action="${pageContext.request.contextPath}/book/searchBooksInHome.do">
         <div class="row">
             <div class="col-lg-8 pull-left">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <input type="text" name="searchFlag" class="form-control" placeholder="Search">
                     <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">下拉菜单
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right">
-                            <li>
-                                <a href="#">功能</a>
-                            </li>
-                            <li>
-                                <a href="#">功能2</a>
-                            </li>
-                            <li>
-                                <a href="#">其他</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="#">分离的链接</a>
-                            </li>
-                        </ul>
                         <button type="submit" class="btn btn-default" style="width: 80px;">搜索</button>
-                    </div><!-- /btn-group -->
-                </div><!-- /input-group -->
-            </div><!-- /.col-lg-6 -->
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-4 pull-right">
                 <span>
                     <a href="${pageContext.request.contextPath}/pages/buy.jsp" class="btn btn-danger"
                        style="width:110px;">
-                        &nbsp;购物车 &nbsp;&nbsp;<span class="badge">0</span>
+                        &nbsp;购物车 &nbsp;&nbsp;<span class="badge">${sessionScope.totalCartCount}</span>
                     </a>
                     <a href="#" class="btn btn-danger" style="width:110px;text-align: center">
                         我的订单
@@ -130,7 +113,7 @@
                 </span>
             </div>
 
-        </div><!-- /.row -->
+        </div>
     </form>
 </div>
 <%--
@@ -149,7 +132,7 @@
 --%>
 
 <!-- BEGIN 轮播图 -->
-<div class="page-slider margin-bottom-35">
+<div class="page-slider margin-bottom-35" style="">
     <div id="carousel-example-generic" class="carousel slide carousel-slider">
         <!-- 序号 -->
         <ol class="carousel-indicators">
@@ -167,11 +150,10 @@
                     <div class="carousel-position-four text-center">
                         <h2 class="margin-bottom-20 animate-delay carousel-title-v3 border-bottom-title text-uppercase"
                             data-animation="animated fadeInDown">
-                            Tones of <br/><span class="color-red-v2">Shop UI Features</span><br/> designed
+                            人不能像走兽那样活着，<br/><span class="color-red-v2">应该追求知识和美德。</span><br/>
                         </h2>
-                        <p class="carousel-subtitle-v2" data-animation="animated fadeInUp">Lorem ipsum dolor sit amet
-                            constectetuer diam <br/>
-                            adipiscing elit euismod ut laoreet dolore.</p>
+                        <p class="carousel-subtitle-v2" data-animation="animated fadeInUp">人是活的，书是死的。活人读死书，可以把书读活。<br/>
+                            死书读活人，可以把人读死。</p>
                     </div>
                 </div>
             </div>
@@ -181,19 +163,21 @@
                 <div class="container">
                     <div class="carousel-position-four text-center">
                         <h2 class="animate-delay carousel-title-v4" data-animation="animated fadeInDown">
-                            Unlimted
+                            TFBOOK
                         </h2>
                         <p class="carousel-subtitle-v2" data-animation="animated fadeInDown">
-                            Layout Options
+                            为乐趣而读书。
                         </p>
                         <p class="carousel-subtitle-v3 margin-bottom-30" data-animation="animated fadeInUp">
-                            Fully Responsive
+                            热卖图书
                         </p>
-                        <a class="carousel-btn" href="#" data-animation="animated fadeInUp">See More Details</a>
+                        <a class="carousel-btn"
+                           href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=1"
+                           data-animation="animated fadeInUp">查看详情</a>
                     </div>
-                    <img class="carousel-position-five animate-delay hidden-sm hidden-xs"
-                         src="${pageContext.request.contextPath}/pages/images/shop-slider/slide2/price.png" alt="Price"
-                         data-animation="animated zoomIn">
+                    <%-- <img class="carousel-position-five animate-delay hidden-sm hidden-xs"
+                          src="${pageContext.request.contextPath}/pages/images/shop-slider/slide2/price.png" alt="Price"
+                          data-animation="animated zoomIn" style="margin-left: 10px;">--%>
                 </div>
             </div>
 
@@ -202,13 +186,13 @@
                 <div class="container">
                     <div class="carousel-position-four text-center">
                             <span class="carousel-subtitle-v3 margin-bottom-15" data-animation="animated fadeInDown">
-                                Full Admin &amp; Frontend
+                                书籍把我们引入最美好的社会&amp; 使我们认识各个时代的伟大智者。
                             </span>
                         <p class="carousel-subtitle-v4" data-animation="animated fadeInDown">
-                            eCommerce UI
+                            --史美尔斯
                         </p>
                         <p class="carousel-subtitle-v3" data-animation="animated fadeInDown">
-                            Is Ready For Your Project
+                            每一次飞行都始于坠落。
                         </p>
                     </div>
                 </div>
@@ -220,17 +204,19 @@
                     <div class="center-block-wrap">
                         <div class="center-block-body">
                             <h2 class="carousel-title-v1 margin-bottom-20" data-animation="animated fadeInDown">
-                                The most <br/>
-                                wanted bijouterie
+                                周榜 <br/>
+                                最受欢迎的图书！
                             </h2>
-                            <a class="carousel-btn" href="#" data-animation="animated fadeInUp">But It Now!</a>
+                            <a class="carousel-btn"
+                               href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=1&sonSortId=&granSortId=&sortFlag=pop"
+                               data-animation="animated fadeInUp">查看详情</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Controls -->
+        <!-- 左右箭头 -->
         <a class="left carousel-control carousel-control-shop" href="#carousel-example-generic" role="button"
            data-slide="prev">
             <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -242,7 +228,6 @@
     </div>
 </div>
 <!-- END 轮播图 -->
-
 
 
 <!-- header -->
@@ -257,10 +242,9 @@
             </div>
         </div>
         <div class="col-md-6 blanc">
-
             <div class="blanc-info">
-                <h3>2018 影视畅销本</h3>
-                <h4>现在仅售 $99.99</h4>
+                <h3 style="color: rgba(255,4,21,0.87)">2019 影视畅销本</h3>
+                <h4 style="color: rgba(255,4,21,0.87)">现在仅售 $99.99</h4>
                 <a class="show" href="#">了解更多</a>
             </div>
         </div>
@@ -346,62 +330,6 @@
                         $("#editor_recommend_books_div").load('${pageContext.request.contextPath}/book/editorRecommend.do');
                     </script>
                 </div>
-
-                <script type="text/javascript">
-                    $(window).load(function () {
-                        $("#flexiselDemo1").flexisel({
-                            visibleItems: 3,
-                            animationSpeed: 1000,
-                            autoPlay: true,
-                            autoPlaySpeed: 3000,
-                            pauseOnHover: true,
-                            enableResponsiveBreakpoints: true,
-                            responsiveBreakpoints: {
-                                portrait: {
-                                    changePoint: 480,
-                                    visibleItems: 1
-                                },
-                                landscape: {
-                                    changePoint: 640,
-                                    visibleItems: 2
-                                },
-                                tablet: {
-                                    changePoint: 768,
-                                    visibleItems: 3
-                                }
-                            }
-                        });
-
-                    });
-                </script>
-                <script type="text/javascript">
-                    $(window).load(function () {
-                        $("#flexiselDemo5").flexisel({
-                            visibleItems: 3,
-                            animationSpeed: 1000,
-                            autoPlay: true,
-                            autoPlaySpeed: 3000,
-                            pauseOnHover: true,
-                            enableResponsiveBreakpoints: true,
-                            responsiveBreakpoints: {
-                                portrait: {
-                                    changePoint: 480,
-                                    visibleItems: 1
-                                },
-                                landscape: {
-                                    changePoint: 640,
-                                    visibleItems: 2
-                                },
-                                tablet: {
-                                    changePoint: 768,
-                                    visibleItems: 3
-                                }
-                            }
-                        });
-
-                    });
-                </script>
-
                 <%--第二个轮播--%>
                 <div class="best-seller" id="editor_recommend_books_div2">
                     <script type="text/javascript">
@@ -493,15 +421,15 @@
                 </section>
                 --%>
             <%--右侧热销图书--%>
-            <div class="sellers" id="sell_hot_books_div">
+            <div class="sellers" id="sell_hot_books_div" style="background-color: rgba(208,247,255,0.87)">
                 <script type="text/javascript">
                     $("#sell_hot_books_div").load('${pageContext.request.contextPath}/book/sellhotBooks.do');
                 </script>
             </div>
             <%--标签--%>
             <div class="sellers">
-                <h3 class="m_2">标签</h3>
-                <div class="tags" id="tags_sort_name_div">
+                <h3 class="m_2" style="background-color: rgba(255,111,18,0.87)">标签</h3>
+                <div class="tags" id="tags_sort_name_div" style="background-color:rgba(95,255,105,0.87)">
                     <script type="text/javascript">
                         $("#tags_sort_name_div").load('${pageContext.request.contextPath}/category/recommendSortTags.do');
                     </script>
@@ -510,7 +438,7 @@
             <%--今日特价--%>
             <section class="sky-form">
                 <div class="sellers">
-                    <h3 class="m_2">今日特价</h3>
+                    <h3 class="m_2" style="background-color: rgba(255,111,18,0.87)">今日特价</h3>
                     <section class="slider">
                         <div class="flexslider" id="todays_special_offer_div">
                             <script type="text/javascript">
@@ -537,8 +465,6 @@
 
                 </div>
             </section>
-
-
         </div>
         <div class="clearfix"></div>
 
@@ -549,7 +475,8 @@
 <!-- testimonials 作家 -->
 <div class="testimonials">
     <div class="container">
-        <h3>作家介绍</h3>
+        <h3 style="background-color: rgba(255,111,18,0.87);width: 100%;height: 47px;vertical-align: center;font-weight: bolder;font-family: 黑体">
+            作家介绍</h3>
         <div class="testimonials-grids">
             <ul id="flexiselDemo11">
                 <li>
@@ -566,7 +493,7 @@
                                 <span>☆</span>
                                 <span>☆</span>
                             </div>
-                            <p>Itaque earum rerum hic tenetur a sapiente delectus.<span>Laura</span></p>
+                            <p>中国科幻作家，中国作家协会会员、第九届全委会委员,代表作品《三体》......<span>刘慈欣</span></p>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -585,7 +512,7 @@
                                 <span>☆</span>
                                 <span>☆</span>
                             </div>
-                            <p>Itaque earum rerum hic tenetur a sapiente delectus.<span>James</span></p>
+                            <p>当代作家。中国作家协会第九届全国委员会委员,代表作《活着》......<span>余华</span></p>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -604,7 +531,7 @@
                                 <span>☆</span>
                                 <span>☆</span>
                             </div>
-                            <p>Itaque earum rerum hic tenetur a sapiente delectus.<span>路遥</span></p>
+                            <p>中国当代作家，代表作有长篇小说《平凡的世界》、《人生》......<span>路遥</span></p>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -650,6 +577,62 @@
     </div>
 </div>
 <!-- footer -->
+
+<script type="text/javascript">
+    $(window).load(function () {
+        $("#flexiselDemo1").flexisel({
+            visibleItems: 3,
+            animationSpeed: 1000,
+            autoPlay: true,
+            autoPlaySpeed: 3000,
+            pauseOnHover: true,
+            enableResponsiveBreakpoints: true,
+            responsiveBreakpoints: {
+                portrait: {
+                    changePoint: 480,
+                    visibleItems: 1
+                },
+                landscape: {
+                    changePoint: 640,
+                    visibleItems: 2
+                },
+                tablet: {
+                    changePoint: 768,
+                    visibleItems: 3
+                }
+            }
+        });
+
+    });
+</script>
+<script type="text/javascript">
+    $(window).load(function () {
+        $("#flexiselDemo5").flexisel({
+            visibleItems: 3,
+            animationSpeed: 1000,
+            autoPlay: true,
+            autoPlaySpeed: 3000,
+            pauseOnHover: true,
+            enableResponsiveBreakpoints: true,
+            responsiveBreakpoints: {
+                portrait: {
+                    changePoint: 480,
+                    visibleItems: 1
+                },
+                landscape: {
+                    changePoint: 640,
+                    visibleItems: 2
+                },
+                tablet: {
+                    changePoint: 768,
+                    visibleItems: 3
+                }
+            }
+        });
+
+    });
+</script>
+
 
 <!-- script-for-nav -->
 <script>

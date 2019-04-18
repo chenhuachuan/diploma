@@ -7,4 +7,6 @@ import java.util.List;
 public interface ProvinceDao {
     public List<Province> selectAllProvince();
 
+    public Province selectProvNameByCode(String provCode);
+
 }

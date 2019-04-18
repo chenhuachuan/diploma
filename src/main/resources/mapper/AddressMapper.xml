@@ -20,12 +20,42 @@
         where user_id=#{userId}
     </select>
 
-
+    <!--插入新地址-->
     <insert id="insertNewAddress" parameterType="Address">
         insert into tf_address(id,receive_name,addr_name,zipcode,receive_tel,user_id,nick_addr_name,nick_addr_id,
         province_addr,city_addr,area_addr)
         values(#{addressId},#{receiveName},#{addrName},#{zipCode},#{receiveTel},#{userId},#{nickAddrName},#{nickAddrId},
         #{provNameAddr},#{cityNameAddr},#{areaNameAddr})
     </insert>
+
+    <update id="updateOldAddress" parameterType="Address">
+        UPDATE tf_address
+        <trim prefix="set" suffixOverrides=",">
+            <if test="receiveName!=null and receiveName!=''">
+                receive_name=#{receiveName},
+            </if>
+            <if test="provNameAddr!=null and provNameAddr!=''">
+                province_addr=#{provNameAddr},
+            </if>
+            <if test="cityNameAddr!=null and cityNameAddr!=''">
+                city_addr=#{cityNameAddr},
+            </if>
+            <if test="areaNameAddr!=null and areaNameAddr!=''">
+                area_addr=#{areaNameAddr},
+            </if>
+            <if test="addrName!=null and addrName!=''">
+                addr_name=#{addrName},
+            </if>
+            <if test="receiveTel!=null and receiveTel!=''">
+                receive_tel=#{receiveTel},
+            </if>
+            <if test="zipCode!=null and zipCode!=''">
+                zipcode=#{zipCode},
+            </if>
+        </trim>
+        where id=#{addressId}
+
+    </update>
+
 
 </mapper>

@@ -9,8 +9,19 @@
                 <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${ebook.bookId}"><i
                         class="new"></i></a>
                 <div class="biseller-name">
-                    <h4>${ebook.bookName}</h4>
-                    <p>$${ebook.bookPrice}</p>
+                    <h4 style="text-align: center;">${ebook.bookName}</h4>
+                    <div class="col-md-12">
+                        <p class="col-md-5">￥${ebook.bookPrice}</p>
+                        <div class="col-md-4">
+                            <img src="../image/lb/car1.jpg" class="show_img_tj1" data-toggle="tooltip" title="添加"
+                                 onclick="window.location.href='${pageContext.request.contextPath}/cart/addToCart.do?bookId=${ebook.bookId}'"
+                                 style="width:30px;height:38px;">
+                        </div>
+                        <div class="col-md-3">
+                            <img src="../image/lb/collect_red.jpg" class="show_img_wish_tj1" data-toggle="tooltip"
+                                 title="收藏" style="width:30px;height:38px;">
+                        </div>
+                    </div>
                 </div>
             </div>
         </li>
@@ -39,3 +50,9 @@
      </div>
      </li>--%>
 </ul>
+<script>
+    $(function () {
+        $('.show_img_tj1').tooltip('show');
+        $('.show_img_wish_tj1').tooltip('show');
+    });
+</script>

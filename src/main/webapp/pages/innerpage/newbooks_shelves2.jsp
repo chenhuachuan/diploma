@@ -11,10 +11,32 @@
                 <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${book.bookId}"><i
                         class="new"></i></a>
                 <div class="biseller-name">
-                    <h4>${book.bookName}&nbsp;&nbsp;&nbsp;&nbsp;${book.author}</h4>
-                    <p>$${book.bookPrice} <a href="#">add to cart</a></p>
+                    <h4 style="text-align: center;">${book.bookName} &nbsp;&nbsp;&nbsp;&nbsp;${book.author}</h4>
+                        <%--<a href="#">cart</a>--%>
+                    <div class="col-md-12">
+                        <p class="col-md-5">￥${book.bookPrice}</p>
+                        <div class="col-md-4">
+                            <img class="show_img_cart" title="添加" data-toggle="tooltip" src="../image/lb/car1.jpg"
+                                 id="img_cart_id"
+                                 onclick="window.location.href='${pageContext.request.contextPath}/cart/addToCart.do?bookId=${book.bookId}'"
+                                 style="width:30px;height:38px;">
+                        </div>
+                        <div class="col-md-3">
+                            <img class="show_img_wish" title="收藏" src="../image/lb/collect_red.jpg"
+                                 data-toggle="tooltip"
+                                 onclick="window.location.href='${pageContext.request.contextPath}/user/person/addWishBook.do?bookId=${book.bookId}'"
+                                 style="width:30px;height:38px;">
+                        </div>
+                    </div>
                 </div>
             </div>
         </li>
     </c:forEach>
 </ul>
+<script>
+    $(function () {
+        $('.show_img_cart').tooltip('show');
+        $('.show_img_wish').tooltip('show');
+    });
+
+</script>

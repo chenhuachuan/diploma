@@ -1,6 +1,7 @@
 package com.jz1501.chenhc.diploma.tfbook.dao;
 
 import com.jz1501.chenhc.diploma.tfbook.entity.Sort;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -10,7 +11,12 @@ public interface CategoryMapper {
 
     public List<Sort> selectParentLevel();
 
-    public List<Sort> selectSecondLevelByParentId(Integer sparentId);
+    public List<Sort> selectSecondLevelByParentId_V2(@Param("parSortId") Integer parSortId,
+                                                     @Param("sonSortId") Integer sonSortId,
+                                                     @Param("granSortId") Integer granSortId);
+
+    public List<Sort> selectSecondLevelByParentId(Integer parSortId);
+
 
     //3
     public List<Sort> selectParentAndSonLevel();
@@ -30,5 +36,14 @@ public interface CategoryMapper {
 
     //tags
     public List<Sort> selectSecondPageTags(Integer parSortId);
+
+    //修改分类名
+
+
+
+
+
+
+
 
 }

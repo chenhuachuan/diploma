@@ -82,4 +82,19 @@ public class CascadingServiceImpl implements CascadingService {
         }
         return (List<Area>) areas;
     }
+
+    @Override
+    public Province queryProvNameByCode(String provCode) {
+        return provinceDao.selectProvNameByCode(provCode);
+    }
+
+    @Override
+    public City queryCityNameByCode(String cityCode) {
+        return cityDao.selectCityNameByCode(cityCode);
+    }
+
+    @Override
+    public Area queryAreaNameByCode(String areaCode) {
+        return areaDao.selectAreaNameByCode(areaCode);
+    }
 }

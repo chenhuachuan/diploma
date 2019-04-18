@@ -11,4 +11,7 @@ public interface AddressService {
     public Address queryAddressById(String userId, String nickAddrId);
 
     void addNewAddress(Address address);
+
+    void modifyAddress(Address address);
+
 }

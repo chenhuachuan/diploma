@@ -1,6 +1,6 @@
 <%@page isELIgnored="false" pageEncoding="UTF-8" contentType="text/html; UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<h3 class="m_2">热销图书</h3>
+<h3 class="m_2" style="background-color: rgba(255,111,18,0.87)">热销图书</h3>
 
 <div class="best">
     <c:forEach items="${hotbooks}" var="book" varStatus="num">

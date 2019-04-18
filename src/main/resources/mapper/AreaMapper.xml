@@ -6,4 +6,10 @@
         select areaId,areaCode,areaName,cityCode from tf_area
         where cityCode=#{cityCode}
     </select>
+
+    <select id="selectAreaNameByCode" parameterType="String" resultType="Area">
+        select areaId,areaCode,areaName,cityCode from tf_area
+        where areaCode=#{areaCode}
+    </select>
+
 </mapper>

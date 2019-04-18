@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -30,6 +31,14 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public void addNewAddress(Address address) {
+        address.setAddressId(UUID.randomUUID().toString().replace("-", ""));
+        address.setNickAddrId(UUID.randomUUID().toString().replace("-", ""));
         addressDao.insertNewAddress(address);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public void modifyAddress(Address address) {
+        addressDao.updateOldAddress(address);
     }
 }

@@ -12,6 +12,12 @@
             |
             <li><a href="${pageContext.request.contextPath}/user/logout.do"> <span class="label label-info">退出登录</span></a>
             </li>
+            |
+            <li><a href="#"><span class="label label-info">个人中心</span></a></li>
+            |
+            <li><a href="${pageContext.request.contextPath}/user/person/favoriteBooks.do"><span
+                    class="label label-info">我的收藏</span></a></li>
+
         </c:if>
         <c:if test="${sessionScope.CurrentUser==null}">
             <li><a href="../pages/regist.jsp"><span class="label label-info">注册 </span></a></li>
@@ -20,7 +26,8 @@
             |
             <li><a href="#"><span class="label label-info">个人中心</span></a></li>
             |
-            <li><a href="#"><span class="label label-info">我的收藏</span></a></li>
+            <li><a href="${pageContext.request.contextPath}/user/person/favoriteBooks.do"><span
+                    class="label label-info">我的收藏</span></a></li>
             <%--  <li class="login">
                   <div id="loginContainer"><a href="#" id="loginButton"><span class="label label-info">登录</span></a>
 

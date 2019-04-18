@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jz1501.chenhc.diploma.tfbook.dao.WishListDao">
+
+    <resultMap type="WishList" id="wishlist_columns_map">
+        <id column="id" property="collectId"/>
+        <result column="book_id" property="bookId"/>
+        <result column="sort_id" property="sortId"/>
+        <result column="user_id" property="userId"/>
+        <result column="collect_time" property="collectTime"/>
+        <result column="status" property="status"/>
+        <association property="book" javaType="Book">
+            <id column="bookId" property="bookId"/>
+            <result column="sort_id" property="sortId"/>
+            <result column="book_name" property="bookName"/>
+            <result column="author" property="author"/>
+            <result column="publish_company" property="publishCompany"/>
+            <result column="publish_time" property="publishTime"/>
+            <result column="word_count" property="wordCount"/>
+            <result column="kai_ben" property="kaiBen"/>
+            <result column="page_count" property="pageCount"/>
+            <result column="repertory" property="repertory"/>
+            <result column="book_price" property="bookPrice"/>
+            <result column="original_price" property="originalPrice"/>
+            <result column="isbn" property="isbn"/>
+            <result column="book_intro" property="bookIntro"/>
+            <result column="sale_count" property="saleCount"/>
+            <result column="img_url" property="imgUrl"/>
+            <result column="recommend" property="commend"/>
+        </association>
+    </resultMap>
+    <sql id="wishlist_columns_all">
+        id,book_id,sort_id,user_id,collect_time,status
+    </sql>
+    <sql id="all_book_column">
+        id bookId,sort_id,book_name,author,publish_company,publish_time,word_count,kai_ben,page_count,repertory,book_price,original_price,isbn,book_intro,sale_count,img_url,recommend
+    </sql>
+    <select id="selectAllWishListByUserId" parameterType="String" resultMap="wishlist_columns_map">
+        SELECT w.*,b.*
+        from tf_wish w join tf_book b
+        on w.book_id=b.id
+        where w.user_id=#{userId}
+    </select>
+
+    <insert id="insertWishList">
+        INSERT INTO tf_wish(id,book_id,sort_id,user_id,collect_time,status)
+        VALUES (#{collectId},#{bookId},#{sortId},#{userId},#{collectTime},#{status})
+    </insert>
+
+    <delete id="deleteWishList">
+        DELETE FROM tf_wish where id=#{collectId} and user_id=#{userId}
+    </delete>
+
+    <select id="selectWishBookByBookId" parameterType="String" resultMap="wishlist_columns_map">
+        SELECT
+        <include refid="wishlist_columns_all"/>
+        FROM tf_wish where book_id=#{bookId}
+    </select>
+
+</mapper>

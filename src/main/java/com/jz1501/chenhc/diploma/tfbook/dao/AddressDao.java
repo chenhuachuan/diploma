@@ -14,4 +14,7 @@ public interface AddressDao {
     //新增地址
     public void insertNewAddress(Address address);
 
+    //修改d
+    public void updateOldAddress(Address address);
+
 }

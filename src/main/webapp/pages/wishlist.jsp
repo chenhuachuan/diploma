@@ -4,8 +4,10 @@
 <html>
 <head>
     <title>wishlist</title>
-    <link href="../pages/css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
-    <link href="../pages/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="${pageContext.request.contextPath}/pages/css/bootstrap.css" rel="stylesheet" type="text/css"
+          media="all">
+    <link href="${pageContext.request.contextPath}/pages/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <script src="${pageContext.request.contextPath}/pages/js/jquery-1.10.2.js" type="text/javascript"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,16 +19,18 @@
         window.scrollTo(0, 1);
     } </script>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <script src="../pages/js/jquery.min.js"></script>
-    <script type="text/javascript" src="../pages/js/easing.js"></script>
-    <link rel="stylesheet" href="../pages/css/flexslider.css" type="text/css" media="screen"/>
-    <link href="../pages/css/megamenu.css" rel="stylesheet" type="text/css" media="all"/>
-    <link rel="stylesheet" href="../pages/css/etalage.css">
-    <script src="../pages/js/jquery.easydropdown.js"></script>
-    <script src="../pages/js/menu_jquery.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/pages/js/easing.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/flexslider.css" type="text/css"
+          media="screen"/>
+    <link href="${pageContext.request.contextPath}/pages/css/megamenu.css" rel="stylesheet" type="text/css"
+          media="all"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/etalage.css">
+    <script src="${pageContext.request.contextPath}/pages/js/jquery.easydropdown.js"></script>
+    <script src="${pageContext.request.contextPath}/pages/js/menu_jquery.js"></script>
+    <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
     <!-- etale -->
-    <script src="../pages/js/jquery.etalage.min.js"></script>
-    <script src="../pages/js/home.js"></script>
+    <script src="${pageContext.request.contextPath}/pages/js/jquery.etalage.min.js"></script>
+    <script src="${pageContext.request.contextPath}/pages/js/home.js"></script>
     <script>
         jQuery(document).ready(function ($) {
             $('#etalage').etalage({
@@ -51,7 +55,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="../pages/images/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo.png" alt=""/></a>
                 </div>
                 <%-- 登录注册--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -62,7 +66,7 @@
 </div>
 
 <!-- megamenu -->
-<script type="text/javascript" src="../pages/js/megamenu.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/pages/js/megamenu.js"></script>
 <script>
     $(document).ready(function () {
         $(".megamenu").megamenu();
@@ -85,52 +89,110 @@
 
 <!-- header -->
 <div class="container">
-    <div class="main">
+    <c:if test="${wishCount !=0}">
+        <div class="main">
         <div class="shoping_bag">
-            <h3><img src="../pages/images/icon-col.png" width="24">收藏:<span></span></h3>
+            <h3><img src="${pageContext.request.contextPath}/image/lb/collect_red.jpg" width="27">收藏:<span></span></h3>
             <div class="clearfix"></div>
         </div>
         <div class="shoping_bag1">
-            <div class="shoping_left">
-                <div class="shoping1_of_1">
-                    <img src="" class="img-responsive" alt=""/>
+            <c:forEach items="${wishBooks}" var="wishlist">
+                <div class="shoping_right">
+                        <%--
+                        shoping_right
+                        <p style="font-size: medium">加入购物车</p>
+                        <a href="#"><span style="font-size:medium">加入购物车 </span></a>
+                        --%>
+                    <a class="show1"
+                       href="${pageContext.request.contextPath}/cart/addToCart.do?bookId=${wishlist.bookId}">加入购物车</a>
+                        <%-- <button type="submit" style="margin-top: 60px;" class="btn btn-info">加入购物车</button>--%>
                 </div>
-                <div class="shoping1_of_2">
-                    <h4><a href="#">书名</a></h4>
-                    <span style="font-size: medium">&nbsp;单价 : </span><br/>
-                    <span style="font-size: medium">&nbsp;描述 : 这是一本好书，特别推荐，买的特别火，销量号来到了快点减肥；嘎计算 就；就撒</span>
+
+                <div class="shoping_left"><%--shoping_left--%>
+                    <div class="shoping1_of_1">
+                        <img src="${pageContext.request.contextPath}/${wishlist.book.imgUrl}" class="img-responsive"
+                             alt=""/>
+                    </div>
+                    <div class="shoping1_of_2">
+                        <span style="font-size: large;"><font
+                                color="#3fc3ff">${wishlist.book.bookName}</font> &nbsp;<font
+                                size="2px;">${wishlist.book.author}</font></span>
+                        <span style="font-size: small">&nbsp;￥${wishlist.book.bookPrice}</span><br/>
+                        <div style="width:750px;">
+                            <span style="font-size: small">&nbsp;${wishlist.book.bookIntro}</span>
+                        </div>
                     <ul class="s_icons">
-                        <%--  <li><a href="#"><img src="../pages/images/s_icon1.png" alt=""></a></li>--%>
-                        <li><a href="#"><img src="../pages/images/s_icon2.png" alt=""></a></li>
-                        <li><a href="#"><img src="../pages/images/s_icon3.png" alt=""></a></li>
+                            <%--  <li><a href="#"><img src="${pageContext.request.contextPath}/pages/images/s_icon1.png" alt=""></a></li>
+                            <li><a href="#"><img src="${pageContext.request.contextPath}/pages/images/s_icon2.png" alt=""></a></li>
+                            ${pageContext.request.contextPath}/user/person/removeWishBook.do?collectId=${wishlist.collectId}
+                            class="btn btn-primary btn-lg" data-toggle="delWishBook" data-target="#delWishBook"
+                            --%>
+                        <li><a href="javascript:void(0)" onclick="showDeleteModel()">
+                            <img src="${pageContext.request.contextPath}/pages/images/s_icon3.png" alt=""></a></li>
+                        <!-- 模态框（Modal） -->
+                        <div class="modal fade" id="delWishBook" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            从收藏栏移除
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        确定移除收藏夹吗？移除后不可恢复！
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="submitDeleteOrder('${wishlist.collectId}')">确定
+                                        </button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal -->
+                        </div>
+                        <!-- end模态框（Modal） -->
+
                     </ul>
                 </div>
+                    <div class="clearfix"></div>
+                </div>
                 <div class="clearfix"></div>
-            </div>
-            <div class="shoping_right">
-                <%--<p style="font-size: medium">加入购物车</p>
-                <a href="#"><span style="font-size:medium">加入购物车 </span></a>
-                --%>
-                <button type="submit" class="btn btn-info">加入购物车</button>
-            </div>
-            <div class="clearfix"></div>
+                <br/>
+            </c:forEach>
         </div>
-        <div style="display: none;">
-            <div class="shoping_right">
-                <p class="tot">总计 &nbsp;<span class="color"> ￥189 </span></p>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <div class="shoping_bag2">
-            <div class="shoping_left">
-                <a class="btn1" href="#">购物车</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a class="btn1"
-                   href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=1">浏览商品</a>
+            <div class="shoping_bag2">
+                <div class="shoping_left">
+                    <a class="btn1" href="${pageContext.request.contextPath}/pages/buy.jsp">购物车</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="btn1"
+                       href="${pageContext.request.contextPath}/pages/home.jsp">浏览商品</a>
             </div>
             <div class="clearfix"></div>
         </div>
 
-    </div>
+        </div>
+    </c:if>
+    <c:if test="${wishCount ==0}">
+        <div class="main">
+            <div class="shoping_bag">
+                <h3><img src="${pageContext.request.contextPath}/pages/images/icon-col.png"
+                         width="24">您还没有收藏呢<span></span></h3>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="shoping_bag2">
+                <div class="shoping_left">
+                    <a class="btn1"
+                       href="${pageContext.request.contextPath}/pages/home.jsp">去添加</a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+        </div>
+    </c:if>
 </div>
 <!-- footer -->
 <div class="footer">
@@ -146,6 +208,20 @@
             // Animation complete.
         });
     });
+
+    function showDeleteModel() {
+        $('#delWishBook').modal();
+    }
+
+    function submitDeleteOrder(colId) {
+        $.post(
+            '${pageContext.request.contextPath}/user/person/removeWishBook.do',
+            {collectId: colId}, function () {
+                $('#delWishBook').modal('hide');
+                window.location.href = "${pageContext.request.contextPath}/user/person/favoriteBooks.do";
+            }
+        )
+    }
 </script>
 <!-- script-for-nav -->
 </body>

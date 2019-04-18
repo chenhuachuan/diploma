@@ -55,7 +55,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="../pages/images/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="../image/lb/logo.png" alt=""/></a>
                 </div>
                 <%-- user login and regsit jsp--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -564,28 +564,47 @@
                                 </div>
                             </div>
                             <div class="btn_form">
-                                <button type="submit" class="btn btn-info">加入购物车</button>
-                                <%-- <a href="">加入购物车</a>--%>
-                                <a href="../pages/buy.jsp">立即购买</a>
+                                <%--<button type="submit" class="btn btn-info">加入购物车</button>--%>
+                                <a href="javascript:void(0)" onclick="add_tocart_formid.submit();">加入购物车</a>
+                                <a href="javascript:void(0)" onclick="buyNow()">立即购买</a>
                             </div>
                         </form>
-                        <a href="#"><span style="font-size:medium">加入收藏 </span></a>
+                        <script>
+                            function buyNow() {
+                                var buyCount = $("#purchase_count_input").val();
+                                window.location.href = "${pageContext.request.contextPath}/cart/purchase/checkOrder.do?bookId=${bookDetails.bookId}&purCount=" + buyCount;
+                            }
+                        </script>
+
+                        <div class="col-md-6">
+                            <div class="col-md-1">
+                                <img src="${pageContext.request.contextPath}/image/lb/collect_red.jpg" width="20px;">
+                            </div>
+                            <div class="col-md-5">
+                                <span style="font-size:16px;">
+                                    <a href="${pageContext.request.contextPath}/user/person/addWishBook.do?bookId=${bookDetails.bookId}">
+                                        加入收藏 </a>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+
                     </div>
 
                     <div class="clearfix"></div>
                 </div>
                 <div class="single-bottom1">
-                    <h6>图书介绍</h6>
+                    <button class="btn btn-info">图书介绍</button>
                     <p class="prod-desc" style="text-indent:2em;">
                         ${bookDetails.bookIntro}
-                    </p>
-                    <h6 style="padding-top: 15px;">编辑推荐</h6>
+                    </p><br/>
+                    <button class="btn btn-info">编辑推荐</button>
                     <p class="prod-desc" style="text-indent:2em;">
                         ${bookDetails.commend}
                     </p>
                 </div>
-                <div class="single-bottom2">
-                    <h6>相关图书</h6>
+                <div class="single-bottom2" style="margin-top: 5px;">
+                    <button class="btn btn-info">相关图书</button>
                     <c:forEach items="${similarityBooks}" var="sim_books">
                         <div class="product">
                             <div class="product-desc">
@@ -603,7 +622,9 @@
                             </div>
                             <div class="product_price">
                                 <span class="price-access">￥.${sim_books.bookPrice}</span>
-                                <button class="button1"><span>加入购物车</span></button>
+                                <a class="show" style="width: 100px; font-size: x-small"
+                                   href="${pageContext.request.contextPath}/cart/addToCart.do?bookId=${sim_books.bookId}">加入购物车</a>
+                                    <%--<button class="button1"><span>加入购物车</span></button>--%>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -694,8 +715,8 @@
 
                 <%--热销图书--%>
                 <div class="sellers">
-                    <h3 class="m_2">热销图书</h3>
-                    <div class="best">
+                    <h3 class="m_2" style="background-color: rgba(255,111,18,0.87)">热销图书</h3>
+                    <div class="best" style="background-color: rgba(208,247,255,0.87)">
                         <c:forEach items="${sellHotBooks}" var="book" varStatus="num">
                             <c:if test="${num.index+1<=3}">
                                 <div>
@@ -723,8 +744,8 @@
                     </div>
                 </div>
 
-                <div class="sellers">
-                    <h3 class="m_2">Tags</h3>
+                    <div class="sellers" style="background-color: rgba(95,255,105,0.87)">
+                        <h3 class="m_2" style="background-color: rgba(255,111,18,0.87)">标签</h3>
                     <div class="tags" id="tags_book_detail_div">
                         <script type="text/javascript">
                             $("#tags_book_detail_div").load('${pageContext.request.contextPath}/category/recommendSortTags.do');
@@ -735,7 +756,7 @@
                 <%--今日特价--%>
                 <section class="sky-form">
                     <div class="sellers">
-                        <h3 class="m_2">今日特价</h3>
+                        <h3 class="m_2" style="background-color: rgba(255,111,18,0.87)">今日特价</h3>
                         <section class="slider">
                             <div class="flexslider">
                                 <ul class="slides">
@@ -754,7 +775,8 @@
                                                     <p style="font-size: 22px;"><font
                                                             color="red">现价:￥${tbook.bookPrice}</font></p>
                                                     <p>立志读遍天下书！</p>
-                                                    <a class="show1" href="#">加入购物车</a>
+                                                    <a class="show1"
+                                                       href="${pageContext.request.contextPath}/cart/addToCart.do?bookId=${tbook.bookId}">加入购物车</a>
                                                 </center>
                                             </div>
                                         </li>

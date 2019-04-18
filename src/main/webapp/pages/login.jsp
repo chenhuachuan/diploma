@@ -62,7 +62,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="images/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="../image/lb/logo.png" alt=""/></a>
                 </div>
                 <%-- user login and regsit jsp--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -436,46 +436,64 @@
 <!-- header -->
 <!-- content -->
 <div class="container">
-    <div class="main">
+    <div class="main" style="background-image: url('../image/beauty/bg8.jpg')">
         <!-- start registration -->
-        <div class="registration">
-            <div class="registration_left">
-                <h2>用户登录</h2>
+        <div class="registration" style="text-align: center">
+            <div class="registration_left" style="background-color: rgba(170,207,255,0.87);">
+                <h2 style="color: rgba(255,100,34,0.87);font-weight: bolder">用户登录</h2>
                 <a href="#">
-                    <div class="reg_fb"><img src="images/facebook.png" alt=""><i>填写登录信息</i>
+                    <div class="reg_fb"><i>填写登录信息</i>
                         <div class="clearfix"></div>
                     </div>
                 </a>
                 <div class="registration_form">
                     <!-- Form -->
-                    <form id="regist_form" action="${pageContext.request.contextPath}/user/userLogin.do" method="post"
+                    <form id="login_form" action="${pageContext.request.contextPath}/user/userLogin.do" method="post"
                           onsubmit="return checkFormLg()">
-                        <div>
+                        <div class="col-md-offset-2">
                             <label>
-                                <input placeholder="邮箱:" type="email" id="lg_email" name="email"
+                                <input placeholder="邮箱:" type="email" id="lg_email" name="email" style="width: 320px;"
                                        onblur="checkEmailExistsLg()" tabindex="5" required>
                             </label>
                         </div>
-                        <div>
+                        <div class="col-md-offset-2">
                             <label>
                                 <input placeholder="密码" type="password" id="lg_password" name="password"
+                                       style="width: 320px;"
                                        onblur="checkPassLengthLg()" tabindex="6" required>
                             </label>
                         </div>
-                        <div>
-                            <input type="submit" value="登录" id="login-submit">
+                        <%-- <div class="col-md-3"></div>
+                         <div class="col-md-6">
+                             <a class="col-sm-3 show" style="margin-right: 20px;" href="#"
+                                onclick="document.getElementById('login_form').submit();return false">登录</a>
+                             <a class="col-sm-3 show" href="../pages/regist.jsp">注册</a>
+                         </div>--%>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">
+                            <input class="col-sm-8" type="submit" value="登录">
                         </div>
-                        <div class="alert alert-danger" id="tipsDiv" style="text-align: center;display: none;"></div>
+                        <div class="col-md-6">
+                            <a class="col-sm-4 sbton" href="../pages/regist.jsp">注册</a>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="alert alert-danger" id="tipsDiv"
+                                 style="text-align: center;display: none; "></div>
+                        </div>
+
                         <c:if test="${sessionScope.loginErrorInfo!=null}">
                             <c:set var="login_error_info" value="${sessionScope.loginErrorInfo}"/>
                             <script>
                                 alert("${login_error_info}");
                             </script>
-
                         </c:if>
                     </form>
                     <!-- /Form -->
                 </div>
+            </div>
+
+            <div class="registration_right">
+                <img src="../image/lb/11.jpg" height="310px;" width="500px;" alt="">
             </div>
             <div class="clearfix"></div>
         </div>

@@ -116,24 +116,24 @@
 }*/
 
 .carousel-slider .carousel-item-four {
-    background: url(../../pages/images/shop-slider/slide1/bg.jpg);
+    background: url(../../pages/images/shop-slider/slide1/banner1.jpg);
     background-size: cover;
     background-position: center center;
 }
 
 .carousel-slider .carousel-item-five {
-    background: url(../../pages/images/shop-slider/slide2/bg.jpg);
+    background: url(../../pages/images/shop-slider/slide2/banner2.jpg);
     background-size: cover;
 }
 
 .carousel-slider .carousel-item-six {
-    background: url(../../pages/images/shop-slider/slide3/bg.jpg);
+    background: url(../../pages/images/shop-slider/slide3/banner3.jpg);
     background-size: cover;
     background-position: center center;
 }
 
 .carousel-slider .carousel-item-seven {
-    background: url(../../pages/images/shop-slider/slide4/bg.jpg);
+    background: url(../../pages/images/shop-slider/slide4/banner4.jpg);
     background-size: cover;
     background-position: center center;
 }

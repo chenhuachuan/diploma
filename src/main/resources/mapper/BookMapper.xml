@@ -67,15 +67,27 @@
         from tf_sort p join tf_sort s on p.id=s.parent_id
         join tf_sort g on s.id=g.parent_id
         join tf_book b on g.id=b.sort_id
-        where
-        <if test="parSortId!=null and parSortId!=''">
+        where b.repertory!=0 and
+        <if test="parSortId!=null and parSortId!='' and sonSortId==null">
             p.id=#{parSortId}
         </if>
-        <if test="sonSortId!=null and sonSortId!=''">
+        <if test="parSortId!=null and sonSortId!=null and sonSortId!='' and granSortId==null">
             s.id=#{sonSortId}
         </if>
-        <if test="granSortId!=null and granSortId!=''">
+        <if test="parSortId!=null and sonSortId!=null and granSortId!=null and granSortId!=null">
             g.id=#{granSortId}
+        </if>
+        <if test="sortFlag!= null and sortFlag!='' and sortFlag=='pop'">
+            ORDER BY sale_count desc
+        </if>
+        <if test="sortFlag!= null and sortFlag!='' and sortFlag=='new'">
+            ORDER BY publish_time desc
+        </if>
+        <if test="sortFlag!= null and sortFlag!='' and sortFlag=='discount'">
+            ORDER BY original_price-book_price desc
+        </if>
+        <if test="sortFlag!= null and sortFlag!='' and sortFlag=='price'">
+            ORDER BY book_price desc
         </if>
         limit #{pageIndex},#{pageSize}
     </select>
@@ -87,13 +99,13 @@
         join tf_sort g on s.id=g.parent_id
         join tf_book b on g.id=b.sort_id
         where
-        <if test="parSortId!= null and parSortId!=''">
+        <if test="parSortId!=null and parSortId!='' and sonSortId==null">
             p.id=#{parSortId}
         </if>
-        <if test="sonSortId!= null and sonSortId!=''">
+        <if test="parSortId!=null and sonSortId!=null and sonSortId!=null and granSortId==null">
             s.id=#{sonSortId}
         </if>
-        <if test="granSortId!= null and granSortId!=''">
+        <if test="parSortId!=null and sonSortId!=null and granSortId!=null and granSortId!=null">
             g.id=#{granSortId}
         </if>
     </select>
@@ -110,6 +122,128 @@
         SELECT
         <include refid="all_book_column"/>
         FROM `tf_book`
-        where sort_id=#{sortId} and id!=#{bookId} ORDER BY sale_count desc , publish_time desc LIMIT 4
+        where sort_id=#{sortId} and id!=#{bookId} AND repertory!=0 ORDER BY sale_count desc , publish_time desc LIMIT 4
     </select>
+
+
+    <!--完成订单 修改数量-->
+    <update id="updateBookCountBeforePurchase" parameterType="Integer">
+        UPDATE tf_book SET repertory=#{totalCount}
+    </update>
+
+    <!--搜索1-->
+    <select id="selectBooksBySearch" parameterType="String" resultMap="all_columns_map">
+        SELECT
+        <include refid="all_book_column"/>
+        FROM tf_book
+        WHERE
+        book_name LIKE #{search}
+        OR author LIKE #{search}
+        OR book_intro LIKE #{search}
+        OR publish_company LIKE #{search}
+        OR recommend LIKE #{search}
+        AND repertory!=0
+    </select>
+
+    <!--首页 搜索 +排序+分页 v2.0 -->
+    <select id="selectBooksInHomePage" resultMap="all_columns_map">
+        SELECT
+        <include refid="all_book_column"/>
+        FROM tf_book
+        WHERE
+        book_name LIKE #{search}
+        OR author LIKE #{search}
+        OR book_intro LIKE #{search}
+        OR publish_company LIKE #{search}
+        OR recommend LIKE #{search}
+        AND repertory!=0
+        <if test="sortFlag!= null and sortFlag!='' and sortFlag=='pop'">
+            ORDER BY sale_count desc
+        </if>
+        <if test="sortFlag!= null and sortFlag!='' and sortFlag=='new'">
+            ORDER BY publish_time desc
+        </if>
+        <if test="sortFlag!= null and sortFlag!='' and sortFlag=='discount'">
+            ORDER BY original_price-book_price desc
+        </if>
+        <if test="sortFlag!= null and sortFlag!='' and sortFlag=='price'">
+            ORDER BY book_price desc
+        </if>
+        limit #{pageIndex},#{pageSize}
+    </select>
+    <!--首页 搜索 总条数  v2.0 -->
+    <select id="selectSearchTotalCount" parameterType="String" resultType="Integer">
+        SELECT  count(1)
+        FROM tf_book
+        WHERE
+        book_name LIKE #{search}
+        OR author LIKE #{search}
+        OR book_intro LIKE #{search}
+        OR publish_company LIKE #{search}
+        OR recommend LIKE #{search}
+        AND repertory!=0
+    </select>
+
+    <!-- 在分类栏里 搜素 排序 分页  -->
+    <select id="selectBooksInCategoryBySortFlag" resultMap="all_columns_map">
+        select
+        b.id,b.sort_id,b.book_name,b.author,b.publish_company,b.publish_time,b.word_count,b.kai_ben,b.page_count,b.repertory,b.book_price,b.original_price,b.isbn,b.book_intro,b.sale_count,b.img_url,b.recommend
+        from tf_sort p join tf_sort s on p.id=s.parent_id
+        join tf_sort g on s.id=g.parent_id
+        join tf_book b on g.id=b.sort_id
+        where b.repertory!=0 AND
+        book_name LIKE #{search}
+        OR author LIKE #{search}
+        OR book_intro LIKE #{search}
+        OR publish_company LIKE #{search}
+        OR recommend LIKE #{search}
+        AND
+        <if test="parSortId!=null and parSortId!=''">
+            p.id=#{parSortId}
+        </if>
+        <if test="sonSortId!=null and sonSortId!=''">
+            s.id=#{sonSortId}
+        </if>
+        <if test="granSortId!=null and granSortId!=''">
+            g.id=#{granSortId}
+        </if>
+        <if test="sortFlag!= null and sortFlag!='' and sortFlag=='pop'">
+            ORDER BY sale_count desc
+        </if>
+        <if test="sortFlag!= null and sortFlag!='' and sortFlag=='new'">
+            ORDER BY publish_time desc
+        </if>
+        <if test="sortFlag!= null and sortFlag!='' and sortFlag=='discount'">
+            ORDER BY original_price-book_price desc
+        </if>
+        <if test="sortFlag!= null and sortFlag!='' and sortFlag=='price'">
+            ORDER BY book_price desc
+        </if>
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="selectSearchInCategoryTotalCount" resultType="Integer">
+        select count(1)
+        from tf_sort p join tf_sort s on p.id=s.parent_id
+        join tf_sort g on s.id=g.parent_id
+        join tf_book b on g.id=b.sort_id
+        where b.repertory!=0 AND
+        book_name LIKE #{search}
+        OR author LIKE #{search}
+        OR book_intro LIKE #{search}
+        OR publish_company LIKE #{search}
+        OR recommend LIKE #{search}
+        AND
+        <if test="parSortId!=null and parSortId!=''">
+            p.id=#{parSortId}
+        </if>
+        <if test="sonSortId!=null and sonSortId!=''">
+            s.id=#{sonSortId}
+        </if>
+        <if test="granSortId!=null and granSortId!=''">
+            g.id=#{granSortId}
+        </if>
+    </select>
+
+
 </mapper>

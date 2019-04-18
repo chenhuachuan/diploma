@@ -1,10 +1,11 @@
 package com.jz1501.chenhc.diploma.tfbook;
 
 import com.jz1501.chenhc.diploma.tfbook.entity.Sort;
-import com.jz1501.chenhc.diploma.tfbook.entity.User;
+import com.jz1501.chenhc.diploma.tfbook.entity.WishList;
 import com.jz1501.chenhc.diploma.tfbook.service.BookService;
 import com.jz1501.chenhc.diploma.tfbook.service.CategoryService;
 import com.jz1501.chenhc.diploma.tfbook.service.UserService;
+import com.jz1501.chenhc.diploma.tfbook.service.WishListService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 
@@ -23,12 +25,38 @@ public class UserTest extends TestTfBookDemo {
     private CategoryService categoryService;
     @Autowired
     private BookService bookService;
-
+    @Autowired
+    private WishListService wishListService;
     @Test
     public void test1() {
-        User dbUser = userService.login("chc123@163.com", "123456");
-        System.out.println(dbUser);
+        long now = System.currentTimeMillis();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        //获取时间戳
+        String time = dateFormat.format(now);
+        Random random = new Random();
+        String as = "";
+        for (int i = 0; i < 16; i++) {
+            int nextInt = random.nextInt(10);
+            as += nextInt + "";
+        }
+        long n = System.nanoTime();
+
+        System.out.println(time + "" + n);
     }
+
+    @Test
+    public void testFGF() {
+
+        String ads = "";
+        for (int i = 0; i < 3; i++) {
+            ads += i + "书:" + i + "本,";
+        }
+
+        System.out.println(ads);
+    }
+
+
+
 
     @Test
     public void testPhone() {
@@ -90,5 +118,50 @@ public class UserTest extends TestTfBookDemo {
             }
         }
     }
+
+    @Test
+    public void searchByInput() {
+        List<WishList> wishLists = wishListService.queryAllWishListByUserId("104bf543ff344dd2a2da7b2cffff0d54");
+        for (WishList wishList : wishLists) {
+            System.out.println(wishList.getBook().getBookName());
+        }
+
+    }
+
+    @Test
+    public void selectAllBookd() {
+        //List<Book> books = bookService.queryAllBooksBySortId(1, 9, null, 1, 6, "");
+        //Integer integer = bookService.queryAllBooksCount(1, 9, null);
+        List<Sort> sorts = categoryService.queryAllSecondLevelByParentId_V2(1, 9, null);
+        for (Sort ss : sorts) {
+            System.out.println(ss.getSortName());
+            for (Sort sort : ss.getSortList()) {
+                System.out.println(sort.getSortName());
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

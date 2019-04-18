@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface AreaDao {
     public List<Area> selectAllArea(String cityCode);
+
+    public Area selectAreaNameByCode(String areaCode);
+
 }

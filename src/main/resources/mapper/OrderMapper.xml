@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jz1501.chenhc.diploma.tfbook.dao.OrderDao">
+
+    <insert id="insertNewOrder" parameterType="com.jz1501.chenhc.diploma.tfbook.entity.Order">
+        INSERT INTO tf_order(id,order_id,total_price,addr_name,receive_name,receive_tel,create_time,status,user_id,address_id,item_count,
+        book_name,item_little_price,book_price)
+        VALUES(#{orderId},#{orderNumber},#{totalPrice},#{addrName},#{receiveName},#{receiveTel},#{createTime},#{status},#{userId},#{addressId},#{itemCount},
+        #{bookName},#{itemLittlePrice},#{bookPrice})
+    </insert>
+
+
+</mapper>

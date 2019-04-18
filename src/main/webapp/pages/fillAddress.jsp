@@ -57,7 +57,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/pages/images/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo.png" alt=""/></a>
                 </div>
                 <%-- user login and regsit jsp--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -111,7 +111,7 @@
                             <th style="text-align: center">
                                 <div class="dropdown">
                                     <div class="btn-group dropdown" style="width:110px;" id="dropdown">
-                                        <select class="form-control" name="nickAddrName"
+                                        <select class="form-control" name="nickAddrId"
                                                 onchange="checkSelectDefalutName()" id="default_address_select">
                                             <option value="new">新增-Add</option>
                                             <c:forEach var="addr" items="${allAddrSort}">
@@ -129,6 +129,8 @@
                             <td style="text-align: right">收货人姓名 :</td>
                             <td>
                                 <input type="hidden" name="nickAddrId" id="hidden_nickAddrId_inputId">
+                                <input type="hidden" name="userId" id="hidden_userId_inputId">
+                                <input type="hidden" name="nickAddrName" id="hidden_nickAddrName_inputId">
                                 <input type="hidden" name="addressId" id="hidden_addressId_inputId">
                                 <input type="text" name="receiveName" id="receiveName"
                                        value="<%--${addr.receiveName}--%>" class="form-control" placeholder="必填"
@@ -216,7 +218,7 @@
                         <tr style="text-align: center;display: none;" id="addr_name_new_id">
                             <td style="text-align: right">地址名称 :</td>
                             <td>
-                                <input type="text" name="nickAddr" id="nickAddr_addr" class="form-control"
+                                <input type="text" name="nickAddrName" id="nickAddr_addr" class="form-control"
                                        style="width: 415px;" placeholder="家、学校、公司......">
                             </td>
                         </tr>
@@ -405,17 +407,30 @@
             $("#new_addr_select_id").show();
             $("#addr_name_new_id").show();
             //清空所有收货信息
+            $("#hidden_addressId_inputId").val("");
             $("#receiveName").val("");
+
             $("#provName_addr").val("");
+            $("#cityName_addr").val("");
+            $("#areaName_addr").val("");
+
             $("#receiveTel_addr").val("");
             $("#zipCode_addr").val("");
+            $("#addrName_addr").val("");
+            $("#nickAddr_addr").val("");
+            $("#hidden_nickAddrId_inputId").val("");
+            $("#hidden_nickAddrName_inputId").val("");
+            $("#hidden_userId_inputId").val("");
         } else {
+            //选择旧地址
             $("#query_update_prov").show();
             $("#query_update_city").show();
             $("#query_update_area").show();
             $("#new_addr_select_id").hide();
             $("#addr_name_new_id").hide();
-            var nickAddressId = $("#default_address_select").val();
+            var nickAddressId = $("#default_address_select option:selected").val();
+            var nickAddressName = $("#default_address_select option:selected").text();
+
             if (nickAddressId != "new" || nickAddressId != "0") {
                 $.ajax({
                     type: 'post',
@@ -426,9 +441,10 @@
                     success: function (data) {
                         $("#hidden_addressId_inputId").val(data.addressId);
                         $("#hidden_nickAddrId_inputId").val(data.nickAddrId);
-                        // console.log(data);
+                        $("#hidden_nickAddrName_inputId").val(nickAddressName);
                         //收货人姓名
                         $("#receiveName").val(data.receiveName);
+                        $("#hidden_userId_inputId").val(data.userId);
                         $("#provName_addr").val(data.provNameAddr);
                         $("#cityName_addr").val(data.cityNameAddr);
                         $("#areaName_addr").val(data.areaNameAddr);

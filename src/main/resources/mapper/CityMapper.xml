@@ -6,4 +6,9 @@
     select cityId,cityCode,cityName,provinceCode from tf_city
           where provinceCode=#{provinceCode}
     </select>
+
+    <select id="selectCityNameByCode" parameterType="String" resultType="City">
+        select cityId,cityCode,cityName,provinceCode from tf_city
+          where cityCode=#{cityCode}
+    </select>
 </mapper>

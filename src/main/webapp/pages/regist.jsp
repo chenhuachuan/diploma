@@ -60,7 +60,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="images/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="../image/lb/logo.png" alt=""/></a>
                 </div>
                 <%-- user login and regsit jsp--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -84,56 +84,59 @@
 <!-- header -->
 <!-- content -->
 <div class="container">
-    <div class="main">
+    <div class="main" style="background-image: url('../image/beauty/bg8.jpg');background-repeat: no-repeat">
         <!-- start registration -->
-        <div class="registration">
-            <div class="registration_left">
-                <h2>用户注册 <span> 创建TF-Book账户</span></h2>
+        <div class="registration" style="text-align: center">
+            <div class="registration_left" style="background-color: rgba(170,207,255,0.87);">
+                <h2 style="color: rgba(255,100,34,0.87);font-weight: bolder">创建TF-Book账户</h2>
                 <a href="#">
-                    <div class="reg_fb"><img src="images/facebook.png" alt=""><i>填写注册信息</i>
+                    <div class="reg_fb"><i>填写注册信息</i>
                         <div class="clearfix"></div>
                     </div>
                 </a>
-
                 <div class="registration_form">
                     <!-- Form -->
                     <form id="regist_form" action="${pageContext.request.contextPath}/user/userRegist.do" method="post"
                           onsubmit="return checkFormRg()">
-                        <div>
+                        <div class="col-md-offset-2">
                             <label>
-                                <input placeholder="姓名:" type="text" name="userName" tabindex="1" required autofocus>
+                                <input placeholder="姓名:" type="text" name="userName" tabindex="1" style="width: 320px;"
+                                       required autofocus>
                             </label>
                         </div>
-                        <div>
+                        <div class="col-md-offset-2">
                             <label>
-                                <input placeholder="昵称:" type="text" name="nickName" tabindex="2" required>
+                                <input placeholder="昵称:" type="text" name="nickName" tabindex="2" style="width: 320px;"
+                                       required>
                             </label>
                         </div>
-                        <div>
+                        <div class="col-md-offset-2">
                             <label>
-                                <input placeholder="电话:" type="text" id="rg_phone" name="phone"
+                                <input placeholder="电话:" type="text" id="rg_phone" name="phone" style="width: 320px;"
                                        onblur="checkPhoneSize()" tabindex="4" required>
                             </label>
                         </div>
-                        <div>
+                        <div class="col-md-offset-2">
                             <label>
-                                <input placeholder="邮箱:" type="email" id="rg_email" name="email"
+                                <input placeholder="邮箱:" type="email" id="rg_email" name="email" style="width: 320px;"
                                        onblur="checkEmailExists()" tabindex="5" required>
                             </label>
                         </div>
-                        <div>
+                        <div class="col-md-offset-2">
                             <label>
                                 <input placeholder="密码" type="password" id="rg_password" name="password"
+                                       style="width: 320px;"
                                        onblur="checkPassLength()" tabindex="6" required>
                             </label>
                         </div>
-                        <div>
+                        <div class="col-md-offset-2">
                             <label>
-                                <input placeholder="确认密码" type="password" id="rg_repassword" onblur="checkRepassword()"
+                                <input placeholder="确认密码" type="password" id="rg_repassword" style="width: 320px;"
+                                       onblur="checkRepassword()"
                                        tabindex="7" required>
                             </label>
                         </div>
-                        <div class="sky-form">
+                        <div class="sky-form col-md-offset-2">
                             <div class="sky_form1">
                                 <ul>
                                     <li><label class="radio left"><input type="radio" name="sex" checked="true"
@@ -144,19 +147,33 @@
                                 </ul>
                             </div>
                         </div>
-                        <div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">
+                            <input class="col-sm-8" type="submit" value="注册">
+                        </div>
+                        <div class="col-md-6">
+                            <a class="col-sm-4 sbton" href="../pages/login.jsp">登录</a>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="alert alert-danger" id="tipsDiv"
+                                 style="text-align: center;display: none; "></div>
+                        </div>
+                        <%--<div>
                             <input type="submit" value="创建账户" id="regist-submit">
                         </div>
-                        <div class="alert alert-danger" id="tipsDiv" style="text-align: center;display: none;"></div>
-
+                        <div class="alert alert-danger" id="tipsDiv" style="text-align: center;display: none;"></div>--%>
                     </form>
                     <!-- /Form -->
                 </div>
+            </div>
 
+            <div class="registration_right">
+                <img src="../image/lb/11.jpg" height="590px;" width="500px;" alt="">
             </div>
             <div class="clearfix"></div>
         </div>
         <!-- end registration -->
+
     </div>
 
 </div>

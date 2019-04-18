@@ -31,4 +31,11 @@ public interface CascadingService {
      */
     public List<Area> queryAllAreas(String cityCode);
 
+
+    public Province queryProvNameByCode(String provCode);
+
+    public City queryCityNameByCode(String cityCode);
+
+    public Area queryAreaNameByCode(String areaCode);
+
 }

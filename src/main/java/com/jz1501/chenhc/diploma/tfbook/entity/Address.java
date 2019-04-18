@@ -1,10 +1,11 @@
 package com.jz1501.chenhc.diploma.tfbook.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Address implements Serializable {
     private String addressId;
-    private String addrName;
+    private String addrName;//详细地址
     private String receiveName;
     private String zipCode;
     private String receiveTel;
@@ -137,5 +138,29 @@ public class Address implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return Objects.equals(addressId, address.addressId) &&
+                Objects.equals(addrName, address.addrName) &&
+                Objects.equals(receiveName, address.receiveName) &&
+                Objects.equals(zipCode, address.zipCode) &&
+                Objects.equals(receiveTel, address.receiveTel) &&
+                Objects.equals(userId, address.userId) &&
+                Objects.equals(nickAddrName, address.nickAddrName) &&
+                Objects.equals(nickAddrId, address.nickAddrId) &&
+                Objects.equals(provNameAddr, address.provNameAddr) &&
+                Objects.equals(cityNameAddr, address.cityNameAddr) &&
+                Objects.equals(areaNameAddr, address.areaNameAddr);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(addressId, addrName, receiveName, zipCode, receiveTel, userId, nickAddrName, nickAddrId, provNameAddr, cityNameAddr, areaNameAddr);
     }
 }

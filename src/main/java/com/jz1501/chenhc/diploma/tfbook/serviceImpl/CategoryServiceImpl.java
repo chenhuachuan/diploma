@@ -47,13 +47,27 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     // @ReadThroughAssignCache(assignedKey = "com.jz1501.chenhc.diploma.tfbook.serviceImpl.CategoryServiceImpl.queryAllSecondLevelByParentId:Integer sparentId",namespace = "category")
-    public List<Sort> queryAllSecondLevelByParentId(Integer sparentId) {
+    public List<Sort> queryAllSecondLevelByParentId_V2(Integer parSortId, Integer sonSortId, Integer granSortId) {
         String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
         String method = Thread.currentThread().getStackTrace()[1].getMethodName();
-        String key = clazz + ":" + method + ":Integer" + sparentId;
+        String key = clazz + ":" + method + ":parSortId" + parSortId + ":sonSortId" + sonSortId + ":granSortId" + granSortId;
         Object sorts = memCachedClient.get(key);
         if (sorts == null) {
-            sorts = categoryMapper.selectSecondLevelByParentId(sparentId);
+            sorts = categoryMapper.selectSecondLevelByParentId_V2(parSortId, sonSortId, granSortId);
+            memCachedClient.add(key, sorts);
+        }
+        return (List<Sort>) sorts;
+    }
+
+    @Override
+    // @ReadThroughAssignCache(assignedKey = "com.jz1501.chenhc.diploma.tfbook.serviceImpl.CategoryServiceImpl.queryAllSecondLevelByParentId:Integer sparentId",namespace = "category")
+    public List<Sort> queryAllSecondLevelByParentId(Integer parSortId) {
+        String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
+        String method = Thread.currentThread().getStackTrace()[1].getMethodName();
+        String key = clazz + ":" + method + ":parSortId" + parSortId;
+        Object sorts = memCachedClient.get(key);
+        if (sorts == null) {
+            sorts = categoryMapper.selectSecondLevelByParentId(parSortId);
             memCachedClient.add(key, sorts);
         }
         return (List<Sort>) sorts;

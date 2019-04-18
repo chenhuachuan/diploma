@@ -6,4 +6,8 @@
     <select id="selectAllProvince" resultType="Province">
         select provId,provCode,provName from tf_province
     </select>
+
+    <select id="selectProvNameByCode" parameterType="String" resultType="Province">
+        select provId,provCode,provName from tf_province where provCode=#{provCode}
+    </select>
 </mapper>

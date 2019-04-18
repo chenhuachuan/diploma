@@ -22,6 +22,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/pages/js/megamenu.js"></script>
     <script src="${pageContext.request.contextPath}/pages/js/menu_jquery.js"></script>
     <script src="${pageContext.request.contextPath}/pages/js/jquery.etalage.min.js"></script>
+    <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/pages/js/home.js"></script>
 
 </head>
@@ -33,7 +34,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/pages/images/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo.png" alt=""/></a>
                 </div>
                 <%-- 登录注册--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -73,16 +74,51 @@
                     </div>
                     <div class="shoping1_of_2">
                         <h4><a href="#">${map.value.book.bookName}</a></h4>
-                        <span style="font-size: medium">购买数量: <b>&nbsp;<input type="text" value="${map.value.count}"
-                                                                              style="width:35px;">
-                    </b>&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;单价 : ${map.value.book.bookPrice}</span>
+                        <span style="font-size: medium;display: none;" id="update_checkbox_purchase_count_span_id">购买数量: &nbsp;
+                            <input type="text" value="${map.value.count}" style="width:35px;">
+                            &nbsp;&nbsp; | 单价 : ${map.value.book.bookPrice}</span>
+
+                        <span style="font-size: medium"
+                              id="checkout_purchase_count_span_id">购买数量: <b>${map.value.count}</b>
+                            &nbsp;&nbsp; | 单价 : ${map.value.book.bookPrice}</span>
                         <ul class="s_icons">
-                            <li><a href="#"><img src="${pageContext.request.contextPath}/pages/images/s_icon1.png"
+                                <%--<li><a href="javascript:;"><img src="${pageContext.request.contextPath}/pages/images/s_icon1.png" onclick="checkout_update_purchaseCount()"
+                                                     alt=""></a></li>
+                                                     ${pageContext.request.contextPath}/cart/removeFromCart.do?bookId=${map.value.book.bookId}"
+                                                     --%>
+                            <li><a href="javascript:void(0)"><img
+                                    src="${pageContext.request.contextPath}/pages/images/s_icon2.png"
                                                  alt=""></a></li>
-                            <li><a href="#"><img src="${pageContext.request.contextPath}/pages/images/s_icon2.png"
+                            <li><a href="javascript:void(0)" onclick="showRemoveModel()">
+                                <img src="${pageContext.request.contextPath}/pages/images/s_icon3.png"
                                                  alt=""></a></li>
-                            <li><a href="#"><img src="${pageContext.request.contextPath}/pages/images/s_icon3.png"
-                                                 alt=""></a></li>
+                            <!-- 模态框（Modal） -->
+                            <div class="modal fade" id="delCartBook" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                &times;
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel">
+                                                从购物车移除
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            确定删除该商品吗？亲三思哦！
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">算了
+                                            </button>
+                                            <button type="button" class="btn btn-primary"
+                                                    onclick="submitRemoveCartBook('${map.value.book.bookId}')">忍心删除
+                                            </button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                            <!-- end模态框（Modal） -->
                         </ul>
                     </div>
                     <div class="clearfix"></div>
@@ -154,6 +190,29 @@ function hideURLbar() {
     $(document).ready(function () {
         $(".megamenu").megamenu();
     });
+
+    //点击修改购买数量
+    function checkout_update_purchaseCount() {
+        $("#update_checkbox_purchase_count_span_id").show();
+        $("#checkout_purchase_count_span_id").hide();
+    }
+
+    //提示框
+    function showRemoveModel() {
+        $('#delCartBook').modal();
+    }
+
+    function submitRemoveCartBook(bookId) {
+        $.post(
+            '${pageContext.request.contextPath}/cart/removeFromCart.do',
+            {bookId: bookId},
+            function () {
+                $('#delCartBook').modal('hide');
+                window.location.href = "${pageContext.request.contextPath}/pages/buy.jsp";
+            }
+        );
+    }
+
 </script>
 <!-- megamenu -->
 <!-- script-for-nav -->

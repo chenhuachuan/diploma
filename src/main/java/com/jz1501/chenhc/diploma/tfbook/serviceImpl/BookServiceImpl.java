@@ -59,6 +59,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Book> editorRecommend_V2() {
+        String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
+        String method = Thread.currentThread().getStackTrace()[1].getMethodName();
+        String key = clazz + ":" + method;
+        Object books = memCachedClient.get(key);
+        if (books == null) {
+            books = bookMapper.selectBookByRecommend();
+            memCachedClient.add(key, books);
+        }
+        return (List<Book>) books;
+    }
+
+    @Override
     public List<Book> sellHotBooks() {
         String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
         String method = Thread.currentThread().getStackTrace()[1].getMethodName();
@@ -86,7 +99,6 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 分页查 所有图书
-     *
      * @param parSortId
      * @param sonSortId
      * @param granSortId
@@ -95,14 +107,14 @@ public class BookServiceImpl implements BookService {
      * @return
      */
     @Override
-    public List<Book> queryAllBooksBySortId(Integer parSortId, Integer sonSortId, Integer granSortId, Integer pageIndex, Integer pageSize) {
+    public List<Book> queryAllBooksBySortId(Integer parSortId, Integer sonSortId, Integer granSortId, Integer pageIndex, Integer pageSize, String sortFlag) {
         Integer curPage = (pageIndex - 1) * pageSize;
         String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
         String method = Thread.currentThread().getStackTrace()[1].getMethodName();
-        String key = clazz + ":" + method + ":parSortId:" + parSortId + ":sonSortId:" + sonSortId + ":granSortId:" + granSortId + ":pageIndex:" + pageIndex + ":pageSize:" + pageSize;
+        String key = clazz + ":" + method + ":parSortId:" + parSortId + ":sonSortId:" + sonSortId + ":granSortId:" + granSortId + ":pageIndex:" + pageIndex + ":pageSize:" + pageSize + ":sortFlag" + sortFlag;
         Object books = memCachedClient.get(key);
         if (books == null) {
-            books = bookMapper.selectSecondBooksById(parSortId, sonSortId, granSortId, curPage, pageSize);
+            books = bookMapper.selectSecondBooksById(parSortId, sonSortId, granSortId, curPage, pageSize, sortFlag);
             memCachedClient.add(key, books);
         }
         return (List<Book>) books;
@@ -138,7 +150,6 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 总条数
-     *
      * @param parSortId
      * @param sonSortId
      * @param granSortId
@@ -146,7 +157,6 @@ public class BookServiceImpl implements BookService {
      */
     @Override
     public Integer queryAllBooksCount(Integer parSortId, Integer sonSortId, Integer granSortId) {
-
         String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
         String method = Thread.currentThread().getStackTrace()[1].getMethodName();
         String key = clazz + ":" + method + ":parSortId:" + parSortId + ":sonSortId:" + sonSortId + ":granSortId:" + granSortId;
@@ -161,7 +171,6 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 图书详情
-     *
      * @param bookId
      * @return
      */
@@ -180,7 +189,6 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 相似图书
-     *
      * @param sortId
      * @return
      */
@@ -195,5 +203,124 @@ public class BookServiceImpl implements BookService {
             memCachedClient.add(key, books);
         }
         return (List<Book>) books;
+    }
+
+    /**
+     * 模糊查询
+     *
+     * @param search
+     * @return
+     */
+    @Override
+    public List<Book> searchBooksFromRepertory(String search) {
+        String searchSentence = "%" + search + "%";
+        return bookMapper.selectBooksBySearch(searchSentence);
+    }
+
+    /**
+     * 模糊搜索 首页 ——排序 ——分页
+     *
+     * @param pageIndex
+     * @param pageSize
+     * @param search
+     * @param sortFlag  : pop,new,discount,price
+     * @return List<Book>
+     */
+    @Override
+    public List<Book> searchBooksInHomePage(Integer pageIndex, Integer pageSize, String search, String sortFlag) {
+        String searchSentence = "%" + search + "%";
+        Integer curPage = (pageIndex - 1) * pageSize;
+        return bookMapper.selectBooksInHomePage(curPage, pageSize, searchSentence, sortFlag);
+    }
+
+    /**
+     * 首页搜索 总页数
+     *
+     * @param pageSize
+     * @param search
+     * @return
+     */
+    @Override
+    public Integer querySearchTotalPages(Integer pageSize, String search) {
+        Integer totalPage;
+        String searchSentence = "%" + search + "%";
+        //总条数
+        Integer allCount = bookMapper.selectSearchTotalCount(searchSentence);
+        if (allCount % pageSize == 0) {
+            totalPage = allCount / pageSize;
+        } else {
+            totalPage = allCount / pageSize + 1;
+        }
+        return totalPage;
+    }
+
+    /**
+     * 首页搜索下 ：总条数
+     *
+     * @param search
+     * @return
+     */
+    @Override
+    public Integer searchBooksTotalCount(String search) {
+        String searchSentence = "%" + search + "%";
+        return bookMapper.selectSearchTotalCount(searchSentence);
+    }
+
+    /**
+     * 在分类中搜索 排序 分页
+     *
+     * @param parSortId  在哪个分类栏里
+     * @param sonSortId
+     * @param granSortId
+     * @param pageIndex  偏移量
+     * @param pageSize   总条数
+     * @param search     搜索条件
+     * @param sortFlag   排序条件  pop new discount price
+     * @return
+     */
+    @Override
+    public List<Book> searchBooksInCategory(Integer parSortId, Integer sonSortId, Integer granSortId, Integer pageIndex, Integer pageSize, String search, String sortFlag) {
+        String searchSentence = "%" + search + "%";
+        Integer curPage = (pageIndex - 1) * pageSize;
+        return bookMapper.selectBooksInCategoryBySortFlag(parSortId, sonSortId, granSortId, curPage, pageSize, search, sortFlag);
+    }
+
+    /**
+     * 分类栏  总页数
+     *
+     * @param parSortId
+     * @param sonSortId
+     * @param granSortId
+     * @param pageSize
+     * @param search
+     * @return
+     */
+    @Override
+    public Integer querySearchInCategoryTotalPages(Integer parSortId, Integer sonSortId, Integer granSortId, Integer pageSize, String search) {
+        Integer totalPage;
+        String searchSentence = "%" + search + "%";
+        //总条数
+        Integer allCount = bookMapper.selectSearchInCategoryTotalCount(parSortId, sonSortId, granSortId, searchSentence);
+        if (allCount % pageSize == 0) {
+            totalPage = allCount / pageSize;
+        } else {
+            totalPage = allCount / pageSize + 1;
+        }
+        return totalPage;
+    }
+
+    /**
+     * 总条数
+     *
+     * @param parSortId
+     * @param sonSortId
+     * @param granSortId
+     * @param search
+     * @return
+     */
+    @Override
+    public Integer searchBooksInCategoryTotalCount(Integer parSortId, Integer sonSortId, Integer granSortId, String search) {
+        String searchSentence = "%" + search + "%";
+        return bookMapper.selectSearchInCategoryTotalCount(parSortId, sonSortId, granSortId, searchSentence);
     }
 }

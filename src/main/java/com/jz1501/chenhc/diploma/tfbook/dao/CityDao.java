@@ -9,7 +9,10 @@ public interface CityDao {
      * 查所有城市
      *
      * @return
+     *
      */
     public List<City> selectAllCity(String provinceCode);
+
+    public City selectCityNameByCode(String provCode);
 
 }

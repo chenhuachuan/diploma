@@ -62,7 +62,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="images/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="../image/lb/logo.png" alt=""/></a>
                 </div>
 
                 <%-- user login and regsit jsp--%>

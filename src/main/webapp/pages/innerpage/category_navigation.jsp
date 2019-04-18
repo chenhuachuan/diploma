@@ -18,10 +18,12 @@
                             <c:forEach var="son_sort" items="${par_sort.sortList}">
                                 <div class="col1">
                                     <div class="h_nav" id="second_level_div2"><%--二级分类--%>
-                                        <a href="#"><span class="label label-success">${son_sort.sortName}</span></a>
+                                        <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=${par_sort.sortId}&sonSortId=${son_sort.sortId}"><span
+                                                class="label label-success">${son_sort.sortName}</span></a>
                                             <%--<h4>${son_sort.sortName}</h4>--%>
                                         <c:forEach items="${son_sort.sortList}" var="gs_sort">
-                                            <a href="#"><span class="label label-info">${gs_sort.sortName}</span></a>
+                                            <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=${par_sort.sortId}&sonSortId=${son_sort.sortId}&granSortId=${gs_sort.sortId}"><span
+                                                    class="label label-info">${gs_sort.sortName}</span></a>
                                         </c:forEach>
                                     </div>
                                 </div>

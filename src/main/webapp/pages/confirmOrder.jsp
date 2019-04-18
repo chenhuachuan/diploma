@@ -4,8 +4,9 @@
 <html>
 <head>
     <title>Confirm Order</title>
-    <link href="../pages/css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
-    <link href="../pages/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="${pageContext.request.contextPath}/pages/css/bootstrap.css" rel="stylesheet" type="text/css"
+          media="all">
+    <link href="${pageContext.request.contextPath}/pages/css/style.css" rel="stylesheet" type="text/css" media="all"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,16 +18,18 @@
         window.scrollTo(0, 1);
     } </script>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <script src="../pages/js/jquery.min.js"></script>
-    <script type="text/javascript" src="../pages/js/easing.js"></script>
-    <link rel="stylesheet" href="../pages/css/flexslider.css" type="text/css" media="screen"/>
-    <link href="../pages/css/megamenu.css" rel="stylesheet" type="text/css" media="all"/>
-    <link rel="stylesheet" href="../pages/css/etalage.css">
-    <script src="../pages/js/jquery.easydropdown.js"></script>
-    <script src="../pages/js/menu_jquery.js"></script>
+    <script src="${pageContext.request.contextPath}/pages/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/pages/js/easing.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/flexslider.css" type="text/css"
+          media="screen"/>
+    <link href="${pageContext.request.contextPath}/pages/css/megamenu.css" rel="stylesheet" type="text/css"
+          media="all"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/pages/css/etalage.css">
+    <script src="${pageContext.request.contextPath}/pages/js/jquery.easydropdown.js"></script>
+    <script src="${pageContext.request.contextPath}/pages/js/menu_jquery.js"></script>
     <!-- etale -->
-    <script src="../pages/js/jquery.etalage.min.js"></script>
-    <script src="../pages/js/home.js"></script>
+    <script src="${pageContext.request.contextPath}/pages/js/jquery.etalage.min.js"></script>
+    <script src="${pageContext.request.contextPath}/pages/js/home.js"></script>
     <script>
         jQuery(document).ready(function ($) {
 
@@ -53,7 +56,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="../pages/images/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo.png" alt=""/></a>
                 </div>
                 <%-- 登录注册 jsp--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -64,7 +67,7 @@
 </div>
 
 <!-- megamenu -->
-<script type="text/javascript" src="../pages/js/megamenu.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/pages/js/megamenu.js"></script>
 <script>
     $(document).ready(function () {
         $(".megamenu").megamenu();
@@ -92,7 +95,7 @@
         <%--确认订单--%>
 
         <%--   <div class="shoping_bag1">
-               <h3><img src="../pages/images/small.jpg">确认订单</h3><br/>
+               <h3><img src="${pageContext.request.contextPath}/pages/images/small.jpg">确认订单</h3><br/>
                <div class="shoping_left">
                    <div style="margin-left: 120px;">
                        <address style="font-size:large">
@@ -104,38 +107,44 @@
                </div>
                <div class="clearfix"></div>
            </div>--%>
-        <div style="width:1000px;height: 140px;">
-            <h3><img src="../pages/images/small.jpg">确认订单及地址</h3><br/>
-            <div class="shoping_left">
-                <div style="margin-left: 100px;">
+        <div style="width:100%;height: 140px;">
+            <h3><img src="${pageContext.request.contextPath}/pages/images/small.jpg">确认订单及地址</h3><br/>
+
+            <div class="shoping_bag1">
+                <div class="shoping_left">
+                    <h2><a href="#"><img src="${pageContext.request.contextPath}/pages/images/gift.jpg">地址</a></h2>
+                </div>
+                <div class="shoping_left">
+                    <div style="padding-left: 120px;">
                     <table style="font-size: large">
                         <tr>
                             <td><strong>收货人：</strong></td>
-                            <td>风清扬</td>
+                            <td>${AddressInfo.receiveName}</td>
                         </tr>
                         <tr>
-                            <td><strong>电话:</strong></td>
-                            <td>18754219658</td>
+                            <td><strong>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话:</strong></td>
+                            <td>${AddressInfo.receiveTel}</td>
                         </tr>
                         <tr>
                             <td><strong>收货地址:</strong></td>
-                            <td>北京市北京通州马驹桥xxx街道七号楼3层</td>
+                            <td>${AddressInfo.provNameAddr}${AddressInfo.cityNameAddr}${AddressInfo.areaNameAddr}${AddressInfo.addrName}</td>
                         </tr>
                     </table>
+                    </div>
                 </div>
             </div>
             <div class="clearfix"></div>
         </div>
-
         <div class="shoping_bag1">
             <div class="shoping_left">
-                <h2><a href="#"><img src="../pages/images/gift.jpg">图书</a></h2>
+                <h2><a href="#"><img src="${pageContext.request.contextPath}/pages/images/gift.jpg">图书</a></h2>
             </div>
-            <c:forEach items="${sessionScope.showCart}" var="map" varStatus="order_item">
+            <c:forEach items="${sessionScope.checkOrder}" var="map" varStatus="order_item">
                 <c:set var="totalPurchaseCount" value="${totalPurchaseCount+map.value.count}"></c:set>
                 <div class="shoping_left">
                     <div class="shoping1_of_1">
-                        <img src="..${map.value.book.imgUrl}" class="img-responsive" alt=""/>
+                        <img src="${pageContext.request.contextPath}${map.value.book.imgUrl}" class="img-responsive"
+                             alt=""/>
                     </div>
                     <div class="shoping1_of_2">
                         <h4><a href="#">${map.value.book.bookName}</a></h4>
@@ -156,7 +165,8 @@
                style="display: none;">
         <div class="shoping_bag1">
             <div class="shoping_left">
-                <h2><a href="#"><img src="../pages/images/gift.jpg">服务</a> <span><%--￥. 25--%></span></h2>
+                <h2><a href="#"><img src="${pageContext.request.contextPath}/pages/images/gift.jpg">服务</a>
+                    <span><%--￥. 25--%></span></h2>
             </div>
             <div class="shoping_right">
                 <p>快递 &nbsp;<a href="#">free</a>&nbsp;<span> ￥ 0</span></p>
@@ -173,7 +183,7 @@
         </div>
         <div class="shoping_bag2">
             <div class="shoping_left"><%--../pages/checkout.jsp--%>
-                <a class="btn1" href="${pageContext.request.contextPath}/cart//purchase/checkOrder.do">提交订单</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a class="btn1" href="${pageContext.request.contextPath}/cart//purchase/confirmOrder.do">提交订单</a>&nbsp;&nbsp;&nbsp;&nbsp;
                 <%--<a class="btn1" href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=1">继续购物</a>--%>
             </div>
             <div class="clearfix"></div>

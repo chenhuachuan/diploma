@@ -64,7 +64,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="../pages/images/logo.png" alt=""/></a>
+                    <a href="../pages/home.jsp"><img src="../image/lb/logo.png" alt=""/></a>
                 </div>
 
                 <%-- user login and regsit jsp--%>
@@ -86,30 +86,13 @@
 <%--搜索框--%>
 
 <div style="padding: 20px 380px 5px 300px;">
-    <form class="bs-example bs-example-form" role="form">
+    <form class="bs-example bs-example-form" role="form"
+          action="${pageContext.request.contextPath}/book/searchBooksInHome.do">
         <div class="row">
             <div class="col-lg-8">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <input type="text" name="searchFlag" class="form-control" placeholder="Search">
                     <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">下拉菜单
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right">
-                            <li>
-                                <a href="#">功能</a>
-                            </li>
-                            <li>
-                                <a href="#">功能2</a>
-                            </li>
-                            <li>
-                                <a href="#">其他</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="#">分离的链接</a>
-                            </li>
-                        </ul>
                         <button type="submit" class="btn btn-default" style="width: 80px;">搜索</button>
                     </div><!-- /btn-group -->
                 </div><!-- /input-group -->
@@ -155,8 +138,8 @@
         <%--左侧--%>
         <div class="col-md-3 span_1_of_right1">
             <section class="sky-form">
-                <div class="product_right">
-                    <h3 class="m_2">分类信息</h3>
+                <div class="product_right" style="background-color: rgba(208,247,255,0.87)">
+                    <h3 class="m_2" style="background-color: rgba(255,111,18,0.87)">分类信息</h3>
 
                     <c:forEach items="${secondPage_sorts}" var="ssort">
                         <select class="dropdown" tabindex="10" data-settings='{"wrapperClass":"metro"}'>
@@ -195,8 +178,8 @@
             </section>
 
             <div class="sellers">
-                <h3 class="m_2">热销图书</h3>
-                <div class="best">
+                <h3 class="m_2" style="background-color: rgba(255,111,18,0.87)">热销图书</h3>
+                <div class="best" style="background-color: rgba(208,247,255,0.87)">
                     <c:forEach items="${sellHotBooks}" var="book" varStatus="num">
                         <c:if test="${num.index+1<=3}">
                             <div>
@@ -262,7 +245,7 @@
             <%--今日特价--%>
             <section class="sky-form">
                 <div class="sellers">
-                    <h3 class="m_2">今日特价</h3>
+                    <h3 class="m_2" style="background-color: rgba(255,111,18,0.87)">今日特价</h3>
                     <section class="slider">
                         <div class="flexslider">
                             <ul class="slides">
@@ -338,7 +321,6 @@
                         });
                     </script>
                     <!-- FlexSlider -->
-
                 </div>
             </section>
 
@@ -352,25 +334,53 @@
                         <%--当前位置--%>
                     <div style="padding-bottom: 5px;">
                         <ul class="breadcrumb">
-                            您现在的位置:&nbsp;
+                            <img src="${pageContext.request.contextPath }/image/lb/loc.jpg" alt=""
+                                 style="margin-right: 10px;">
                             <li><a href="${pageContext.request.contextPath }/pages/home.jsp">图书</a></li>
-                            <li class="active"><a href="#">小说</a></li>
-                            <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共: <span>${booksCount}-本图书</span></a>
+                            <c:forEach items="${locationSort}" var="sortA">
+                                <li><a href="${pageContext.request.contextPath }/pages/home.jsp">
+                                    <c:if test="${sortA.sortId==parSortId and sonSortId==null}">
+                                        <font color="red">${sortA.sortName}</font>
+                                    </c:if>
+                                    <c:if test="${sortA.sortId==parSortId and sonSortId!=null}">
+                                        ${sortA.sortName}
+                                    </c:if>
+                                </a></li>
+                                <c:forEach items="${sortA.sortList}" var="sonA">
+                                    <c:if test="${sonA.sortId==sonSortId}">
+                                        <li><a href="${pageContext.request.contextPath }/pages/home.jsp">
+                                            <c:if test="${granSortId==null}">
+                                                <font color="red">${sonA.sortName}</font>
+                                            </c:if>
+                                            <c:if test="${granSortId!=null}">
+                                                ${sonA.sortName}
+                                            </c:if>
+                                        </a></li>
+                                    </c:if>
+                                    <c:forEach items="${sonA.sortList}" var="sonB">
+                                        <c:if test="${sonB.sortId==granSortId}">
+                                            <li><a href="${pageContext.request.contextPath }/pages/home.jsp"><font
+                                                    color="red">${sonB.sortName}</font></a></li>
+                                        </c:if>
+                                    </c:forEach>
+                                </c:forEach>
+                            </c:forEach>
+                            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共: <span>${booksCount}本图书</span></li>
                             </li>
                         </ul>
 
                     </div>
 
                         <%--根据用户选择排序--%>
-                    <ul class="w_nav">
+                    <ul class="w_nav" style="font-size: medium;display: none">
                         <li>综合排序 :</li>
-                        <li><a class="active" href="#">popular</a></li>
+                        <li><a class="active" href="#">销量</a></li>
                         |
-                        <li><a href="#">new </a></li>
+                        <li><a href="#">最新</a></li>
                         |
-                        <li><a href="#">discount</a></li>
+                        <li><a href="#">优惠价</a></li>
                         |
-                        <li><a href="#">price: Low High </a></li>
+                        <li><a href="#">价格</a></li>
                         <div class="clear"></div>
                     </ul>
                     <div class="clearfix"></div>
@@ -385,30 +395,72 @@
 
             <div class="women">
                     <%--当前位置--%>
-                <div style="padding-bottom: 5px;">
-                    <ul class="breadcrumb">
-                        您现在的位置:&nbsp;
-                        <li><a href="${pageContext.request.contextPath }/pages/home.jsp">图书</a></li>
-                        <li class="active"><a href="#">小说</a></li>
-                        <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共: <span>${booksCount}-本图书</span></a></li>
+                <div class="col-md-8">
+                    <div style="padding-bottom: 5px;font-size: medium">
+                        <ul class="breadcrumb">
+                            <img src="${pageContext.request.contextPath }/image/lb/loc.jpg" alt=""
+                                 style="margin-right: 10px;">
+                            <li><a href="${pageContext.request.contextPath }/pages/home.jsp">图书</a></li>
+                            <c:forEach items="${locationSort}" var="sortA">
+                                <li><a href="${pageContext.request.contextPath }/pages/home.jsp">
+                                    <c:if test="${sortA.sortId==parSortId and sonSortId==null}">
+                                        <font color="red">${sortA.sortName}</font>
+                                    </c:if>
+                                    <c:if test="${sortA.sortId==parSortId and sonSortId!=null}">
+                                        ${sortA.sortName}
+                                    </c:if>
+                                </a>
+                                </li>
+                                <c:forEach items="${sortA.sortList}" var="sonA">
+                                    <c:if test="${sonA.sortId==sonSortId}">
+                                        <li><a href="${pageContext.request.contextPath }/pages/home.jsp">
+                                            <c:if test="${granSortId==null}">
+                                                <font color="red">${sonA.sortName}</font>
+                                            </c:if>
+                                            <c:if test="${granSortId!=null}">
+                                                ${sonA.sortName}
+                                            </c:if>
+                                        </a>
+                                        </li>
+                                    </c:if>
+                                    <c:forEach items="${sonA.sortList}" var="sonB">
+                                        <c:if test="${sonB.sortId==granSortId}">
+                                            <li><a href="${pageContext.request.contextPath }/pages/home.jsp">
+                                                <font color="red">${sonB.sortName}</font>
+                                            </a>
+                                            </li>
+                                        </c:if>
+                                    </c:forEach>
+                                </c:forEach>
+                            </c:forEach>
+                            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共: <span>${booksCount}本图书</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                <%--根据用户选择排序--%>
+                    <ul class="w_nav" style="font-size: medium">
+                        <li>排序 :</li>
+                        <li><a class="active"
+                               href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=${parSortId}&sonSortId=${sonSortId}&granSortId=${granSortId}&sortFlag=pop">销量</a>
+                        </li>
+                        |
+                        <li>
+                            <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=${parSortId}&sonSortId=${sonSortId}&granSortId=${granSortId}&sortFlag=new">最新</a>
+                        </li>
+                        |
+                        <li>
+                            <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=${parSortId}&sonSortId=${sonSortId}&granSortId=${granSortId}&sortFlag=discount">优惠价</a>
+                        </li>
+                        |
+                        <li>
+                            <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=${parSortId}&sonSortId=${sonSortId}&granSortId=${granSortId}&sortFlag=price">价格</a>
+                        </li>
+                        <div class="clear"></div>
                     </ul>
                 </div>
-
-                <%--根据用户选择排序--%>
-                <ul class="w_nav">
-                    <li>综合排序 :</li>
-                    <li><a class="active" href="#">popular</a></li>
-                    |
-                    <li><a href="#">new </a></li>
-                    |
-                    <li><a href="#">discount</a></li>
-                    |
-                    <li><a href="#">price: Low High </a></li>
-                    <div class="clear"></div>
-                </ul>
                 <div class="clearfix"></div>
             </div>
-
 
             <!-- grids_of_4 --><%--图书展示--%>
             <div class="grids_of_4">
@@ -431,127 +483,7 @@
                         <span>&nbsp;&nbsp;&nbsp;原价：￥${sbooks.originalPrice}</span>
                     </div>
                 </c:forEach>
-                    <%-- <div class="grid1_of_4">
-                         <div class="content_box">
-                             <a href="details.jsp">
-                                 <div class="view view-fifth">
-                                     <img src="images/6.jpg" class="img-responsive" alt=""/>
-                                     <div class="mask">
-                                         <div class="info"></div>
-                                     </div>
-                                 </div>
-                             </a>
-                         </div>
-                         <h4><a href="details.jsp"> Duis autem</a></h4>
-                         <p>It is a long established fact that a reader</p>
-                         <span>$99.99</span>
-                 </div>
-
-                     &lt;%&ndash;</div>&ndash;%&gt;
-                     <div class="grid1_of_4">
-                 <div class="content_box"><a href="details.jsp">
-                     <div class="view view-fifth">
-                         <img src="images/7.jpg" class="img-responsive" alt=""/>
-                         <div class="mask">
-                             <div class="info">Quick View</div>
-                         </div>
-                     </div>
-                 </a>
-                 </div>
-                 <h4><a href="details.jsp"> Duis autem</a></h4>
-                 <p>It is a long established fact that a reader</p>
-                 <span>$99.99</span>
-             </div>
-     --%>
-                    <%--
-
-                            <div class="grid1_of_4">
-                            <div class="content_box"><a href="details.jsp">
-                                <div class="view view-fifth">
-                                    <img src="images/8.jpg" class="img-responsive" alt=""/>
-                                    <div class="mask">
-                                        <div class="info">Quick View</div>
-                                    </div>
-                            </a>
-                            </div>
-                            <h4><a href="details.jsp"> Duis autem</a></h4>
-                            <p>It is a long established fact that a reader</p>
-                            <span>$99.99</span>
-                        </div>
-                    </div>
-                            <div class="grid1_of_4">
-                        <div class="content_box"><a href="details.jsp">
-                            <div class="view view-fifth">
-                                <img src="images/9.jpg" class="img-responsive" alt=""/>
-                                <div class="mask">
-                                    <div class="info">Quick View</div>
-                                </div>
-                        </a>
-                        </div>
-                        <h4><a href="details.jsp"> Duis autem</a></h4>
-                        <p>It is a long established fact that a reader</p>
-                        <span>$99.99</span>
-                    </div>
-                    </div>
-                            <div class="grid1_of_4">
-                        <div class="content_box"><a href="details.jsp">
-                            <div class="view view-fifth">
-                                <img src="images/10.jpg" class="img-responsive" alt=""/>
-                                <div class="mask">
-                                    <div class="info">Quick View</div>
-                                </div>
-                        </a>
-                        </div>
-                        <h4><a href="details.jsp"> Duis autem</a></h4>
-                        <p>It is a long established fact that a reader</p>
-                        <span>$99.99</span>
-                    </div>
-                    </div>
-                            <div class="grid1_of_4">
-                        <div class="content_box"><a href="details.jsp">
-                            <div class="view view-fifth">
-                                <img src="images/11.jpg" class="img-responsive" alt=""/>
-                                <div class="mask">
-                                    <div class="info">Quick View</div>
-                                </div>
-                        </a>
-                        </div>
-                        <h4><a href="details.jsp"> Duis autem</a></h4>
-                        <p>It is a long established fact that a reader</p>
-                        <span>$99.99</span>
-                    </div>
-                    </div>
-                            <div class="grid1_of_4">
-                        <div class="content_box"><a href="details.jsp">
-                            <div class="view view-fifth">
-                                <img src="images/12.jpg" class="img-responsive" alt=""/>
-                                <div class="mask">
-                                    <div class="info">Quick View</div>
-                                </div>
-                        </a>
-                        </div>
-                        <h4><a href="details.jsp"> Duis autem</a></h4>
-                        <p>It is a long established fact that a reader</p>
-                        <span>$99.99</span>
-                    </div>
-                    </div>
-                            <div class="grid1_of_4">
-                        <div class="content_box"><a href="details.jsp">
-                            <div class="view view-fifth">
-                                <img src="images/13.jpg" class="img-responsive" alt=""/>
-                                <div class="mask">
-                                    <div class="info">Quick View</div>
-                                </div>
-                        </a>
-                        </div>
-                        <h4><a href="details.jsp"> Duis autem</a></h4>
-                        <p>It is a long established fact that a reader</p>
-                        <span>$99.99</span>
-                    </div>
-                    </div>
-                    --%>
                 <div class="clearfix"></div>
-
                 <div style="padding-top: 20px;text-align: center">
                     <ul class="pagination pagination-lg">
                             <%--上一页--%>
@@ -560,10 +492,9 @@
                         </c:if>
                         <c:if test="${currentPage>1}">
                             <li>
-                                <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?currentPage=${currentPage-1}&parSortId=${parSortId}">&laquo;</a>
+                                <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?currentPage=${currentPage-1}&parSortId=${parSortId}&sonSortId=${sonSortId}&granSortId=${granSortId}&sortFlag=${sortFlag}">&laquo;</a>
                             </li>
                         </c:if>
-
 
                         <c:if test="${totalPages>2}">
                             <c:forEach begin="1" step="1" end="${totalPages-1}" varStatus="statusA">
@@ -572,7 +503,7 @@
                                             class="active"
                                         </c:if>
                                 >
-                                    <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?currentPage=${statusA.index+1}&parSortId=${parSortId}">${statusA.index}</a>
+                                    <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?currentPage=${statusA.index+1}&parSortId=${parSortId}&sonSortId=${sonSortId}&granSortId=${granSortId}&sortFlag=${sortFlag}">${statusA.index}</a>
                                 </li>
                             </c:forEach>
                         </c:if>
@@ -584,33 +515,10 @@
                                             class="active"
                                         </c:if>
                                 >
-                                    <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?currentPage=${statusA.index+1}&parSortId=${parSortId}">${statusA.index}</a>
+                                    <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?currentPage=${statusA.index}&parSortId=${parSortId}&sonSortId=${sonSortId}&granSortId=${granSortId}&sortFlag=${sortFlag}">${statusA.index}</a>
                                 </li>
                             </c:forEach>
                         </c:if>
-
-                            <%--
-                                                        <li
-                                                        <c:if test="${num.index+2<2}">
-                                                            class="disabled"
-                                                        </c:if>
-                                                        ><a href="">2</a></li>
-
-                                                        <li
-                                                            <c:if test="${num.index+3<3}">
-                                                                class="disabled"
-                                                            </c:if>
-                                                        ><a href="#">3</a></li>
-                                                        <li
-                                                            <c:if test="${num.index+4<4}">
-                                                                class="disabled"
-                                                            </c:if>
-                                                        ><a href="#">4</a></li>
-                                                        <li
-                                                            <c:if test="${num.index+5<5}">
-                                                                class="disabled"
-                                                            </c:if>
-                                                        ><a href="#">5</a></li>--%>
 
                         <li class="disabled"><a>...</a></li>
                             <%--总页数--%>
@@ -619,25 +527,21 @@
                                     class="active"
                                 </c:if>
                         >
-                            <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?currentPage=${totalPages}&parSortId=${parSortId}">${totalPages}</a>
+                            <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?currentPage=${totalPages}&parSortId=${parSortId}&sonSortId=${sonSortId}&granSortId=${granSortId}&sortFlag=${sortFlag}">${totalPages}</a>
                         </li>
 
                             <%--下一页--%>
                         <c:if test="${currentPage<totalPages}">
                             <li>
-                                <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?currentPage=${currentPage+1}&parSortId=${parSortId}">&raquo;</a>
+                                <a href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?currentPage=${currentPage+1}&parSortId=${parSortId}&sonSortId=${sonSortId}&granSortId=${granSortId}&sortFlag=${sortFlag}">&raquo;</a>
                             </li>
                         </c:if>
                         <c:if test="${currentPage==totalPages}">
                             <li class="disabled"><a>&raquo;</a></li>
                         </c:if>
-
-
                     </ul>
                 </div>
                 <div class="clearfix"></div>
-
-
             </div>
             <!-- end grids_of_4 -->
 
@@ -659,3 +563,146 @@
 
 </body>
 </html>
+<%-- <div class="grid1_of_4">
+                     <div class="content_box">
+                         <a href="details.jsp">
+                             <div class="view view-fifth">
+                                 <img src="images/6.jpg" class="img-responsive" alt=""/>
+                                 <div class="mask">
+                                     <div class="info"></div>
+                                 </div>
+                             </div>
+                         </a>
+                     </div>
+                     <h4><a href="details.jsp"> Duis autem</a></h4>
+                     <p>It is a long established fact that a reader</p>
+                     <span>$99.99</span>
+             </div>
+
+                 &lt;%&ndash;</div>&ndash;%&gt;
+                 <div class="grid1_of_4">
+             <div class="content_box"><a href="details.jsp">
+                 <div class="view view-fifth">
+                     <img src="images/7.jpg" class="img-responsive" alt=""/>
+                     <div class="mask">
+                         <div class="info">Quick View</div>
+                     </div>
+                 </div>
+             </a>
+             </div>
+             <h4><a href="details.jsp"> Duis autem</a></h4>
+             <p>It is a long established fact that a reader</p>
+             <span>$99.99</span>
+         </div>
+ --%>
+<%--
+
+        <div class="grid1_of_4">
+        <div class="content_box"><a href="details.jsp">
+            <div class="view view-fifth">
+                <img src="images/8.jpg" class="img-responsive" alt=""/>
+                <div class="mask">
+                    <div class="info">Quick View</div>
+                </div>
+        </a>
+        </div>
+        <h4><a href="details.jsp"> Duis autem</a></h4>
+        <p>It is a long established fact that a reader</p>
+        <span>$99.99</span>
+    </div>
+</div>
+        <div class="grid1_of_4">
+    <div class="content_box"><a href="details.jsp">
+        <div class="view view-fifth">
+            <img src="images/9.jpg" class="img-responsive" alt=""/>
+            <div class="mask">
+                <div class="info">Quick View</div>
+            </div>
+    </a>
+    </div>
+    <h4><a href="details.jsp"> Duis autem</a></h4>
+    <p>It is a long established fact that a reader</p>
+    <span>$99.99</span>
+</div>
+</div>
+        <div class="grid1_of_4">
+    <div class="content_box"><a href="details.jsp">
+        <div class="view view-fifth">
+            <img src="images/10.jpg" class="img-responsive" alt=""/>
+            <div class="mask">
+                <div class="info">Quick View</div>
+            </div>
+    </a>
+    </div>
+    <h4><a href="details.jsp"> Duis autem</a></h4>
+    <p>It is a long established fact that a reader</p>
+    <span>$99.99</span>
+</div>
+</div>
+        <div class="grid1_of_4">
+    <div class="content_box"><a href="details.jsp">
+        <div class="view view-fifth">
+            <img src="images/11.jpg" class="img-responsive" alt=""/>
+            <div class="mask">
+                <div class="info">Quick View</div>
+            </div>
+    </a>
+    </div>
+    <h4><a href="details.jsp"> Duis autem</a></h4>
+    <p>It is a long established fact that a reader</p>
+    <span>$99.99</span>
+</div>
+</div>
+        <div class="grid1_of_4">
+    <div class="content_box"><a href="details.jsp">
+        <div class="view view-fifth">
+            <img src="images/12.jpg" class="img-responsive" alt=""/>
+            <div class="mask">
+                <div class="info">Quick View</div>
+            </div>
+    </a>
+    </div>
+    <h4><a href="details.jsp"> Duis autem</a></h4>
+    <p>It is a long established fact that a reader</p>
+    <span>$99.99</span>
+</div>
+</div>
+        <div class="grid1_of_4">
+    <div class="content_box"><a href="details.jsp">
+        <div class="view view-fifth">
+            <img src="images/13.jpg" class="img-responsive" alt=""/>
+            <div class="mask">
+                <div class="info">Quick View</div>
+            </div>
+    </a>
+    </div>
+    <h4><a href="details.jsp"> Duis autem</a></h4>
+    <p>It is a long established fact that a reader</p>
+    <span>$99.99</span>
+</div>
+</div>
+--%>
+
+
+<%--
+                            <li
+                            <c:if test="${num.index+2<2}">
+                                class="disabled"
+                            </c:if>
+                            ><a href="">2</a></li>
+
+                            <li
+                                <c:if test="${num.index+3<3}">
+                                    class="disabled"
+                                </c:if>
+                            ><a href="#">3</a></li>
+                            <li
+                                <c:if test="${num.index+4<4}">
+                                    class="disabled"
+                                </c:if>
+                            ><a href="#">4</a></li>
+                            <li
+                                <c:if test="${num.index+5<5}">
+                                    class="disabled"
+                                </c:if>
+                            ><a href="#">5</a></li>--%>

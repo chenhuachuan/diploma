@@ -101,9 +101,10 @@
                 <span>
                     <a href="${pageContext.request.contextPath}/pages/buy.jsp" class="btn btn-danger"
                        style="width:110px;">
-                        &nbsp;购物车 &nbsp;&nbsp;<span class="badge">0</span>
+                        &nbsp;购物车 &nbsp;&nbsp;<span class="badge">${sessionScope.totalCartCount}</span>
                     </a>
-                    <a href="#" class="btn btn-danger" style="width:110px;text-align: center">
+                    <a href="${pageContext.request.contextPath}/cart/purchase/userOrderListInfo.do"
+                       class="btn btn-danger" style="width:110px;text-align: center">
                         我的订单
                     </a>
                     <%--<button type="button" class="btn btn-danger" style="width:100px;">我的订单</button>--%>

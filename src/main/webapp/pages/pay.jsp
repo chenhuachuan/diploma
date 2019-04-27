@@ -4,7 +4,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Success</title>
+    <title>pay</title>
     <link href="${pageContext.request.contextPath}/pages/css/bootstrap.css" rel="stylesheet" type="text/css"
           media="all">
     <link href="${pageContext.request.contextPath}/pages/css/style.css" rel="stylesheet" type="text/css" media="all"/>
@@ -90,131 +90,18 @@
     </div>
 </div>
 
-<%@ page import="com.alipay.api.internal.util.AlipaySignature" %>
-<%@ page import="com.jz1501.chenhc.diploma.tfbook.util.AlipayConfig" %>
-<%@ page import="java.util.HashMap" %>
-<%@ page import="java.util.Iterator" %>
-<%@ page import="java.util.Map" %>
-<%
-    //获取支付宝GET过来反馈信息
-    Map<String, String> params = new HashMap<String, String>();
-    Map<String, String[]> requestParams = request.getParameterMap();
-    for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
-        String name = (String) iter.next();
-        String[] values = (String[]) requestParams.get(name);
-        String valueStr = "";
-        for (int i = 0; i < values.length; i++) {
-            valueStr = (i == values.length - 1) ? valueStr + values[i]
-                    : valueStr + values[i] + ",";
-        }
-        //乱码解决，这段代码在出现乱码时使用
-        valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-        params.put(name, valueStr);
-    }
-
-    boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.alipay_public_key, AlipayConfig.charset, AlipayConfig.sign_type); //调用SDK验证签名
-
-//    if(signVerified) {
-//        //商户订单号
-//        String orderNumber = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
-//        //out.println("out_trade_no:"+out_trade_no);
-//        OrderService os=new OrderServiceImpl();
-//        os.modifyOrderStatus(orderNumber);
-//
-//
-//
-//    }else{
-//        response.sendRedirect(request.getContextPath() + "/pages/home.jsp");
-//    }
-    //——请在这里编写您的程序（以下代码仅作参考）——
-//    if(signVerified) {
-//        //商户订单号
-//        String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
-//
-//        //支付宝交易号
-//        String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
-//
-//        //付款金额
-//        String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"),"UTF-8");
-//
-//        out.println("trade_no:"+trade_no+"<br/>out_trade_no:"+out_trade_no+"<br/>total_amount:"+total_amount);
-//    }else {
-//        out.println("验签失败");
-//    }
-    //——请在这里编写您的程序（以上代码仅作参考）——
-%>
 <!-- header -->
 <div class="container">
     <div class="main">
-        <div style="width:100%;height: auto;">
-            <h3><img src="${pageContext.request.contextPath}/image/lb/success1.jpg">购买成功！</h3><br/>
+        <div>
+            <jsp:include page="../pay/paynow.jsp"/>
         </div>
-        <div class="shoping_bag1">
-            <div class="shoping_left">
-                <h2><a href="#"><img src="${pageContext.request.contextPath}/pages/images/gift.jpg">地址</a></h2>
-            </div>
-            <div class="shoping_left">
-                <div style="padding-left: 75px;">
-                    <div class="shoping1_of_2">
-                        <span style="font-size: medium"><b>收货人：</b>  &nbsp;${sessionScope.UserOrderInfo.receiveName}</span><br/>
-                        <span style="font-size: medium"><b>电话：</b>  &nbsp;${sessionScope.UserOrderInfo.receiveTel}</span><br/>
-                        <span style="font-size: medium"><b>地址：</b>  &nbsp;${sessionScope.UserOrderInfo.addrName}</span><br/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-        <div class="shoping_bag1">
-            <div class="shoping_left">
-                <h2><a href="#"><img src="${pageContext.request.contextPath}/pages/images/gift.jpg">订单详情</a></h2>
-            </div>
-            <div class="shoping_left" style="padding-left: 75px;">
-                <div class="shoping1_of_1">
-                </div>
-                <div class="shoping1_of_2">
-                    <span style="font-size: large"><b>${sessionScope.UserOrderInfo.bookName}</b> &nbsp;</span>
-                    <span>|&nbsp;&nbsp;购买数量: <b>${sessionScope.UserOrderInfo.itemCount}</b>&nbsp;&nbsp; </span>
-                    <%--<span>|&nbsp;&nbsp;优惠：￥1 &nbsp;| 小计:￥23</span>--%>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="shoping_right">
-                <span style="color: red;font-family: 宋体">总价：￥${sessionScope.UserOrderInfo.totalPrice}</span>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-
-        <div class="shoping_bag1">
-            <div class="shoping_left">
-                <h2><a href="#"><img src="${pageContext.request.contextPath}/pages/images/gift.jpg">交易信息</a></h2>
-            </div>
-            <div class="shoping_left">
-                <div style="padding-left: 75px;">
-                    <div class="shoping1_of_2">
-                        <span style="font-size: medium"><b>订单编号：</b> ${sessionScope.UserOrderInfo.orderNumber} &nbsp;</span><br/>
-                        <%--<span style="font-size: medium"><b>交易流水号：</b> 54214201241121212312 &nbsp;</span><br/>
-                        <span style="font-size: medium"><b>支付编号：</b> 54214201241121212312 &nbsp;</span><br/>--%>
-                        <span style="font-size: medium"><b>创建时间：</b><fmt:formatDate
-                                value="${sessionScope.UserOrderInfo.createTime}"
-                                pattern="yyyy-MM-dd"/> &nbsp;</span><br/>
-                        <%-- <span style="font-size: medium"><b>付款时间：</b>  2019-04-04 15:02:20 &nbsp;</span><br/>
-                         <span style="font-size: medium"><b>发货时间：</b>  2019-04-04 15:02:20 &nbsp;</span><br/>--%>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-
-        </div>
-        <div class="clearfix"></div>
         <div class="shoping_bag2">
-            <div class="shoping_left">
+            <div class="shoping_left" style="display: none">
                 <a class="btn1" href="${pageContext.request.contextPath}/pages/home.jsp">返回首页</a>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="clearfix"></div>
         </div>
-        <%--
-                <div class="details">
-                    <div class="container">--%>
         <div class="details">
             <div style="width:100%;height: auto;">
                 <h3><img src="${pageContext.request.contextPath}/image/lb/success1.jpg">为您推荐</h3><br/>

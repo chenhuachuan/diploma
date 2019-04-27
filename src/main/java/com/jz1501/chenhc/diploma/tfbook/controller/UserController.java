@@ -68,6 +68,7 @@ public class UserController extends PropertiesEditor {
             if (dbUser != null) {
                 Object forceLoginFlag = session.getAttribute("forceLogin");
                 Object wish_To_login = session.getAttribute("wish_To_login");
+                Object order_To_login = session.getAttribute("order_To_login");
 
                 session.setAttribute("CurrentUser", dbUser);
                 session.setAttribute("wishFlag", "loginsuccess");
@@ -77,6 +78,9 @@ public class UserController extends PropertiesEditor {
                 } else if ("toWish".equals(wish_To_login)) {
                     //去收藏
                     return "forward:/user/person/favoriteBooks.do";
+                } else if ("toOrderList".equals(order_To_login)) {
+                    //我的订单
+                    return "forward:/cart/purchase/userOrderListInfo.do";
                 } else {
                     session.setAttribute("loginErrorInfo", "登录成功！");
                     return "forward:/pages/home.jsp";//去首页

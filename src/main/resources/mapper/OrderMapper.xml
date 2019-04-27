@@ -4,10 +4,51 @@
 
     <insert id="insertNewOrder" parameterType="com.jz1501.chenhc.diploma.tfbook.entity.Order">
         INSERT INTO tf_order(id,order_id,total_price,addr_name,receive_name,receive_tel,create_time,status,user_id,address_id,item_count,
-        book_name,item_little_price,book_price)
-        VALUES(#{orderId},#{orderNumber},#{totalPrice},#{addrName},#{receiveName},#{receiveTel},#{createTime},#{status},#{userId},#{addressId},#{itemCount},
-        #{bookName},#{itemLittlePrice},#{bookPrice})
+        book_name,item_little_price,book_price,book_id)
+        VALUES(#{orderId},#{orderNumber},#{totalPrice},#{addrName},#{receiveName},#{receiveTel},#{createTime,jdbcType=TIMESTAMP},#{status},#{userId},#{addressId},#{itemCount},
+        #{bookName},#{itemLittlePrice},#{bookPrice},#{bookId})
     </insert>
 
+    <resultMap id="order_all_colnum" type="Order">
+        <id property="orderId" column="id"/>
+        <result property="orderNumber" column="order_id"/>
+        <result property="totalPrice" column="total_price"/>
+        <result property="addrName" column="addr_name"/>
+        <result property="receiveName" column="receive_name"/>
+        <result property="receiveTel" column="receive_tel"/>
+        <result property="createTime" column="create_time"/>
+        <result property="status" column="status"/>
+        <result property="itemCount" column="item_count"/>
+        <result property="bookName" column="book_name"/>
+        <result property="bookPrice" column="book_price"/>
+        <result property="itemLittlePrice" column="item_little_price"/>
+        <result property="userId" column="user_id"/>
+        <result property="addressId" column="address_id"/>
+        <result property="bookId" column="book_id"/>
+
+    </resultMap>
+    <select id="selectOrderById" parameterType="String" resultMap="order_all_colnum">
+        SELECT id,order_id,total_price,addr_name,receive_name,receive_tel,create_time,status,user_id,address_id,item_count,book_name,item_little_price,book_price,book_id FROM tf_order
+        where order_id=#{orderId}
+    </select>
+
+    <update id="updateOrderStatus" parameterType="String">
+        UPDATE tf_order SET status='20' where order_id=#{orderNumber}
+    </update>
+
+
+    <select id="selectUserAllOrderByUserId" parameterType="String" resultMap="order_all_colnum">
+        select id,order_id,total_price,addr_name,receive_name,receive_tel,create_time,status,user_id,address_id,item_count,book_name,item_little_price,book_price,book_id
+        from tf_order where user_id=#{userId} and status="20" order by create_time desc
+    </select>
+
+    <update id="deleteOrderInfoByOrderNumber" parameterType="String">
+        update tf_order set status="30" where order_id=#{orderNumber}
+    </update>
+
+    <select id="selectOrderInfoByOrderNumber" parameterType="String" resultMap="order_all_colnum">
+         select id,order_id,total_price,addr_name,receive_name,receive_tel,create_time,status,user_id,address_id,item_count,book_name,item_little_price,book_price,book_id
+        from tf_order where order_id=#{orderNumber}
+    </select>
 
 </mapper>

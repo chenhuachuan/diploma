@@ -2,6 +2,7 @@ package com.jz1501.chenhc.diploma.tfbook.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -11,6 +12,12 @@ public class TimeFormatUtil {
 
     public static String toFormatDate(Date objDate) {
         return sdf.format(objDate);
+    }
+
+    public static Date toFormatUtilDate() {
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        return date;
     }
 
     public static java.util.Date toUtilDate(String strDate) {
@@ -51,6 +58,7 @@ public class TimeFormatUtil {
         return sqlDate;
 
     }
+
 }
 
 

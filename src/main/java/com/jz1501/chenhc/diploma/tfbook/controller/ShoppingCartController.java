@@ -68,6 +68,7 @@ public class ShoppingCartController {
             OrderItem newOrderItem = new OrderItem();
             Book dbBook = bookService.queryBookDetailsByBookId(bookId);
             newOrderItem.setBook(dbBook);
+            newOrderItem.setBookId(bookId);
             if (purCount == null) {
                 //订单数量+1
                 newOrderItem.setCount(1);
@@ -83,6 +84,55 @@ public class ShoppingCartController {
         //计算总金额
         calculateTotalMoney(session);
         return "forward:/pages/buy.jsp";
+    }
+
+    /**
+     * 修改购物车页面购买数量
+     *
+     * @param sbflag
+     * @param mcount
+     * @return
+     */
+    @RequestMapping("/modifyBuyPagePurchaseCount")
+    public String modifyBuyPagePurchaseCount(String sbflag, Integer mcount, String bookId, HttpSession session) {
+        //获取购物车
+        Map<String, OrderItem> showCartMap = (Map) session.getAttribute("showCart");
+        if (showCartMap == null) {
+            showCartMap = new HashMap<String, OrderItem>();
+        }
+        if (showCartMap.containsKey(bookId)) {
+            OrderItem orderItem = showCartMap.get(bookId);
+
+            if ("subOne".equals(sbflag) && mcount == null) {
+                //减一
+                if (orderItem.getCount() > 1) {
+                    orderItem.setCount(orderItem.getCount() - 1);
+                } else {
+                    showCartMap.remove(bookId);//从购物车移除
+                }
+            } else if ("addOne".equals(sbflag) && mcount == null) {
+                //加一
+                orderItem.setCount(orderItem.getCount() + 1);
+            } else if (mcount != null && mcount != 0 && sbflag == null) {
+                //修改数量
+                orderItem.setCount(mcount);
+            } else if (mcount == 0 && sbflag == null) {
+                showCartMap.remove(bookId);//从购物车移除
+            }
+        } else {
+            throw new RuntimeException("sb");
+        }
+        Map<String, OrderItem> lastCart = (Map) session.getAttribute("showCart");
+        if (lastCart.isEmpty()) {
+            session.removeAttribute("showCart");
+        } else {
+            //存入session
+            session.setAttribute("showCart", showCartMap);
+            //计算总金额
+            calculateTotalMoney(session);
+        }
+
+        return "redirect:/pages/buy.jsp";
     }
 
     //移除购物车
@@ -106,7 +156,6 @@ public class ShoppingCartController {
             //计算总金额
             calculateTotalMoney(session);
         }
-
         return "redirect:/pages/buy.jsp";
     }
 
@@ -146,30 +195,27 @@ public class ShoppingCartController {
     }
 
     @RequestMapping("/purchase/fillReceiveAddress")
-    public String fillInAddress(Model model) {
-        String userId = "104bf543ff344dd2a2da7b2cffff0d54";
-        // String nickAddrId="e561617d030148a7b233771311b5619d";
-        //User currentUser = (User)session.getAttribute("CurrentUser");
-        //List<Address> addresses = addressService.queryAddressById(currentUser.getUserId(), nickAddrId);
-        List<Address> addresses = addressService.queryAddressByUserId(userId);
+    public String fillInAddress(Model model, HttpSession session) {
+        User currentUser = (User) session.getAttribute("CurrentUser");
+        List<Address> addresses = addressService.queryAddressByUserId(currentUser.getUserId());
         model.addAttribute("UserAddress", addresses);
         return "forward:/pages/fillAddress.jsp";
     }
 
 
     @RequestMapping("/purchase/allAddrSort")
-    public String queryAllCategoryAddress(Model model) {
-        String userId = "104bf543ff344dd2a2da7b2cffff0d54";
-        List<Address> categoryAddr = addressService.queryAddressByUserId(userId);
+    public String queryAllCategoryAddress(Model model, HttpSession session) {
+        User currentUser = (User) session.getAttribute("CurrentUser");
+        List<Address> categoryAddr = addressService.queryAddressByUserId(currentUser.getUserId());
         model.addAttribute("allAddrSort", categoryAddr);
         return "forward:/pages/fillAddress.jsp";
     }
 
 
     @RequestMapping("/purchase/queryOneAddress")
-    public String queryOneAddressByNickId(String nickAddrId, Model model) {
-        String userId = "104bf543ff344dd2a2da7b2cffff0d54";
-        Address addresses = addressService.queryAddressById(userId, nickAddrId);
+    public String queryOneAddressByNickId(String nickAddrId, Model model, HttpSession session) {
+        User currentUser = (User) session.getAttribute("CurrentUser");
+        Address addresses = addressService.queryAddressById(currentUser.getUserId(), nickAddrId);
         model.addAttribute("one_address", addresses);
         return "forward:/pages/fillAddress.jsp";
     }
@@ -190,30 +236,30 @@ public class ShoppingCartController {
             }
             completeAddress.setNickAddrId("");
             completeAddress.setUserId(currentUser.getUserId());
-            // addressService.addNewAddress(address);
+            addressService.addNewAddress(address);
             //获取订单信息
             Map<String, OrderItem> showCartMap = (Map) session.getAttribute("checkOrder");//showCart
+
             //将用户选择地址和订单回显到  confirmOrder.jsp页面 做最后展示
-            model.addAttribute("OrderInfo", showCartMap);
-            model.addAttribute("AddressInfo", completeAddress);
+            session.setAttribute("OrderInfo", showCartMap);
+            session.setAttribute("AddressInfo", completeAddress);
             return "forward:/pages/confirmOrder.jsp";
         } else if (!completeAddress.equals(dbAddress)) {
             //修改了地址  入库
             addressService.modifyAddress(address);
-
             //获取订单信息
             Map<String, OrderItem> showCartMap = (Map) session.getAttribute("checkOrder");//showCart
             //将用户选择地址和订单回显到  confirmOrder.jsp页面 做最后展示
-            model.addAttribute("OrderInfo", showCartMap);
-            model.addAttribute("AddressInfo", completeAddress);
+            session.setAttribute("OrderInfo", showCartMap);
+            session.setAttribute("AddressInfo", completeAddress);
             return "forward:/pages/confirmOrder.jsp";
 
         } else {
             //获取订单信息
             Map<String, OrderItem> showCartMap = (Map) session.getAttribute("checkOrder");//showCart
             //将用户选择地址和订单回显到  confirmOrder.jsp页面 做最后展示
-            model.addAttribute("OrderInfo", showCartMap);
-            model.addAttribute("AddressInfo", completeAddress);
+            session.setAttribute("OrderInfo", showCartMap);
+            session.setAttribute("AddressInfo", completeAddress);
             return "forward:/pages/confirmOrder.jsp";
         }
     }
@@ -229,8 +275,33 @@ public class ShoppingCartController {
         orderService.addNewOrder();//订单信息
         List<Book> books = bookService.editorRecommend();
         model.addAttribute("booksTJ", books);
-        //相似推荐
-        return "forward:/pages/success.jsp";
+        return "forward:/pages/pay.jsp";
+    }
+
+
+    @RequestMapping("/purchase/userOrderListInfo")
+    public String queryUserOrderInfo(Model model, HttpSession session) {
+        User currentUser = (User) session.getAttribute("CurrentUser");
+        List<Order> orders = orderService.queryUserAllOrderInfoByUserId(currentUser.getUserId());
+        model.addAttribute("orderListInfo", orders);
+        return "forward:/pages/orderlist.jsp";
+    }
+
+    //删除订单 软删除
+    @RequestMapping("/purchase/removeOrder")
+    public String removeOrderInfo(String orderNumber) {
+        orderService.removeOrderInfoByOrderNumber(orderNumber);
+        return "forward:/pages/orderlist.jsp";
+    }
+
+    //订单详情
+    @RequestMapping("/purchase/orderDetailInfo")
+    public String queryOrderDetailInfo(String orderNumber, Model model) {
+        Map<String, OrderItem> orderDetailInfo = orderService.queryOrderDetailInfoByOrderNumber(orderNumber);
+        Order order = orderService.queryOrderInfoById(orderNumber);
+        model.addAttribute("orderDetailInfo", orderDetailInfo);
+        model.addAttribute("orderINFO", order);
+        return "forward:/pages/orderinfo.jsp";
     }
 
 

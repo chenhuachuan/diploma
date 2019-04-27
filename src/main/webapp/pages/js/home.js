@@ -19,4 +19,13 @@ function getNewShelvesBooks() {
 */
 var total_order_count = $("#total_order_count").val();
 
+(function ($) {
+    $('.spinner .btn:first-of-type').on('click', function () {
+        $('.spinner input').val(parseInt($('.spinner input').val(), 10) + 1);
+    });
+    $('.spinner .btn:last-of-type').on('click', function () {
+        $('.spinner input').val(parseInt($('.spinner input').val(), 10) - 1);
+    });
+})(jQuery);
+
 

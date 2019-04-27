@@ -13,15 +13,14 @@
     <artifactId>tfbook</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>tfbook</name>
+    <!-- <packaging>war</packaging>-->
     <description>Diploma project for Spring Boot by Chenhc</description>
 
     <properties>
         <java.version>1.8</java.version>
     </properties>
 
-
     <dependencies>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -29,7 +28,31 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!--移除嵌入式tomcat-->
+            <!-- <exclusions>
+                 <exclusion>
+                     <groupId>org.springframework.boot</groupId>
+                     <artifactId>spring-boot-starter-tomcat</artifactId>
+                 </exclusion>
+             </exclusions>-->
         </dependency>
+        <!--打包上线需要的servlet api依赖-->
+        <!--  <dependency>
+              <groupId>javax.servlet</groupId>
+              <artifactId>javax.servlet-api</artifactId>
+              <version>3.0.1</version>
+              <scope>provided</scope>
+          </dependency>
+
+          &lt;!&ndash;部署项目时添加&ndash;&gt;
+          <dependency>
+              <groupId>log4j</groupId>
+              <artifactId>log4j</artifactId>
+              <version>1.2.16</version>
+              <scope>compile</scope>
+          </dependency>-->
+
+
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -72,7 +95,6 @@
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
-
         <!--mybatis和springboot的整合包-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -309,6 +331,22 @@
             <version>4.0.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.pentahohub.nexus/alipay-sdk-java -->
+        <!-- <dependency>
+             <groupId>com.pentahohub.nexus</groupId>
+             <artifactId>alipay-sdk-java</artifactId>
+             <version>20150820220052</version>
+         </dependency>-->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
 
     </dependencies>
 
@@ -318,6 +356,14 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <finalName>${project.name}</finalName><!-- 打包后的war名称-->
+                </configuration>
+            </plugin>
+
             <!--<plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

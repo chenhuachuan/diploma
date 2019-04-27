@@ -1302,6 +1302,32 @@ a.show1:hover {
     color: #ed1c24;
 }
 
+a.show2 {
+    background: #00405d;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 0.7em 1em;
+    display: inline-block;
+    text-decoration: none;
+    text-shadow: 0 2px 0 #00405d, 0 0 4px #00405d;
+    border-radius: 3px;
+    text-align: center;
+    text-transform: uppercase;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -o-border-radius: 3px;
+    -msborder-radius: 3px;
+    margin: 1em 0em;
+    width: 66%;
+}
+
+a.show2:hover {
+    background: #ed1c24;
+    color: #ffffff;
+}
+
 label.me {
     width: 135px;
     height: 1px;
@@ -2268,6 +2294,25 @@ ul.s_icons {
     text-decoration: none;
 }
 
+.shoping_left a.btn_scan {
+    margin-top: 1%;
+    text-transform: capitalize;
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    color: #ffffff;
+    background: #00405d;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.shoping_left a.btn_scan:hover {
+    background: #ed1c24;
+    text-decoration: none;
+}
+
 .shoping_right p span.color {
     color: rgb(12, 138, 12);
 }
@@ -2542,6 +2587,10 @@ i.home {
         width: 46%;
     }
 
+    a.show2 {
+        width: 46%;
+    }
+
     a.sbton {
         width: 40%;
     }
@@ -2612,6 +2661,10 @@ i.home {
     }
 
     a.show1 {
+        width: 84%;
+    }
+
+    a.show2 {
         width: 84%;
     }
 
@@ -2746,6 +2799,10 @@ i.home {
     }
 
     a.show1 {
+        width: 30%;
+    }
+
+    a.show2 {
         width: 30%;
     }
 
@@ -2948,6 +3005,10 @@ i.home {
     }
 
     a.show1 {
+        font-size: 12px;
+    }
+
+    a.show2 {
         font-size: 12px;
     }
 
@@ -3177,6 +3238,10 @@ i.home {
     }
 
     a.show1 {
+        width: 33%;
+    }
+
+    a.show2 {
         width: 33%;
     }
 
@@ -3436,6 +3501,10 @@ i.home {
     }
 
     a.show1 {
+        width: 56%;
+    }
+
+    a.show2 {
         width: 56%;
     }
 

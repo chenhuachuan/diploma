@@ -1,5 +1,7 @@
 package com.jz1501.chenhc.diploma.tfbook.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,6 +12,7 @@ public class Order implements Serializable {
     private String addrName;//详细地址
     private String receiveName;//收货人
     private String receiveTel;//电话
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     private String status;
     private String itemCount;//每本数量
@@ -18,6 +21,15 @@ public class Order implements Serializable {
     private String itemLittlePrice;//每种书的小计
     private String userId;
     private String addressId;
+    private String bookId;
+
+    public String getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
+    }
 
     public Order() {
     }
@@ -132,5 +144,25 @@ public class Order implements Serializable {
 
     public void setAddressId(String addressId) {
         this.addressId = addressId;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId='" + orderId + '\'' +
+                ", orderNumber='" + orderNumber + '\'' +
+                ", totalPrice=" + totalPrice +
+                ", addrName='" + addrName + '\'' +
+                ", receiveName='" + receiveName + '\'' +
+                ", receiveTel='" + receiveTel + '\'' +
+                ", createTime=" + createTime +
+                ", status='" + status + '\'' +
+                ", itemCount='" + itemCount + '\'' +
+                ", bookName='" + bookName + '\'' +
+                ", bookPrice='" + bookPrice + '\'' +
+                ", itemLittlePrice='" + itemLittlePrice + '\'' +
+                ", userId='" + userId + '\'' +
+                ", addressId='" + addressId + '\'' +
+                '}';
     }
 }

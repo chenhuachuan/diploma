@@ -183,7 +183,8 @@
         </div>
         <div class="shoping_bag2">
             <div class="shoping_left"><%--../pages/checkout.jsp--%>
-                <a class="btn1" href="${pageContext.request.contextPath}/cart//purchase/confirmOrder.do">提交订单</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a class="btn1" href="${pageContext.request.contextPath}/cart/purchase/confirmOrder.do">提交订单</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a class="btn1" href="${pageContext.request.contextPath}/cart/purchase/allAddrSort.do">返回</a>&nbsp;&nbsp;&nbsp;&nbsp;
                 <%--<a class="btn1" href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=1">继续购物</a>--%>
             </div>
             <div class="clearfix"></div>

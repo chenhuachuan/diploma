@@ -9,20 +9,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="application/x-javascript"> addEventListener("load", function () {
-        setTimeout(hideURLbar, 0);
-    }, false);
-    function hideURLbar() {
-        window.scrollTo(0, 1);
-    } </script>
+    <link rel="stylesheet" href="../pages/css/font-awesome/css/font-awesome.css">
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <script src="${pageContext.request.contextPath}/pages/js/jquery-1.10.2.js" type="text/javascript"></script>
     <script type="text/javascript" src="../pages/js/easing.js"></script>
     <link rel="stylesheet" href="../pages/css/flexslider.css" type="text/css" media="screen"/>
     <link href="../pages/css/megamenu.css" rel="stylesheet" type="text/css" media="all"/>
     <link rel="stylesheet" href="../pages/css/etalage.css">
+    <link rel="stylesheet" href="../pages/css/common.css">
     <script src="../pages/js/jquery.easydropdown.js"></script>
     <script src="../pages/js/menu_jquery.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
     <!-- etale -->
     <script src="../pages/js/jquery.etalage.min.js"></script>
     <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
@@ -605,13 +602,41 @@
                                 <input type="text" value="${map.value.count}" style="width:35px;">
                                 &nbsp;&nbsp; | 单价 : ${map.value.book.bookPrice}</span>
 
-                            <span style="font-size: medium" id="purchase_count_span_id">购买数量: <b>${map.value.count}</b>
-                                &nbsp;&nbsp; | 单价 : <b>${map.value.book.bookPrice} </b>元</span>
+
+                            <div class="row">
+                                <span class="col-md-2" style="font-size: medium;" id="purchase_count_span_id">数量:</span>
+                                <div class="col-md-push-1">
+                                    <div class="input-group col-md-1">
+                                                 <span class="input-group-btn">
+                                                   <button class="btn btn-default"
+                                                           onclick="delBuyCountInBuyPage('${map.value.book.bookId}')"
+                                                           style="width:18px;height: 23px;padding: 5%"
+                                                           type="button">-</button>
+                                                 </span>
+                                        <input type="text" id="modify_input_count" style="width:55px;height: 23px;"
+                                               value="${map.value.count}"
+                                               onblur="setPurchaseCountValue('${map.value.book.bookId}')"
+                                               class="form-control" placeholder="0">
+                                        <span class="input-group-btn">
+                                                   <button class="btn btn-default"
+                                                           onclick="addBuyCountInBuyPage('${map.value.book.bookId}')"
+                                                           style="width:18px;height: 23px; padding: 5%"
+                                                           type="button">+</button>
+                                                 </span>
+                                    </div>
+                                </div>
+                                <span class="col-md-4" style="font-size: medium;"
+                                      id="">单价 : &nbsp;&nbsp;<b>${map.value.book.bookPrice} </b>元</span>
+                            </div>
+
                             <ul class="s_icons">
                                     <%--<li><a href="javascript:;"><img src="../pages/images/s_icon1.png" onclick="updatePurchaseCount()" alt=""></a></li>
                                     ${pageContext.request.contextPath}/cart/removeFromCart.do?bookId=${map.value.book.bookId}
                                     --%>
-                                <li><a href="javascript:void(0)"><img src="../pages/images/s_icon2.png" alt=""></a></li>
+                                <li><a href="javascript:void(0)">
+                                    <img src="../pages/images/s_icon2.png"
+                                         onclick="window.location.href='${pageContext.request.contextPath}/user/person/addWishBook.do?bookId=${map.value.book.bookId}'"
+                                         alt=""></a></li>
                                 <li><a href="javascript:void(0)" onclick="showRemoveBuyModel()">
                                     <img src="../pages/images/s_icon3.png" alt=""></a></li>
                                 <!-- 模态框（Modal） -->
@@ -681,7 +706,7 @@
             <div class="shoping_left"><%--../pages/checkout.jsp--%>
                 <c:if test="${sessionScope.showCart!=null}">
                     <a class="btn1" href="${pageContext.request.contextPath}/cart/purchase/checkOrder.do">结算</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a class="btn1" href="${pageContext.request.contextPath}/pages/home.jsp">继续购物</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="btn_scan" href="${pageContext.request.contextPath}/pages/home.jsp">继续购物</a>&nbsp;&nbsp;&nbsp;&nbsp;
                 </c:if>
                 <c:if test="${sessionScope.showCart==null}">
                     <a class="btn1" href="${pageContext.request.contextPath}/pages/home.jsp">去购物</a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -699,8 +724,44 @@
     </div>
 </div>
 <script type="text/javascript">
+
+    //修改购买数量
+    function setPurchaseCountValue(bookId) {
+        var inv = $('#modify_input_count').val();
+        var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
+        if (!re.test(inv)) {
+            //$('#modify_input_count').val(1);
+            window.location.href = "${pageContext.request.contextPath}/pages/buy.jsp";
+
+            /* $.post('/cart/modifyBuyPagePurchaseCount.do',
+                     {mcount:0,bookId:bookId}
+
+                 );*/
+            return false;
+        } else {
+            var buyCount = $("#modify_input_count").val();
+            window.location.href = '${pageContext.request.contextPath}/cart/modifyBuyPagePurchaseCount.do?mcount=' + buyCount + '&bookId=' + bookId;
+            /* $.post('/cart/modifyBuyPagePurchaseCount.do',
+                 {mcount:buyCount,bookId:bookId}
+             );*/
+        }
+    }
+
+    //购买减一
+    function delBuyCountInBuyPage(bid) {
+        window.location.href = "${pageContext.request.contextPath}/cart/modifyBuyPagePurchaseCount.do?sbflag=subOne&bookId=" + bid;
+        /* $.post('/cart/modifyBuyPagePurchaseCount.do',
+             {sbflag:'subOne',bookId:bookId}
+         );*/
+    }
+
+    //购买加一
+    function addBuyCountInBuyPage(bookId) {
+        window.location.href = "${pageContext.request.contextPath}/cart/modifyBuyPagePurchaseCount.do?sbflag=addOne&bookId=" + bookId;
+    }
+
     /*
-    *点击修改购买数量
+    *点击修改购买数量 old version kill
     * */
     function updatePurchaseCount() {
         $("#purchase_count_span_id").hide();
@@ -732,6 +793,12 @@
     </div>
 </div>
 <!-- footer -->
+<script type="application/x-javascript"> addEventListener("load", function () {
+    setTimeout(hideURLbar, 0);
+}, false);
 
+function hideURLbar() {
+    window.scrollTo(0, 1);
+} </script>
 </body>
 </html>

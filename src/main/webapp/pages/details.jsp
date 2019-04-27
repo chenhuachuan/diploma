@@ -7,17 +7,10 @@
     <title>Book Detail</title>
     <link href="../pages/css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
     <link href="../pages/css/style.css" rel="stylesheet" type="text/css" media="all"/>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="../pages/css/font-awesome/css/font-awesome.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="application/x-javascript"> addEventListener("load", function () {
-        setTimeout(hideURLbar, 0);
-    }, false);
-
-    function hideURLbar() {
-        window.scrollTo(0, 1);
-    } </script>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <script src="../js/jquery-1.10.1.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="../pages/js/easing.js"></script>
@@ -919,6 +912,12 @@
     </div>
 </div>
 <!-- footer -->
+<script type="application/x-javascript"> addEventListener("load", function () {
+    setTimeout(hideURLbar, 0);
+}, false);
 
+function hideURLbar() {
+    window.scrollTo(0, 1);
+} </script>
 </body>
 </html>

@@ -1,11 +1,10 @@
 package com.jz1501.chenhc.diploma.tfbook;
 
+import com.jz1501.chenhc.diploma.tfbook.entity.Address;
 import com.jz1501.chenhc.diploma.tfbook.entity.Sort;
 import com.jz1501.chenhc.diploma.tfbook.entity.WishList;
-import com.jz1501.chenhc.diploma.tfbook.service.BookService;
-import com.jz1501.chenhc.diploma.tfbook.service.CategoryService;
-import com.jz1501.chenhc.diploma.tfbook.service.UserService;
-import com.jz1501.chenhc.diploma.tfbook.service.WishListService;
+import com.jz1501.chenhc.diploma.tfbook.service.*;
+import com.jz1501.chenhc.diploma.tfbook.util.TimeFormatUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,32 @@ public class UserTest extends TestTfBookDemo {
     private BookService bookService;
     @Autowired
     private WishListService wishListService;
+    @Autowired
+    private AddressService addressService;
+
+
+    @Autowired
+    private OrderService orderService;
+
+    @Test
+    public void test() {
+        Date curd = TimeFormatUtil.toFormatUtilDate();
+        System.out.println(curd);
+    }
+
+    @Test
+    public void getUserAddress() {
+        List<Address> addresses = addressService.queryAddressByUserId("104bf543ff344dd2a2da7b2cffff0d54");
+        for (Address as : addresses) {
+            System.out.println(as);
+        }
+    }
+
+
+
+
+
+
     @Test
     public void test1() {
         long now = System.currentTimeMillis();

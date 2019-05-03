@@ -4,13 +4,18 @@ import com.jz1501.chenhc.diploma.tfbook.entity.Book;
 import com.jz1501.chenhc.diploma.tfbook.entity.Sort;
 import com.jz1501.chenhc.diploma.tfbook.service.BookService;
 import com.jz1501.chenhc.diploma.tfbook.service.CategoryService;
+import com.jz1501.chenhc.diploma.tfbook.util.TimeFormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/book")
@@ -138,18 +143,6 @@ public class BookController {
         return "forward:/pages/searchInHome.jsp";
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     //二级页面
     @RequestMapping("/queryAllBooksbyPage")
     public String queryAllSecondBooksByPage(@RequestParam(defaultValue = "") Integer parSortId,
@@ -222,6 +215,102 @@ public class BookController {
 
         return "forward:/pages/details.jsp";
     }
+
+
+    //search bg
+    @RequestMapping("/showSearchBooks_bg")
+    @ResponseBody
+    public Map<String, Object> queryAllBooksBySearchBg(Integer rows, Integer page, String search, String fromDateStr, String toDateStr) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Date fromDate = TimeFormatUtil.toUtilDate(fromDateStr);
+        Date toDate = TimeFormatUtil.toUtilDate(toDateStr);
+        Integer totalCount = bookService.queryTotalCountBySearchBg(rows, page, search, fromDate, toDate);
+        List<Book> books = bookService.queryBgAllBooksBySearch(rows, page, search, fromDate, toDate);
+        map.put("total", totalCount);
+        map.put("rows", books);
+        return map;
+    }
+
+
+    @RequestMapping("/allBooksInfo")
+    @ResponseBody
+    public Map<String, Object> queryAllBooksInfoByPage(Integer rows, Integer page) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Integer totalCount = bookService.queryTotalCount();
+
+        List<Book> books = bookService.queryAllBooksInfo(rows, page);
+        map.put("total", totalCount);
+        map.put("rows", books);
+        return map;
+    }
+
+    @RequestMapping("/deleteBook")
+    @ResponseBody
+    public String updateBookStatus(String bookId) {
+        try {
+            bookService.updateBookStatus(bookId);
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "fail";
+        }
+    }
+
+    //图书展示
+    @RequestMapping("/queryBooksbyPage_json")
+    @ResponseBody
+    public Map<String, Object> queryAllBooksByPageJson(@RequestParam(defaultValue = "12") Integer pageSize,//每页条数
+                                                       @RequestParam(defaultValue = "1") Integer currentPage) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        //总页数
+        //总条数
+        Integer totalCount = bookService.queryBookTotalPage(pageSize);
+        //图书信息
+        List<Book> books = bookService.queryAllBooksByPage(pageSize, currentPage);
+        map.put("totalCount", totalCount);
+        map.put("books", books);
+        return map;
+    }
+
+    @RequestMapping("/queryBooksbyPage")
+    public String queryAllBooksByPage(@RequestParam(defaultValue = "10") Integer pageSize,//每页条数
+                                      @RequestParam(defaultValue = "1") Integer currentPage, Model model) {
+        //总条数
+        Integer totalCount = bookService.queryBookTotalPage(pageSize);
+        //图书信息
+        List<Book> books = bookService.queryAllBooksByPage(pageSize, currentPage);
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("currentPage", currentPage);//当前页
+        model.addAttribute("books", books);
+
+        return "forward:/bgpages/pages/booksShow.jsp";
+    }
+
+
+    @RequestMapping("/bookDetail")
+    public String queryBookDetailByBookId(String bookId, Model model) {
+        Book book = bookService.queryBookDetailsByBookId(bookId);
+        //图书信息
+        model.addAttribute("bookDetails", book);
+        return "forward:/bgpages/js/pagejs/bookDetail.jsp";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

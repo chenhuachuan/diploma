@@ -61,7 +61,8 @@ public class OrderServiceImpl implements OrderService {
             Book book = bookMapper.selectBookDetailsByBookid(OI.getBookId());
             //修改库存
             if (book.getRepertory() >= OI.getCount()) {
-                bookMapper.updateBookCountBeforePurchase(book.getRepertory() - OI.getCount());
+                bookMapper.updateBookCountBeforePurchase((book.getRepertory() - OI.getCount()), book.getBookId());
+                bookMapper.updateBookSaleCountBeforePurchase((book.getSaleCount() + OI.getCount()), book.getBookId());
                 //插入订单项表： 未完成
             } else {
                 throw new RuntimeException("repertory is not enough!");
@@ -131,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
             Book book = bookMapper.selectBookDetailsByBookid(OI.getBookId());
             //修改库存
             if (book.getRepertory() >= OI.getCount()) {
-                bookMapper.updateBookCountBeforePurchase(book.getRepertory() - OI.getCount());
+                bookMapper.updateBookCountBeforePurchase((book.getRepertory() - OI.getCount()), book.getBookId());
                 //插入订单项表： 未完成
             } else {
                 throw new RuntimeException("repertory is not enough!");

@@ -10,12 +10,106 @@
         SELECT id as userId,user_name as userName,nick_name as nickName,password,email from tf_user where email=#{email} and password=#{password}
     </select>
 
+    <select id="selectAdminLogin" resultType="User">
+        SELECT id as userId,user_name as userName,nick_name as nickName,password,email from tf_user where user_name=#{adminName} and password=#{password}
+    </select>
+
     <select id="examineEmailExistOrNot" parameterType="String" resultType="String">
         select email from tf_user where email=#{email}
     </select>
 
     <select id="examinePhoneNumExist" parameterType="String" resultType="String">
         select phone from tf_user where phone=#{phone}
+    </select>
+
+    <select id="selectAllUsersInfo" resultType="User">
+        select id userId,user_name userName,password,email,sex,salt,status,birth_date birthDate,regist_time registTime,phone,nick_name nickName
+        from tf_user where status!='88' limit #{index},#{row}
+    </select>
+
+    <resultMap id="user_and_address_map" type="User">
+        <id column="userId" property="userId"/>
+        <result column="userName" property="userName"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="sex" property="sex"/>
+        <result column="salt" property="salt"/>
+        <result column="status" property="status"/>
+        <result column="birthDate" property="birthdate"/>
+        <result column="registTime" property="registTime"/>
+        <result column="phone" property="phone"/>
+        <result column="nickName" property="nickName"/>
+        <association property="address" javaType="Address">
+            <result column="receiveName" property="receiveName"/>
+            <result column="addressName" property="addrName"/>
+            <result column="zipcode" property="zipCode"/>
+            <result column="receiveTel" property="receiveTel"/>
+            <result column="addressNickName" property="nickAddrName"/>
+            <result column="procince" property="provNameAddr"/>
+            <result column="city" property="cityNameAddr"/>
+            <result column="area" property="areaNameAddr"/>
+        </association>
+    </resultMap>
+
+    <select id="selectAllUsersInfo2" resultMap="user_and_address_map">
+         select u.id userId,u.user_name userName,u.password,u.email,u.sex,u.salt,u.status,u.birth_date birthDate,u.regist_time registTime,u.phone,
+			 u.nick_name nickName,a.receive_name receiveName,a.addr_name addressName,a.zipcode,a.receive_tel receiveTel,a.nick_addr_name addressNickName,
+			 a.province_addr procince,a.city_addr city,a.area_addr area
+			 from tf_user u JOIN tf_address a ON u.id=a.user_id where u.status!='88'
+    </select>
+
+    <select id="selectTotalCount" resultType="Integer">
+        select count(1) from tf_user where status!='88'
+    </select>
+
+
+    <select id="selectUsersBySearch" resultType="User">
+        select id userId,user_name userName,password,email,sex,salt,status,birth_date birthdate,regist_time
+        registTime,phone,nick_name nickName
+        from tf_user where status!='88'
+        <if test="search!=null and search!=''">
+            user_name like #{search}
+        </if>
+        <if test="fromDate!=null and fromDate!='' and search!=null">
+            <![CDATA[
+                  and regist_time >= #{fromDate}
+                 ]]>
+        </if>
+        <if test="fromDate!=null and fromDate!='' and search==null">
+            <![CDATA[
+                  regist_time >= #{fromDate}
+                 ]]>
+        </if>
+        <if test="toDate!=null and toDate!='' and fromDate!=null">
+            <![CDATA[ and regist_time < #{toDate} ]]>
+        </if>
+        <if test="toDate!=null and toDate!='' and fromDate==null">
+            <![CDATA[ regist_time < #{toDate} ]]>
+        </if>
+        limit #{index},#{row}
+    </select>
+    <select id="selectTotalCountBySearchBg" resultType="Integer">
+        select count(1)
+        from tf_user where status!='88'
+        <if test="search!=null and search!=''">
+            user_name like #{search}
+        </if>
+        <if test="fromDate!=null and fromDate!='' and search!=null">
+            <![CDATA[
+                  and regist_time >= #{fromDate}
+                 ]]>
+        </if>
+        <if test="fromDate!=null and fromDate!='' and search==null">
+            <![CDATA[
+                  regist_time >= #{fromDate}
+                 ]]>
+        </if>
+        <if test="toDate!=null and toDate!='' and fromDate!=null">
+            <![CDATA[ and regist_time < #{toDate} ]]>
+        </if>
+        <if test="toDate!=null and toDate!='' and fromDate==null">
+            <![CDATA[ regist_time < #{toDate} ]]>
+        </if>
     </select>
 
 </mapper>

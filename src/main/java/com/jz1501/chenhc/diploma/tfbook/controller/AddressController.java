@@ -5,6 +5,7 @@ import com.jz1501.chenhc.diploma.tfbook.entity.User;
 import com.jz1501.chenhc.diploma.tfbook.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -48,6 +49,14 @@ public class AddressController {
         User currentUser = (User) session.getAttribute("CurrentUser");
         List<Address> categoryAddr = addressService.queryAddressByUserId(currentUser.getUserId());
         return categoryAddr;
+    }
+
+    //bg
+    @RequestMapping("/usersAllAddress")
+    public String queryAllAddress(String userId, Model model) {
+        List<Address> categoryAddr = addressService.queryAddressByUserId(userId);
+        model.addAttribute("address", categoryAddr);
+        return "forward:/bgpages/pages/userAddressInfo.jsp";
     }
 
     @RequestMapping("/queryOneAddress")

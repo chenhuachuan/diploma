@@ -30,5 +30,7 @@ public interface CategoryService {
     public List<Sort> querySecondPageTags(Integer parSortId);
 
 
+    public List<Sort> queryAllSort();
+
 
 }

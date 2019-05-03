@@ -142,4 +142,17 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return (List<Sort>) sorts;
     }
+
+    @Override
+    public List<Sort> queryAllSort() {
+        String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
+        String method = Thread.currentThread().getStackTrace()[1].getMethodName();
+        String key = clazz + ":" + method;
+        Object sorts = memCachedClient.get(key);
+        if (sorts == null) {
+            sorts = categoryMapper.selectAllSort();
+            memCachedClient.add(key, sorts);
+        }
+        return (List<Sort>) sorts;
+    }
 }

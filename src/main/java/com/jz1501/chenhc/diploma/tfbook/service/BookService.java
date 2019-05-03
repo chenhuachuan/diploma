@@ -2,6 +2,7 @@ package com.jz1501.chenhc.diploma.tfbook.service;
 
 import com.jz1501.chenhc.diploma.tfbook.entity.Book;
 
+import java.util.Date;
 import java.util.List;
 
 public interface BookService {
@@ -95,4 +96,27 @@ public interface BookService {
 
     //总条数
     public Integer searchBooksInCategoryTotalCount(Integer parSortId, Integer sonSortId, Integer granSortId, String search);
+
+    //bg
+
+    public List<Book> queryAllBooksInfo(Integer row, Integer page);
+
+    public Integer queryTotalCount();
+
+    public void addNewBook(Book book);
+
+    public void updateBookInfo(Book book);
+
+    public void updateBookStatus(String bookId);
+
+    //每页多少条，第几页
+    public List<Book> queryAllBooksByPage(Integer rows, Integer page);
+
+    //总页数
+    public Integer queryBookTotalPage(Integer rows);
+
+    public List<Book> queryBgAllBooksBySearch(Integer rows, Integer page, String search, Date fromDate, Date toDate);
+
+    public Integer queryTotalCountBySearchBg(Integer rows, Integer page, String search, Date fromDate, Date toDate);
+
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -20,6 +21,13 @@ public class CategoryController {
         List<Sort> sorts = categoryService.queryAllCategoryName();
         model.addAttribute("sortsList", sorts);
         return "forward:/pages/innerpage/category_navigation.jsp";
+    }
+
+    @RequestMapping("/all_category_name_json")
+    @ResponseBody
+    public List<Sort> queryAllCategoryNameJson() {
+        List<Sort> sorts = categoryService.queryAllSort();
+        return sorts;
     }
 
     @RequestMapping("/first_categroy_name")

@@ -1,14 +1,15 @@
 package com.jz1501.chenhc.diploma.tfbook;
 
 import com.jz1501.chenhc.diploma.tfbook.entity.Address;
+import com.jz1501.chenhc.diploma.tfbook.entity.Book;
 import com.jz1501.chenhc.diploma.tfbook.entity.Sort;
 import com.jz1501.chenhc.diploma.tfbook.entity.WishList;
 import com.jz1501.chenhc.diploma.tfbook.service.*;
-import com.jz1501.chenhc.diploma.tfbook.util.TimeFormatUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -34,10 +35,28 @@ public class UserTest extends TestTfBookDemo {
     private OrderService orderService;
 
     @Test
-    public void test() {
-        Date curd = TimeFormatUtil.toFormatUtilDate();
-        System.out.println(curd);
+    public void test() throws ParseException {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date parse = simpleDateFormat.parse("2001-03-02");
+        List<Book> books = bookService.queryBgAllBooksBySearch(4, 1, "追", parse, new Date());
+
+        for (Book book : books) {
+            System.out.println(book.getBookName());
+        }
+
+        /*List<Book> books = bookService.queryAllBooksInfo(4,2);
+        for (Book book : books) {
+            System.out.println(book.getBookName()+"，sort:"+book.getSort().getSortName());
+
+        }*/
+
+
+        /*Date curd = TimeFormatUtil.toFormatUtilDate();
+
+        System.out.println(curd);*/
     }
+
 
     @Test
     public void getUserAddress() {

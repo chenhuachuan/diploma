@@ -24,6 +24,25 @@ public class Book implements Serializable {
     private String imgUrl;
     private String bookIntro;
     private String commend;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private Sort sort;
+
+    public Sort getSort() {
+        return sort;
+    }
+
+    public void setSort(Sort sort) {
+        this.sort = sort;
+    }
 
     public Book() {
     }

@@ -40,6 +40,8 @@ public interface CategoryMapper {
     //修改分类名
 
 
+    public List<Sort> selectAllSort();
+
 
 
 

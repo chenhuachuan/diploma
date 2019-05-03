@@ -3,11 +3,14 @@ package com.jz1501.chenhc.diploma.tfbook.serviceImpl;
 import com.jz1501.chenhc.diploma.tfbook.dao.BookMapper;
 import com.jz1501.chenhc.diploma.tfbook.entity.Book;
 import com.jz1501.chenhc.diploma.tfbook.service.BookService;
+import com.jz1501.chenhc.diploma.tfbook.util.TimeFormatUtil;
 import com.whalin.MemCached.MemCachedClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -323,4 +326,78 @@ public class BookServiceImpl implements BookService {
         String searchSentence = "%" + search + "%";
         return bookMapper.selectSearchInCategoryTotalCount(parSortId, sonSortId, granSortId, searchSentence);
     }
+
+    //bg
+
+
+    @Override
+    public List<Book> queryAllBooksInfo(Integer row, Integer page) {
+        Integer index = (page - 1) * row;
+        return bookMapper.selectAllBooksInfo(row, index);
+    }
+
+    @Override
+    public Integer queryTotalCount() {
+        return bookMapper.selectTotalCount();
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    @Override
+    public void addNewBook(Book book) {
+        bookMapper.addNewBook(book);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public void updateBookInfo(Book book) {
+        bookMapper.updateBookInfo(book);
+    }
+
+    /**
+     * 图书下架
+     *
+     * @param bookId
+     */
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public void updateBookStatus(String bookId) {
+        bookMapper.updateBookStatus(bookId);
+    }
+
+    //所有图书信息  展示
+    @Override
+    public List<Book> queryAllBooksByPage(Integer rows, Integer page) {
+        Integer curPage = (page - 1) * rows;
+        return bookMapper.selectBooksByPage(rows, curPage);
+    }
+
+    @Override
+    public Integer queryBookTotalPage(Integer rows) {
+        Integer totalPage;
+        //总条数
+        Integer allCount = bookMapper.selectBookTotalCount();
+        if (allCount % rows == 0) {
+            totalPage = allCount / rows;
+        } else {
+            totalPage = allCount / rows + 1;
+        }
+        return totalPage;
+    }
+
+    @Override
+    public List<Book> queryBgAllBooksBySearch(Integer rows, Integer page, String search, Date fromDate, Date toDate) {
+        Integer index = (page - 1) * rows;
+        String searchFlag = "%" + search + "%";
+        return bookMapper.selectBgBooksBySearch(rows, index, searchFlag, (fromDate == null) ? null : TimeFormatUtil.toSqlDate(fromDate), (toDate == null) ? null : TimeFormatUtil.toSqlDate(toDate));
+    }
+
+    @Override
+    public Integer queryTotalCountBySearchBg(Integer row, Integer page, String search, Date fromDate, Date toDate) {
+        Integer index = (page - 1) * row;
+        String searchFlag = "%" + search + "%";
+        return bookMapper.selectBgBooksTotalCountBySearch(row, index, searchFlag, (fromDate == null) ? null : TimeFormatUtil.toSqlDate(fromDate), (toDate == null) ? null : TimeFormatUtil.toSqlDate(toDate));
+    }
+
 }
+
+

@@ -35,7 +35,9 @@ public interface BookMapper {
 
 
     //修改图书数量
-    public void updateBookCountBeforePurchase(Integer totalCount);
+    public void updateBookCountBeforePurchase(@Param("totalCount") Integer totalCount, @Param("bookId") String bookId);
+
+    public void updateBookSaleCountBeforePurchase(@Param("saleCount") Integer saleCount, @Param("bookId") String bookId);
 
     //图书搜索 v1.0
     public List<Book> selectBooksBySearch(String search);
@@ -90,5 +92,29 @@ public interface BookMapper {
      */
     public Integer selectSearchInCategoryTotalCount(@Param("parSortId") Integer parSortId, @Param("sonSortId") Integer sonSortId,
                                                     @Param("granSortId") Integer granSortId, @Param("search") String search);
+
+
+    //bg
+    public List<Book> selectAllBooksInfo(@Param("row") Integer row, @Param("index") Integer index);
+
+    public Integer selectTotalCount();
+
+    public void addNewBook(Book book);
+
+    public void updateBookInfo(Book book);
+
+    public void updateBookStatus(String bookId);
+
+    public Integer selectBookTotalCount();
+
+    public List<Book> selectBooksByPage(@Param("row") Integer row, @Param("index") Integer index);
+
+    public List<Book> selectBgBooksBySearch(@Param("row") Integer row, @Param("index") Integer index,
+                                            @Param("search") String search, @Param("fromDate") java.sql.Date fromDate,
+                                            @Param("toDate") java.sql.Date toDate);
+
+    public Integer selectBgBooksTotalCountBySearch(@Param("row") Integer row, @Param("index") Integer index,
+                                                   @Param("search") String search, @Param("fromDate") java.sql.Date fromDate,
+                                                   @Param("toDate") java.sql.Date toDate);
 
 }

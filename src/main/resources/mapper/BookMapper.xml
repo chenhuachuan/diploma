@@ -127,9 +127,14 @@
 
 
     <!--完成订单 修改数量-->
-    <update id="updateBookCountBeforePurchase" parameterType="Integer">
-        UPDATE tf_book SET repertory=#{totalCount}
+    <update id="updateBookCountBeforePurchase">
+        UPDATE tf_book SET repertory=#{totalCount} where id=#{bookId}
     </update>
+
+    <update id="updateBookSaleCountBeforePurchase">
+        update tf_book set sale_count=#{saleCount} where id=#{bookId}
+    </update>
+
 
     <!--搜索1-->
     <select id="selectBooksBySearch" parameterType="String" resultMap="all_columns_map">
@@ -245,5 +250,160 @@
         </if>
     </select>
 
+
+    <!--bg-->
+
+    <resultMap type="Book" id="book_columns_and_sort">
+        <id column="id" property="bookId"/>
+        <result column="sort_id" property="sortId"/>
+        <result column="book_name" property="bookName"/>
+        <result column="author" property="author"/>
+        <result column="publish_company" property="publishCompany"/>
+        <result column="publish_time" property="publishTime"/>
+        <result column="word_count" property="wordCount"/>
+        <result column="kai_ben" property="kaiBen"/>
+        <result column="page_count" property="pageCount"/>
+        <result column="repertory" property="repertory"/>
+        <result column="book_price" property="bookPrice"/>
+        <result column="original_price" property="originalPrice"/>
+        <result column="isbn" property="isbn"/>
+        <result column="book_intro" property="bookIntro"/>
+        <result column="sale_count" property="saleCount"/>
+        <result column="img_url" property="imgUrl"/>
+        <result column="recommend" property="commend"/>
+
+        <association property="sort" javaType="Sort">
+            <id property="sortId" column="pid"/>
+            <result property="sortName" column="pname"/>
+            <result property="sortCount" column="pcount"/>
+            <result property="parentId" column="ppid"/>
+        </association>
+    </resultMap>
+
+    <select id="selectAllBooksInfo" resultMap="book_columns_and_sort">
+        SELECT b.id,b.sort_id,b.book_name,b.author,b.publish_company,b.publish_time,b.word_count,b.kai_ben,b.page_count,b.repertory,b.book_price,b.original_price,b.isbn,b.book_intro,b.sale_count,b.img_url,b.recommend,
+        t.id pid,t.sort_name pname,t.sort_count pcount,t.parent_id ppid from tf_book b JOIN tf_sort t on b.sort_id=t.id
+        limit #{index},#{row}
+    </select>
+
+    <select id="selectTotalCount" resultType="Integer">
+        select count(1) from tf_book
+    </select>
+
+    <insert id="addNewBook" parameterType="Book">
+        insert into tf_book(id,sort_id,book_name,author,publish_company,publish_time,word_count,kai_ben,page_count,repertory,book_price,isbn,book_intro,sale_count,img_url,recommend,original_price)
+        values(#{bookId},#{sortId},#{bookName},#{author},#{publishCompany},#{publishTime},#{wordCount},#{kaiBen},#{pageCount},#{repertory},#{bookPrice},
+        #{isbn},#{bookIntro},#{saleCount},#{imgUrl},#{recommend},#{originalPrice})
+    </insert>
+
+    <update id="updateBookInfo" parameterType="Book">
+        update tf_book SET
+        <if test="bookName!=null">
+            book_name=#{bookName},
+        </if>
+        <if test="author!=null">
+            author=#{author},
+        </if>
+        <if test="pageCount!=null">
+            page_count=#{pageCount},
+        </if>
+        <if test="wordCount!=null">
+            word_count=#{wordCount},
+        </if>
+        <if test="publishCompany!=null">
+            publish_company=#{publishCompany},
+        </if>
+        <if test="publishTime!=null">
+            publish_time=#{publishTime},
+        </if>
+        <if test="kaiBen!=null">
+            kaiben=#{kaiBen},
+        </if>
+        <if test="repertory!=null">
+            repertory=#{repertory},
+        </if>
+        <if test="bookPrice!=null">
+            book_price=#{bookPrice},
+        </if>
+        <if test="originalPrice!=null">
+            original_price=#{originalPrice},
+        </if>
+        <if test="isbn!=null">
+            isbn=#{isbn},
+        </if>
+        <if test="imgUrl!=null">
+            img_url=#{imgUrl},
+        </if>
+        <if test="bookIntro!=null">
+            book_intro=#{bookIntro},
+        </if>
+        <if test="commend!=null">
+            recommend=#{commend},
+        </if>
+        <if test="sortId!=null">
+            sort_id=#{sortId},
+        </if>
+        where id=#{bookId}
+    </update>
+
+
+    <update id="updateBookStatus" parameterType="String">
+        update tf_book set status='0' where id=#{bookId}
+    </update>
+
+    <select id="selectBooksByPage" resultMap="all_columns_map">
+        select * from tf_book limit  #{index},#{row}
+    </select>
+    <select id="selectBookTotalCount" resultType="Integer">
+        select count(1) from tf_book
+    </select>
+
+
+    <select id="selectBgBooksBySearch" resultMap="all_columns_map">
+        select * from tf_book where
+        <if test="search!=null and search!=''">
+            book_name like #{search}
+        </if>
+        <if test="fromDate!=null and fromDate!='' and search!=null">
+            <![CDATA[
+                  and publish_time >= #{fromDate}
+            ]]>
+        </if>
+        <if test="fromDate!=null and fromDate!='' and search==null">
+            <![CDATA[
+                  publish_time >= #{fromDate}
+                 ]]>
+        </if>
+        <if test="toDate!=null and toDate!='' and fromDate!=null">
+            <![CDATA[ and publish_time < #{toDate} ]]>
+        </if>
+        <if test="toDate!=null and toDate!='' and fromDate==null">
+            <![CDATA[ publish_time < #{toDate} ]]>
+        </if>
+        limit #{index},#{row}
+    </select>
+
+    <select id="selectBgBooksTotalCountBySearch" resultType="Integer">
+        select count(1) from tf_book where
+        <if test="search!=null and search!=''">
+            book_name like #{search}
+        </if>
+        <if test="fromDate!=null and fromDate!='' and search!=null">
+            <![CDATA[
+                  and publish_time >= #{fromDate}
+            ]]>
+        </if>
+        <if test="fromDate!=null and fromDate!='' and search==null">
+            <![CDATA[
+                  publish_time >= #{fromDate}
+                 ]]>
+        </if>
+        <if test="toDate!=null and toDate!='' and fromDate!=null">
+            <![CDATA[ and publish_time < #{toDate} ]]>
+        </if>
+        <if test="toDate!=null and toDate!='' and fromDate==null">
+            <![CDATA[ publish_time < #{toDate} ]]>
+        </if>
+    </select>
 
 </mapper>

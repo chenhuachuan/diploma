@@ -171,5 +171,8 @@
             where p.id=#{parSortId} LIMIT 12
     </select>
 
+    <select id="selectAllSort" resultMap="parent_level">
+        select id pid,sort_name pname,sort_count pcount,parent_id ppid from tf_sort where sort_name!=''
+    </select>
 
 </mapper>

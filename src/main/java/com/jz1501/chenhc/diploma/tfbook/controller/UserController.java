@@ -4,17 +4,17 @@ import com.jz1501.chenhc.diploma.tfbook.entity.User;
 import com.jz1501.chenhc.diploma.tfbook.entity.WishList;
 import com.jz1501.chenhc.diploma.tfbook.service.UserService;
 import com.jz1501.chenhc.diploma.tfbook.service.WishListService;
+import com.jz1501.chenhc.diploma.tfbook.util.TimeFormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author 陈华川
@@ -50,9 +50,30 @@ public class UserController extends PropertiesEditor {
         }
     }
 
+    @RequestMapping("/adminRegist")
+    public String adminRegist(@RequestParam("adminName") String adminName,
+                              @RequestParam("password") String password,
+                              @RequestParam("email") String email) {
+        try {
+            User user = new User();
+            user.setUserName(adminName);
+            user.setPassword(password);
+            user.setEmail(email);
+            userService.adminRegist(user);
+          /*  session.setAttribute("admin", user);
+            session.setAttribute("adminLoginFlag", "true");*/
+            //session.setAttribute("check_admin_status", "regist_success_toLogin");
+            //return "redirect:/bgpages/main.jsp";
+            return "regist_success";
+        } catch (Exception e) {
+            //session.setAttribute("check_admin_status", "regist_fail_toRegist");
+//            return "redirect:/bgpages/main.jsp";
+            return "regist_fail";
+        }
+    }
+
     /**
      * 用户登录
-     *
      * @param email
      * @param password
      * @param session
@@ -96,14 +117,47 @@ public class UserController extends PropertiesEditor {
         }
     }
 
+    @RequestMapping(value = "/adminLogin", method = RequestMethod.POST)
+    @ResponseBody
+    public String adminLogin(@RequestParam("adminName") String adminName, @RequestParam("password") String password, HttpSession session) {
+        User admin = userService.adminLogin(adminName, password);
+        if (admin != null) {
+            session.setAttribute("CurrentAdmin", admin);
+            System.out.println("----admin_login-----");
+            return "login_success";//redirect:/bgpages/main.jsp
+        } else {
+            //session.setAttribute("check_admin_status","login_fail_toReLogin");
+            System.out.println("----adminName:" + adminName + "," + "--loginFail----");
+            return "login_fail";
+        }
+    }
+
+
     @RequestMapping(value = "/logout")
     public String userLogOut(HttpSession session) {
-        session.removeAttribute("CurrentUser");
-        session.removeAttribute("loginErrorInfo");
-        session.removeAttribute("forceLogin");
-        session.removeAttribute("wish_To_login");
-        session.removeAttribute("wishFlag");
+//        session.removeAttribute("CurrentUser");
+//        session.removeAttribute("loginErrorInfo");
+//        session.removeAttribute("forceLogin");
+//        session.removeAttribute("wish_To_login");
+//        session.removeAttribute("wishFlag");
+//        session.removeAttribute("check_admin_status");
+//        session.removeAttribute("CurrentAdmin");
+        session.invalidate();//清除所有
         return "redirect:/pages/home.jsp";
+    }
+
+    @RequestMapping(value = "/logout_admin")
+    @ResponseBody
+    public String AdminLogOut(HttpSession session) {
+//        session.removeAttribute("CurrentUser");
+//        session.removeAttribute("loginErrorInfo");
+//        session.removeAttribute("forceLogin");
+//        session.removeAttribute("wish_To_login");
+//        session.removeAttribute("wishFlag");
+//        session.removeAttribute("check_admin_status");
+//        session.removeAttribute("CurrentAdmin");
+        session.invalidate();//清除所有  bgpages/main.jsp
+        return "success_logout";
     }
 
     @RequestMapping("/emailExists")
@@ -156,5 +210,39 @@ public class UserController extends PropertiesEditor {
         wishListService.removeWishBookById(collectId, currentUser.getUserId());
         return "forward:/user/person/favoriteBooks.do";
     }
+
+
+    @RequestMapping("/showAllUsersInfo")
+    @ResponseBody
+    public Map<String, Object> showAllUsersInfo(Integer rows, Integer page) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Integer totalCount = userService.queryUserTotalCount();
+        List<User> users = userService.queryAllUsersInfo(rows, page);
+        map.put("total", totalCount);
+        map.put("rows", users);
+        return map;
+    }
+
+    @RequestMapping("/queryUsersBySearch_bg")
+    @ResponseBody
+    public Map<String, Object> queryAllUserBySearchBg(Integer rows, Integer page,
+                                                      String search, String fromDateStr, String toDateStr) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Date fromDate = null;
+        Date toDate = null;
+        if (fromDateStr != null) {
+            fromDate = TimeFormatUtil.toUtilDate(fromDateStr);
+        }
+        if (toDateStr != null) {
+            toDate = TimeFormatUtil.toUtilDate(toDateStr);
+        }
+        Integer totalCount = userService.queryUsersBySearchTotalCount(rows, page, search, fromDate, toDate);
+        List<User> users = userService.queryUsersBySearch(rows, page, search, fromDate, toDate);
+        map.put("total", totalCount);
+        map.put("rows", users);
+        return map;
+    }
+
+
 
 }

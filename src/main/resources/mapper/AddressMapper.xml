@@ -57,5 +57,12 @@
 
     </update>
 
+    <select id="selectOneAddressByID" parameterType="String" resultType="Address">
+        select
+        <include refid="address_column"/>
+        from tf_address
+        where id=#{addressId}
+    </select>
+
 
 </mapper>

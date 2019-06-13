@@ -1,6 +1,7 @@
 package com.jz1501.chenhc.diploma.tfbook.service;
 
 import com.jz1501.chenhc.diploma.tfbook.entity.Area;
+import com.jz1501.chenhc.diploma.tfbook.entity.Bor;
 import com.jz1501.chenhc.diploma.tfbook.entity.City;
 import com.jz1501.chenhc.diploma.tfbook.entity.Province;
 
@@ -37,5 +38,8 @@ public interface CascadingService {
     public City queryCityNameByCode(String cityCode);
 
     public Area queryAreaNameByCode(String areaCode);
+
+    public Bor queryTotalStaties();
+
 
 }

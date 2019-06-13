@@ -1,18 +1,23 @@
 <%@page isELIgnored="false" pageEncoding="UTF-8" contentType="text/html; UTF-8" %>
 <div class="row clearfix">
     <div class="col-sm-12 column">
-        <form id="bookDetail_form" method="post" role="form" data-options="novalidate:true" class="form-horizontal"
+        <form id="bookDetail_form_id" method="post"
+              role="form" data-options="novalidate:true" class="form-horizontal" enctype="multipart/form-data"
               style="margin-top: 10px">
+            <input class="easyui-textbox" type="hidden" name="bookId" value=""/>
+            <input class="easyui-textbox" type="hidden" name="saleCount" value="0"/>
+            <input class="easyui-textbox" type="hidden" name="status" value="1"/>
+
             <div class="form-group-separator"></div>
             <div class="form-group">
                 <label class="col-sm-1 control-label">书名</label>
                 <div class="col-sm-5">
-                    <input class="easyui-textbox" type="text" name="bookName" style="width: 260px;"
+                    <input class="easyui-textbox" type="text" id="add_bookName" name="bookName" style="width: 260px;"
                            data-options="required:true"/>
                 </div>
                 <label class="col-sm-1 control-label">作者</label>
                 <div class="col-sm-5">
-                    <input class="easyui-textbox" type="text" name="author" style="width: 260px;"
+                    <input class="easyui-textbox" type="text" id="add_author" name="author" style="width: 260px;"
                            data-options="required:true"/>
                 </div>
             </div>
@@ -20,12 +25,12 @@
             <div class="form-group">
                 <label class="col-sm-1 control-label">字数</label>
                 <div class="col-sm-5">
-                    <input class="easyui-textbox" type="text" name="wordCount" style="width: 260px;"
+                    <input class="easyui-textbox" type="text" id="add_wordCount" name="wordCount" style="width: 260px;"
                            data-options="required:true"/>
                 </div>
                 <label class="col-sm-1 control-label">页数</label>
                 <div class="col-sm-5">
-                    <input class="easyui-textbox" type="text" name="pageCount" style="width: 260px;"
+                    <input class="easyui-textbox" type="text" id="add_pageCount" name="pageCount" style="width: 260px;"
                            data-options="required:true"/>
                 </div>
             </div>
@@ -33,25 +38,26 @@
             <div class="form-group">
                 <label class="col-sm-1 control-label">出版社</label>
                 <div class="col-sm-5">
-                    <input class="easyui-textbox" type="text" name="publishCompany" style="width: 260px;"
+                    <input class="easyui-textbox" type="text" id="add_publishCompany" name="publishCompany"
+                           style="width: 260px;"
                            data-options="required:true"/>
                 </div>
                 <label class="col-sm-1 control-label">出版时间</label>
                 <div class="col-sm-5">
-                    <input class="easyui-datetimebox" name="publishTime"
-                           data-options="required:true,showSeconds:false" style="width: 260px;" value="">
+                    <input class="easyui-datebox" name="publishTime" id="publishTime_id"
+                           data-options="required:true" style="width: 260px;">
                 </div>
             </div>
             <div class="form-group-separator"></div>
             <div class="form-group">
                 <label class="col-sm-1 control-label">开本</label>
                 <div class="col-sm-5">
-                    <input class="easyui-textbox" type="text" name="kaiBen" style="width: 260px;"
+                    <input class="easyui-textbox" type="text" id="add_kaiBen" name="kaiBen" style="width: 260px;"
                            data-options="required:true"/>
                 </div>
                 <label class="col-sm-1 control-label">数量</label>
                 <div class="col-sm-5">
-                    <input class="easyui-textbox" type="text" name="repertory" style="width: 260px;"
+                    <input class="easyui-textbox" type="text" id="add_repertory" name="repertory" style="width: 260px;"
                            data-options="required:true"/>
                 </div>
             </div>
@@ -59,12 +65,13 @@
             <div class="form-group">
                 <label class="col-sm-1 control-label">价格</label>
                 <div class="col-sm-5">
-                    <input class="easyui-textbox" type="text" name="bookPrice" style="width: 260px;"
+                    <input class="easyui-textbox" type="text" id="add_bookPrice" name="bookPrice" style="width: 260px;"
                            data-options="required:true"/>
                 </div>
                 <label class="col-sm-1 control-label">原价</label>
                 <div class="col-sm-5">
-                    <input class="easyui-textbox" type="text" name="originalPrice" style="width: 260px;"
+                    <input class="easyui-textbox" type="text" id="add_originalPrice" name="originalPrice"
+                           style="width: 260px;"
                            data-options="required:true"/>
                 </div>
             </div>
@@ -72,59 +79,61 @@
             <div class="form-group">
                 <label class="col-sm-1 control-label">ISBN</label>
                 <div class="col-sm-5">
-                    <input class="easyui-textbox" type="text" name="isbn" style="width: 260px;"
+                    <input class="easyui-textbox" type="text" id="add_isbn" name="isbn" style="width: 260px;"
                            data-options="required:true"/>
                 </div>
                 <label class="col-sm-1 control-label">分类</label>
                 <div class="col-sm-5">
-                    <%--  <select id="sortName" class="easyui-combobox" name="sortName"  style="width:260px;">
-                      </select>--%>
-
-                    <input id="sortName" class="easyui-combobox" style="width: 260px;" name="sortName"
-                           data-options="valueField:'sortId',textField:'sortName',url:'${pageContext.request.contextPath}/category/all_category_name_json.do'"/>
-                    <%--  <input class="easyui-textbox" type="text" name="sortName" style="width: 260px;"  data-options="required:true" />
-                        <input type="hidden" name="sortId" style="width: 260px;"  data-options="required:true" />
-                        --%>
+                    <input id="sortId_id" class="easyui-combobox" style="width: 260px;" name="sortId"
+                           data-options="valueField:'sortId',textField:'sortName',required:true,url:'${pageContext.request.contextPath}/category/all_category_name_json1.do'"/>
                 </div>
             </div>
             <div class="form-group-separator"></div>
             <div class="form-group">
                 <label class="col-sm-1 control-label" id="img_upload" style="width:80px;">图片上传</label>
                 <div class="col-sm-5" id="img_upload2">
-                    <input class="easyui-filebox" name="imgUrl" onchange="view_photo()" style="width:280px">
+                    <input type="file" id="add_imgUrl" name="imgUrl" onchange="view_photo()" style="width:280px">
                 </div>
-
-                <input type="hidden" name="imgUrl2" style="width: 260px;display: none;"/>
                 <label class="col-sm-1 control-label" id="show_img" style="display: none">封面图</label>
                 <div class="col-sm-5" style="height: 110px;" id="showImageDivId">
                     <img id="showImageId" width="230" height="110"/>
                 </div>
             </div>
+
+
             <div class="form-group-separator"></div>
             <div class="form-group">
                 <label class="col-sm-1 control-label" style="width:80px;">图书介绍</label>
                 <div class="col-sm-10">
-                    <textarea class="form-control" rows="4" name="bookIntro" style="margin-left: 13px"
+                    <textarea class="form-control" id="add_bookIntro" rows="3" name="bookIntro"
+                              style="margin-left: 13px" data-options="required:true"
                               name=textarea></textarea>
+                    <%--  <input class="easyui-textbox" id="add_bookIntro21"  type="text" name="bookIntro" style="width: 100%;"/>--%>
                 </div>
             </div>
             <div class="form-group-separator"></div>
             <div class="form-group">
                 <label class="col-sm-1 control-label" style="width:80px;">编辑推荐</label>
                 <div class="col-sm-10">
-                    <textarea class="form-control" rows="4" name="commend" style="margin-left: 13px"
+                    <textarea class="form-control" rows="3" id="add_commend" name="commend" style="margin-left: 13px"
+                              data-options="required:true"
                               name=textarea></textarea>
+                    <%--<input class="easyui-textbox" id="add_commend" type="text" name="commend" style="width: 100%;"/>--%>
                 </div>
             </div>
+            <%--<input type="submit" class="btn btn-primary" value="确定"/>--%>
         </form>
     </div>
 </div>
+
+
 <script>
+    var $bookDetail_form_id = $("#bookDetail_form_id");
     var type = "<%=request.getParameter("type").toString()%>";
     if (type == "edit") {
         $("#show_img").attr("style", "display:block");
         //加载数据
-        $("#bookDetail_form").form('load', {
+        $("#bookDetail_form_id").form('load', {
             bookName: selectRowData.bookName,
             author: selectRowData.author,
             score: selectRowData.score,
@@ -146,22 +155,6 @@
         });
     }
 
-    /*
-        $.ajax({
-            url:'',
-            type:'post',
-            dataType:'json',
-            success:function (data) {
-                $("#sortName").combobox({//往下拉框塞值
-                    data:data,
-                    valueField:"sortId",//value值
-                    textField:"sortName",//文本值
-                    panelHeight:"auto"
-                })
-            }
-
-        });*/
-
 
     /**
      * 预览图片
@@ -171,15 +164,7 @@
         var allowExtention = ".jpg,.bmp,.gif,.png";
         //extention  接受上传图片的格式
         var extention = fileObj.value.substring(fileObj.value.lastIndexOf(".") + 1).toLowerCase();
-        /*browserVersion
-            window.navigator.userAgent    判断pc端浏览器的类别
-            toUpperCase()   转换成小写字母
-        */
         var browserVersion = window.navigator.userAgent.toUpperCase();
-        /*判断上传文件 格式是否符合要求
-            indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。
-            如果没有找到匹配的字符串则返回 -1。
-        */
         if (allowExtention.indexOf(extention) > -1) {
             if (fileObj.files) {//HTML5实现预览，兼容chrome、火狐7+等
                 //判断浏览器是否支持FileReader
@@ -243,5 +228,4 @@
         */
         PreviewImage($("input[name='imgUrl']")[0], 'showImageId', 'showImageDivId');
     }
-
 </script>

@@ -40,21 +40,17 @@
                 source_image_height: 1200,
                 show_hint: true,
                 click_callback: function (image_anchor, instance_id) {
-                    alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');
                 }
             });
 
         });
     </script>
-
     <script type="text/javascript" src="../pages/js/jquery.jscrollpane.min.js"></script>
     <script type="text/javascript" id="sourcecode">
         $(function () {
             $('.scroll-pane').jScrollPane();
         });
     </script>
-
-
 </head>
 <body>
 <!-- header -->
@@ -64,9 +60,8 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="../pages/home.jsp"><img src="../image/lb/logo.png" alt=""/></a>
+                    <a href="../pages/home.jsp"><img src="../image/lb/logo_v3.jpg" alt=""/></a>
                 </div>
-
                 <%-- user login and regsit jsp--%>
                 <%@include file="innerpage/login_regist.jsp" %>
 
@@ -116,7 +111,6 @@
 </div>
 
 
-<!-- script-for-nav -->
 <script>
     $("span.menu").click(function () {
         $(".head-nav ul").slideToggle(300, function () {
@@ -124,8 +118,6 @@
         });
     });
 </script>
-<!-- script-for-nav -->
-
 <div class="banner1">
     <div class="container">
 
@@ -151,29 +143,6 @@
                         </select>
                         <%--<label class="wom"></label>--%>
                     </c:forEach>
-
-                    <%--      <select class="dropdown" tabindex="50" data-settings='{"wrapperClass":"metro"}'>
-                              <option value="1">Women's</option>
-                              <option value="2">Sub Category1</option>
-                              <option value="3">Sub Category2</option>
-                              <option value="4">Sub Category3</option>
-                          </select>
-                          <label class="wom"></label>
-                          <select class="dropdown" tabindex="8" data-settings='{"wrapperClass":"metro"}'>
-                              <option value="1">Kids</option>
-                              <option value="2">Sub Category1</option>
-                              <option value="3">Sub Category2</option>
-                              <option value="4">Sub Category3</option>
-                          </select>
-                          <label class="kid"></label>
-                          <select class="dropdown" tabindex="8" data-settings='{"wrapperClass":"metro"}'>
-                              <option value="1">Sports</option>
-                              <option value="2">Sub Category1</option>
-                              <option value="3">Sub Category2</option>
-                              <option value="4">Sub Category3</option>
-                          </select>
-                          <label class="spo"></label>
-                          --%>
                 </div>
 
             </section>
@@ -194,7 +163,8 @@
                         </c:if>
                         <div class="icon">
                             <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${book.bookId}">
-                                <img src="..${book.imgUrl}" class="img-responsive" alt="" width="74px;" height="74px;"/>
+                                <img src="../${book.imgUrl}" class="img-responsive" alt="" width="74px;"
+                                     height="74px;"/>
                             </a>
                         </div>
                         <div class="data">
@@ -205,32 +175,7 @@
                     </c:forEach>
                     <div class="clearfix"></div>
                 </div>
-                <%-- <div class="best">
-                     <div class="icon">
-                         <img src="images/sh.jpg" class="img-responsive" alt=""/>
-                     </div>
-                     <div class="data">
-                         <h4><a href="#">Sample Item Title Goes Here</a></h4>
-                         <p>$120.00</p>
-                         <h5>$120.00</h5>
-                     </div>
-                     <div class="clearfix"></div>
-                 </div>
-                 <div class="best">
-                     <div class="icon">
-                         <img src="images/sh.jpg" class="img-responsive" alt=""/>
-                     </div>
-                     <div class="data">
-                         <h4><a href="#">Sample Item Title Goes Here</a></h4>
-                         <p>$120.00</p>
-                         <h5>$120.00</h5>
-                     </div>
-                     <div class="clearfix"></div>
-                 </div>
-                 --%>
             </div>
-
-
             <%--标签栏--%>
             <div class="sellers" style="display: none">
                 <h3 class="m_2">Tags</h3>
@@ -242,7 +187,6 @@
                     </ul>
                 </div>
             </div>
-
             <%--今日特价--%>
             <section class="sky-form">
                 <div class="sellers">
@@ -270,47 +214,13 @@
                                         </div>
                                     </li>
                                 </c:forEach>
-
-                                <%-- <li>
-                                     <div class="tittle">
-                                         <img src="images/shoe.jpg" class="img-responsive" alt=""/>
-                                         <h6>Item Title Here</h6>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <a class="show1" href="#">SHOW ME MORE</a>
-                                     </div>
-                                 </li>
-                                 <li>
-                                     <div class="tittle">
-                                         <img src="images/shoe.jpg" class="img-responsive" alt=""/>
-                                         <h6>Item Title Here</h6>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <a class="show1" href="#">SHOW ME MORE</a>
-                                     </div>
-                                 </li>
-                                 <li>
-                                     <div class="tittle">
-                                         <img src="images/shoe.jpg" class="img-responsive" alt=""/>
-                                         <h6>Item Title Here</h6>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <a class="show1" href="#">SHOW ME MORE</a>
-                                     </div>
-                                 </li>--%>
                             </ul>
                         </div>
 
                     </section>
-
-                    <!-- FlexSlider -->
                     <script defer src="../pages/js/jquery.flexslider.js"></script>
                     <script type="text/javascript">
                         $(function () {
-                            //SyntaxHighlighter.all();
                         });
                         $(window).load(function () {
                             $('.flexslider').flexslider({
@@ -321,13 +231,10 @@
                             });
                         });
                     </script>
-                    <!-- FlexSlider -->
                 </div>
             </section>
 
         </div>
-
-
         <%--右侧--%>
         <c:if test="${totalPages==0}">
             <div class="col-md-9 w_content">
@@ -387,7 +294,8 @@
                     <div class="clearfix"></div>
                 </div>
                 <br/>
-                <img src="../image/beauty/bg12.jpg">
+                <center><h3>暂无图书</h3></center>
+                <img src="../image/lb/nobook1.jpg" height="800px" width="1000px">
             </div>
         </c:if>
 
@@ -564,146 +472,3 @@
 
 </body>
 </html>
-<%-- <div class="grid1_of_4">
-                     <div class="content_box">
-                         <a href="details.jsp">
-                             <div class="view view-fifth">
-                                 <img src="images/6.jpg" class="img-responsive" alt=""/>
-                                 <div class="mask">
-                                     <div class="info"></div>
-                                 </div>
-                             </div>
-                         </a>
-                     </div>
-                     <h4><a href="details.jsp"> Duis autem</a></h4>
-                     <p>It is a long established fact that a reader</p>
-                     <span>$99.99</span>
-             </div>
-
-                 &lt;%&ndash;</div>&ndash;%&gt;
-                 <div class="grid1_of_4">
-             <div class="content_box"><a href="details.jsp">
-                 <div class="view view-fifth">
-                     <img src="images/7.jpg" class="img-responsive" alt=""/>
-                     <div class="mask">
-                         <div class="info">Quick View</div>
-                     </div>
-                 </div>
-             </a>
-             </div>
-             <h4><a href="details.jsp"> Duis autem</a></h4>
-             <p>It is a long established fact that a reader</p>
-             <span>$99.99</span>
-         </div>
- --%>
-<%--
-
-        <div class="grid1_of_4">
-        <div class="content_box"><a href="details.jsp">
-            <div class="view view-fifth">
-                <img src="images/8.jpg" class="img-responsive" alt=""/>
-                <div class="mask">
-                    <div class="info">Quick View</div>
-                </div>
-        </a>
-        </div>
-        <h4><a href="details.jsp"> Duis autem</a></h4>
-        <p>It is a long established fact that a reader</p>
-        <span>$99.99</span>
-    </div>
-</div>
-        <div class="grid1_of_4">
-    <div class="content_box"><a href="details.jsp">
-        <div class="view view-fifth">
-            <img src="images/9.jpg" class="img-responsive" alt=""/>
-            <div class="mask">
-                <div class="info">Quick View</div>
-            </div>
-    </a>
-    </div>
-    <h4><a href="details.jsp"> Duis autem</a></h4>
-    <p>It is a long established fact that a reader</p>
-    <span>$99.99</span>
-</div>
-</div>
-        <div class="grid1_of_4">
-    <div class="content_box"><a href="details.jsp">
-        <div class="view view-fifth">
-            <img src="images/10.jpg" class="img-responsive" alt=""/>
-            <div class="mask">
-                <div class="info">Quick View</div>
-            </div>
-    </a>
-    </div>
-    <h4><a href="details.jsp"> Duis autem</a></h4>
-    <p>It is a long established fact that a reader</p>
-    <span>$99.99</span>
-</div>
-</div>
-        <div class="grid1_of_4">
-    <div class="content_box"><a href="details.jsp">
-        <div class="view view-fifth">
-            <img src="images/11.jpg" class="img-responsive" alt=""/>
-            <div class="mask">
-                <div class="info">Quick View</div>
-            </div>
-    </a>
-    </div>
-    <h4><a href="details.jsp"> Duis autem</a></h4>
-    <p>It is a long established fact that a reader</p>
-    <span>$99.99</span>
-</div>
-</div>
-        <div class="grid1_of_4">
-    <div class="content_box"><a href="details.jsp">
-        <div class="view view-fifth">
-            <img src="images/12.jpg" class="img-responsive" alt=""/>
-            <div class="mask">
-                <div class="info">Quick View</div>
-            </div>
-    </a>
-    </div>
-    <h4><a href="details.jsp"> Duis autem</a></h4>
-    <p>It is a long established fact that a reader</p>
-    <span>$99.99</span>
-</div>
-</div>
-        <div class="grid1_of_4">
-    <div class="content_box"><a href="details.jsp">
-        <div class="view view-fifth">
-            <img src="images/13.jpg" class="img-responsive" alt=""/>
-            <div class="mask">
-                <div class="info">Quick View</div>
-            </div>
-    </a>
-    </div>
-    <h4><a href="details.jsp"> Duis autem</a></h4>
-    <p>It is a long established fact that a reader</p>
-    <span>$99.99</span>
-</div>
-</div>
---%>
-
-
-<%--
-                            <li
-                            <c:if test="${num.index+2<2}">
-                                class="disabled"
-                            </c:if>
-                            ><a href="">2</a></li>
-
-                            <li
-                                <c:if test="${num.index+3<3}">
-                                    class="disabled"
-                                </c:if>
-                            ><a href="#">3</a></li>
-                            <li
-                                <c:if test="${num.index+4<4}">
-                                    class="disabled"
-                                </c:if>
-                            ><a href="#">4</a></li>
-                            <li
-                                <c:if test="${num.index+5<5}">
-                                    class="disabled"
-                                </c:if>
-                            ><a href="#">5</a></li>--%>

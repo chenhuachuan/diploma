@@ -20,22 +20,28 @@
         <result column="sale_count" property="saleCount"/>
         <result column="img_url" property="imgUrl"/>
         <result column="recommend" property="commend"/>
+        <result column="status" property="status"/>
     </resultMap>
 
     <sql id="all_book_column">
-        id,sort_id,book_name,author,publish_company,publish_time,word_count,kai_ben,page_count,repertory,book_price,original_price,isbn,book_intro,sale_count,img_url,recommend
+        id,sort_id,book_name,author,publish_company,publish_time,word_count,kai_ben,page_count,repertory,book_price,original_price,isbn,book_intro,sale_count,img_url,recommend,status
     </sql>
     <!-- 手动映射 -->
     <select id="selectBookByPublishTime" resultMap="all_columns_map">
         SELECT
         <include refid="all_book_column"/>
-        FROM tf_book ORDER BY publish_time DESC LIMIT 0,3
+        FROM tf_book where status!='0' ORDER BY publish_time DESC LIMIT 0,3
     </select>
 
     <select id="selectBookByPublishTimeTwo" resultMap="all_columns_map">
         SELECT
         <include refid="all_book_column"/>
-        FROM tf_book ORDER BY publish_time DESC LIMIT 3,3
+        FROM tf_book where status!='0' ORDER BY publish_time DESC LIMIT 3,3
+    </select>
+    <select id="selectBookByPublishTimeBG" resultMap="all_columns_map">
+        SELECT
+        <include refid="all_book_column"/>
+        FROM tf_book ORDER BY publish_time DESC LIMIT 0,5
     </select>
     <!--end 新书上架-->
 
@@ -43,21 +49,21 @@
     <select id="selectBookByRecommend" resultMap="all_columns_map">
         select
         <include refid="all_book_column"/>
-        from tf_book ORDER BY RAND() LIMIT 3
+        from tf_book where status!='0' ORDER BY RAND() LIMIT 3
     </select>
 
     <!--热销图书-->
     <select id="selectBooksBySaleCount" resultMap="all_columns_map">
         select
         <include refid="all_book_column"/>
-        from tf_book ORDER BY sale_count desc limit 0, 5
+        from tf_book where status!='0' ORDER BY sale_count desc limit 0, 5
     </select>
 
     <!--今日特价-->
     <select id="selectBooksBySpecialPrice" resultMap="all_columns_map">
         select
         <include refid="all_book_column"/>
-        from tf_book where sale_count >3 ORDER BY RAND() LIMIT 4
+        from tf_book where sale_count >3 and status!='0' ORDER BY RAND() LIMIT 4
     </select>
 
     <!--二级分类-->
@@ -67,7 +73,7 @@
         from tf_sort p join tf_sort s on p.id=s.parent_id
         join tf_sort g on s.id=g.parent_id
         join tf_book b on g.id=b.sort_id
-        where b.repertory!=0 and
+        where b.repertory!=0 and b.status!='0' and
         <if test="parSortId!=null and parSortId!='' and sonSortId==null">
             p.id=#{parSortId}
         </if>
@@ -98,7 +104,7 @@
         join tf_sort s on p.id=s.parent_id
         join tf_sort g on s.id=g.parent_id
         join tf_book b on g.id=b.sort_id
-        where
+        where b.status!='0' and
         <if test="parSortId!=null and parSortId!='' and sonSortId==null">
             p.id=#{parSortId}
         </if>
@@ -122,7 +128,8 @@
         SELECT
         <include refid="all_book_column"/>
         FROM `tf_book`
-        where sort_id=#{sortId} and id!=#{bookId} AND repertory!=0 ORDER BY sale_count desc , publish_time desc LIMIT 4
+        where sort_id=#{sortId} and id!=#{bookId} AND repertory!=0 and status!='0' ORDER BY sale_count desc ,
+        publish_time desc LIMIT 4
     </select>
 
 
@@ -141,7 +148,7 @@
         SELECT
         <include refid="all_book_column"/>
         FROM tf_book
-        WHERE
+        WHERE status!='0' and
         book_name LIKE #{search}
         OR author LIKE #{search}
         OR book_intro LIKE #{search}
@@ -155,7 +162,7 @@
         SELECT
         <include refid="all_book_column"/>
         FROM tf_book
-        WHERE
+        WHERE status!='0' and
         book_name LIKE #{search}
         OR author LIKE #{search}
         OR book_intro LIKE #{search}
@@ -180,7 +187,7 @@
     <select id="selectSearchTotalCount" parameterType="String" resultType="Integer">
         SELECT  count(1)
         FROM tf_book
-        WHERE
+        WHERE status!='0' and
         book_name LIKE #{search}
         OR author LIKE #{search}
         OR book_intro LIKE #{search}
@@ -196,7 +203,7 @@
         from tf_sort p join tf_sort s on p.id=s.parent_id
         join tf_sort g on s.id=g.parent_id
         join tf_book b on g.id=b.sort_id
-        where b.repertory!=0 AND
+        where b.repertory!=0 AND status!='0' and
         book_name LIKE #{search}
         OR author LIKE #{search}
         OR book_intro LIKE #{search}
@@ -232,7 +239,7 @@
         from tf_sort p join tf_sort s on p.id=s.parent_id
         join tf_sort g on s.id=g.parent_id
         join tf_book b on g.id=b.sort_id
-        where b.repertory!=0 AND
+        where b.repertory!=0 AND status!='0' and
         book_name LIKE #{search}
         OR author LIKE #{search}
         OR book_intro LIKE #{search}
@@ -271,6 +278,7 @@
         <result column="sale_count" property="saleCount"/>
         <result column="img_url" property="imgUrl"/>
         <result column="recommend" property="commend"/>
+        <result column="status" property="status"/>
 
         <association property="sort" javaType="Sort">
             <id property="sortId" column="pid"/>
@@ -281,74 +289,83 @@
     </resultMap>
 
     <select id="selectAllBooksInfo" resultMap="book_columns_and_sort">
-        SELECT b.id,b.sort_id,b.book_name,b.author,b.publish_company,b.publish_time,b.word_count,b.kai_ben,b.page_count,b.repertory,b.book_price,b.original_price,b.isbn,b.book_intro,b.sale_count,b.img_url,b.recommend,
+        SELECT
+        b.id,b.sort_id,b.book_name,b.author,b.publish_company,b.publish_time,b.word_count,b.kai_ben,b.page_count,b.repertory,b.book_price,b.original_price,b.isbn,b.book_intro,b.sale_count,b.img_url,b.recommend,b.status,
         t.id pid,t.sort_name pname,t.sort_count pcount,t.parent_id ppid from tf_book b JOIN tf_sort t on b.sort_id=t.id
+        where b.status!=''
+        <if test="bookName!=null">
+            and book_name like #{bookName}
+        </if>
         limit #{index},#{row}
     </select>
 
+    <select id="selectTotalCountBySearch" resultType="Integer" parameterType="String">
+        select count(1) from tf_book where  book_name like #{bookName}
+    </select>
     <select id="selectTotalCount" resultType="Integer">
         select count(1) from tf_book
     </select>
 
     <insert id="addNewBook" parameterType="Book">
-        insert into tf_book(id,sort_id,book_name,author,publish_company,publish_time,word_count,kai_ben,page_count,repertory,book_price,isbn,book_intro,sale_count,img_url,recommend,original_price)
+        insert into
+        tf_book(id,sort_id,book_name,author,publish_company,publish_time,word_count,kai_ben,page_count,repertory,book_price,isbn,book_intro,sale_count,img_url,recommend,original_price,status)
         values(#{bookId},#{sortId},#{bookName},#{author},#{publishCompany},#{publishTime},#{wordCount},#{kaiBen},#{pageCount},#{repertory},#{bookPrice},
-        #{isbn},#{bookIntro},#{saleCount},#{imgUrl},#{recommend},#{originalPrice})
+        #{isbn},#{bookIntro},#{saleCount},#{imgUrl},#{commend},#{originalPrice},#{status})
     </insert>
 
-    <update id="updateBookInfo" parameterType="Book">
+    <update id="updateBook_DaoInfo" parameterType="Book">
         update tf_book SET
-        <if test="bookName!=null">
+        <if test="bookName!=null and bookName!=''">
             book_name=#{bookName},
         </if>
-        <if test="author!=null">
+        <if test="author!=null and author!=''">
             author=#{author},
         </if>
-        <if test="pageCount!=null">
+        <if test="pageCount!=null and pageCount!=''">
             page_count=#{pageCount},
         </if>
-        <if test="wordCount!=null">
+        <if test="wordCount!=null and wordCount!=''">
             word_count=#{wordCount},
         </if>
-        <if test="publishCompany!=null">
+        <if test="publishCompany!=null and publishCompany!=''">
             publish_company=#{publishCompany},
         </if>
-        <if test="publishTime!=null">
+        <if test="publishTime!=null and publishTime!=''">
             publish_time=#{publishTime},
         </if>
-        <if test="kaiBen!=null">
-            kaiben=#{kaiBen},
+        <if test="kaiBen!=null and kaiBen!=''">
+            kai_ben=#{kaiBen},
         </if>
-        <if test="repertory!=null">
+        <if test="repertory!=null and repertory!=''">
             repertory=#{repertory},
         </if>
-        <if test="bookPrice!=null">
+        <if test="bookPrice!=null and bookPrice!=''">
             book_price=#{bookPrice},
         </if>
-        <if test="originalPrice!=null">
+        <if test="originalPrice!=null and originalPrice!=''">
             original_price=#{originalPrice},
         </if>
-        <if test="isbn!=null">
+        <if test="isbn!=null and isbn!=''">
             isbn=#{isbn},
         </if>
-        <if test="imgUrl!=null">
+        <if test="imgUrl!=null and imgUrl!=''">
             img_url=#{imgUrl},
         </if>
-        <if test="bookIntro!=null">
+        <if test="bookIntro!=null and bookIntro!=''">
             book_intro=#{bookIntro},
         </if>
-        <if test="commend!=null">
+        <if test="commend!=null and commend!=''">
             recommend=#{commend},
         </if>
-        <if test="sortId!=null">
-            sort_id=#{sortId},
+        <if test="sortId!=null and sortId!=''">
+            sort_id=#{sortId}
         </if>
         where id=#{bookId}
     </update>
 
-
-    <update id="updateBookStatus" parameterType="String">
-        update tf_book set status='0' where id=#{bookId}
+    <!--下架-->
+    <update id="updateBookStatus_xia" parameterType="String">
+        update tf_book set status=#{status} where id=#{bookId}
     </update>
 
     <select id="selectBooksByPage" resultMap="all_columns_map">
@@ -405,5 +422,6 @@
             <![CDATA[ publish_time < #{toDate} ]]>
         </if>
     </select>
+
 
 </mapper>

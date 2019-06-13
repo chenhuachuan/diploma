@@ -5,7 +5,8 @@
         <li>
             <div class="biseller-column">
                 <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${ebook.bookId}">
-                    <img src="${pageContext.request.contextPath}${ebook.imgUrl}" class="img-responsive" alt=""></a>
+                    <img src="${pageContext.request.contextPath}/${ebook.imgUrl}" class="img-responsive" alt=""
+                         width="200px" height="200px"></a>
                 <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${ebook.bookId}"><i
                         class="new"></i></a>
                 <div class="biseller-name">

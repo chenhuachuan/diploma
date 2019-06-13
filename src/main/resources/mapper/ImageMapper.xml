@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jz1501.chenhc.diploma.tfbook.dao.ImageDao">
+
+    <!-- 手动映射 -->
+    <select id="selectAllImage" resultType="Image">
+        select id imageId,image_desc imageDesc,image_size imageSize,image_url imageUrl,replace_time replaceTime,status,type
+        from tf_image
+    </select>
+
+    <select id="selectOneImageById" parameterType="String" resultType="Image">
+        select id imageId,image_desc imageDesc,image_size imageSize,image_url imageUrl,replace_time replaceTime,status,type
+        from tf_image where id=#{imageId}
+    </select>
+
+
+    <!--插入新图-->
+    <insert id="insertOneImage" parameterType="Image">
+        insert into tf_image values(#{imageId},#{imageDesc},#{imageSize},#{imageUrl},#{replaceTime},#{status},#{type})
+    </insert>
+
+    <!--修改图片状态-->
+    <update id="updateOneImageStatus">
+        update tf_image set status=#{status} where id=#{imageId}
+    </update>
+
+    <!--修改图片信息-->
+    <update id="updateOneImage" parameterType="Image">
+        update tf_image
+        <trim prefix="set" suffixOverrides=",">
+            <if test="imageDesc!=null and imageDesc!=''">
+                image_desc=#{imageDesc},
+            </if>
+            <if test="imageSize!=null and imageSize!=''">
+                image_size=#{imageSize},
+            </if>
+            <if test="imageUrl!=null and imageUrl!=''">
+                image_url=#{imageUrl},
+            </if>
+            <if test="replaceTime!=null and replaceTime!=''">
+                replace_time=#{replaceTime},
+            </if>
+            <if test="status!=null and status!=''">
+                status=#{status},
+            </if>
+            <if test="type!=null and type!=''">
+                type=#{type},
+            </if>
+        </trim>
+        where id=#{imageId}
+    </update>
+
+    <!--轮播图-->
+    <select id="selectBannerImage" resultType="Image">
+        select id imageId,image_desc imageDesc,image_size imageSize,image_url imageUrl,replace_time replaceTime,status,type
+        from tf_image where status='1' and type='1' limit 0,4
+    </select>
+</mapper>

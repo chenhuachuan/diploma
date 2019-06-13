@@ -35,31 +35,6 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/pages/js/jquery.flexisel.js"></script>
     <script defer src="${pageContext.request.contextPath}/pages/js/jquery.flexslider.js"></script>
 
-    <script type="application/x-javascript"> addEventListener("load", function () {
-        setTimeout(hideURLbar, 0);
-    }, false);
-    function hideURLbar() {
-        window.scrollTo(0, 1);
-    }
-    </script>
-    <script>
-        $(document).ready(function () {
-            $(".megamenu").megamenu();
-        });
-        jQuery(document).ready(function ($) {
-            $('#etalage').etalage({
-                thumb_image_width: 300,
-                thumb_image_height: 400,
-                source_image_width: 800,
-                source_image_height: 1000,
-                show_hint: true,
-                click_callback: function (image_anchor, instance_id) {
-                    alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');
-                }
-            });
-        });
-    </script>
-
 </head>
 <body>
 <!-- header -->
@@ -68,7 +43,8 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="../pages/home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo.png" alt=""/></a>
+                    <a href="../pages/home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo_v3.jpg"
+                                                     alt="" width="250" height="54"/></a>
                 </div>
                 <%-- user login and regsit jsp--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -84,7 +60,6 @@
     <script type="text/javascript">
         $("#page_load_contrller_data_div").load('${pageContext.request.contextPath}/category/all_category_name.do');
     </script>
-
 </div>
 
 <%--搜索框--%>
@@ -117,116 +92,12 @@
         </div>
     </form>
 </div>
-<%--
-<div class="banner">
-    <div class="container">
-        <div class="col-md-6">
-        </div>
-        <div class="col-md-6 banner-info">
-            <h1>TF-Book 在线书城</h1>
-            <p>这是一段浪漫的故事......</p>
-            <a class="show-more" href="#">SHOW ME MORE</a>
-        </div>
-        <div class="clearfix"></div>
-    </div>
-</div>
---%>
 
 <!-- BEGIN 轮播图 -->
-<div class="page-slider margin-bottom-35" style="">
-    <div id="carousel-example-generic" class="carousel slide carousel-slider">
-        <!-- 序号 -->
-        <ol class="carousel-indicators">
-            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-            <li data-target="#carousel-example-generic" data-slide-to="3"></li>
-        </ol>
-
-        <!-- 四张轮播 -->
-        <div class="carousel-inner" role="listbox">
-            <!-- 第一张图-->
-            <div class="item carousel-item-four active">
-                <div class="container">
-                    <div class="carousel-position-four text-center">
-                        <h2 class="margin-bottom-20 animate-delay carousel-title-v3 border-bottom-title text-uppercase"
-                            data-animation="animated fadeInDown">
-                            人不能像走兽那样活着，<br/><span class="color-red-v2">应该追求知识和美德。</span><br/>
-                        </h2>
-                        <p class="carousel-subtitle-v2" data-animation="animated fadeInUp">人是活的，书是死的。活人读死书，可以把书读活。<br/>
-                            死书读活人，可以把人读死。</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 第二张 -->
-            <div class="item carousel-item-five">
-                <div class="container">
-                    <div class="carousel-position-four text-center">
-                        <h2 class="animate-delay carousel-title-v4" data-animation="animated fadeInDown">
-                            TFBOOK
-                        </h2>
-                        <p class="carousel-subtitle-v2" data-animation="animated fadeInDown">
-                            为乐趣而读书。
-                        </p>
-                        <p class="carousel-subtitle-v3 margin-bottom-30" data-animation="animated fadeInUp">
-                            热卖图书
-                        </p>
-                        <a class="carousel-btn"
-                           href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=1"
-                           data-animation="animated fadeInUp">查看详情</a>
-                    </div>
-                    <%-- <img class="carousel-position-five animate-delay hidden-sm hidden-xs"
-                          src="${pageContext.request.contextPath}/pages/images/shop-slider/slide2/price.png" alt="Price"
-                          data-animation="animated zoomIn" style="margin-left: 10px;">--%>
-                </div>
-            </div>
-
-            <!-- 第三张 -->
-            <div class="item carousel-item-six">
-                <div class="container">
-                    <div class="carousel-position-four text-center">
-                            <span class="carousel-subtitle-v3 margin-bottom-15" data-animation="animated fadeInDown">
-                                书籍把我们引入最美好的社会&amp; 使我们认识各个时代的伟大智者。
-                            </span>
-                        <p class="carousel-subtitle-v4" data-animation="animated fadeInDown">
-                            --史美尔斯
-                        </p>
-                        <p class="carousel-subtitle-v3" data-animation="animated fadeInDown">
-                            每一次飞行都始于坠落。
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 第四张 -->
-            <div class="item carousel-item-seven">
-                <div class="center-block">
-                    <div class="center-block-wrap">
-                        <div class="center-block-body">
-                            <h2 class="carousel-title-v1 margin-bottom-20" data-animation="animated fadeInDown">
-                                周榜 <br/>
-                                最受欢迎的图书！
-                            </h2>
-                            <a class="carousel-btn"
-                               href="${pageContext.request.contextPath}/book/queryAllBooksbyPage.do?parSortId=1&sonSortId=&granSortId=&sortFlag=pop"
-                               data-animation="animated fadeInUp">查看详情</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 左右箭头 -->
-        <a class="left carousel-control carousel-control-shop" href="#carousel-example-generic" role="button"
-           data-slide="prev">
-            <i class="fa fa-angle-left" aria-hidden="true"></i>
-        </a>
-        <a class="right carousel-control carousel-control-shop" href="#carousel-example-generic" role="button"
-           data-slide="next">
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-        </a>
-    </div>
+<div class="page-slider margin-bottom-35" id="banner_image_cng_chc">
+    <script>
+        $("#banner_image_cng_chc").load('${pageContext.request.contextPath}/image/queryAllBannerImage_CNG_CHC.do');
+    </script>
 </div>
 <!-- END 轮播图 -->
 
@@ -336,44 +207,6 @@
                     <script type="text/javascript">
                         $("#editor_recommend_books_div2").load('${pageContext.request.contextPath}/book/editorRecommend2.do');
                     </script>
-                    <%-- <div class="biseller-info">
-                             <ul id="flexiselDemo5">
-                             <li>
-                                 <div class="biseller-column1">
-                                     <img src="images/ss3.jpg" class="img-responsive" alt="">
-                                     <a href="#"><i class="new"></i></a>
-                                     <div class="biseller-name">
-                                         <h4>文档的</h4>
-                                         <p>$99.99</p>
-                                     </div>
-                                 </div>
-                             </li>
-                             <li>
-                                 <div class="biseller-column1">
-                                     <img src="images/ss1.jpg" class="img-responsive" alt="">
-                                     <a href="#"><i class="new"></i></a>
-                                     <div class="biseller-name">
-                                         <h4>Sample Item Title</h4>
-                                         <p>$99.99</p>
-                                     </div>
-
-                                 </div>
-                             </li>
-                             <li>
-                                 <div class="biseller-column1">
-                                 <img src="images/ss2.jpg" class="img-responsive" alt="">
-                                 <a href="#"><i class="new"></i></a>
-                                     <div class="biseller-name">
-                             <h4>Sample Item Title</h4>
-                             <p>$99.99</p>
-                         </div>
-
-                                 </div>
-                             </li>
-
-                         </ul>
-                         </div>
- --%>
                 </div>
                 <div class="clearfix"></div>
 
@@ -384,43 +217,6 @@
         <%--右侧--%>
         <div class="col-md-3 span_1_of_right">
 
-            <%-- <section  class="sky-form">
-                   <div class="product_right">
-                <h3 class="m_2">图书分类</h3>
-                    <select class="dropdown" tabindex="10" data-settings='{"wrapperClass":"metro"}'>
-                        <option value="0">Men's</option>
-                        <option value="1">Tempor</option>
-                        <option value="2">Congue</option>
-                        <option value="3">Mazim </option>
-                        <option value="4">Mutationem</option>
-                        <option value="5">Hendrerit </option>
-                   </select>
-                   <label class="me"></label>
-                   <select class="dropdown" tabindex="50" data-settings='{"wrapperClass":"metro"}'>
-                        <option value="1">Women's</option>
-                        <option value="2">Sub Category1</option>
-                        <option value="3">Sub Category2</option>
-                        <option value="4">Sub Category3</option>
-                   </select>
-                    <label class="wom"></label>
-                   <select class="dropdown" tabindex="8" data-settings='{"wrapperClass":"metro"}'>
-                        <option value="1">Kids</option>
-                        <option value="2">Sub Category1</option>
-                        <option value="3">Sub Category2</option>
-                        <option value="4">Sub Category3</option>
-                   </select>
-                    <label class="kid"></label>
-                   <select class="dropdown" tabindex="8" data-settings='{"wrapperClass":"metro"}'>
-                        <option value="1">Sports</option>
-                        <option value="2">Sub Category1</option>
-                        <option value="3">Sub Category2</option>
-                        <option value="4">Sub Category3</option>
-                   </select>
-                    <label class="spo"></label>
-</div>
-
-                </section>
-                --%>
             <%--右侧热销图书--%>
             <div class="sellers" id="sell_hot_books_div" style="background-color: rgba(208,247,255,0.87)">
                 <script type="text/javascript">
@@ -474,7 +270,7 @@
 
 
 <!-- testimonials 作家 -->
-<div class="testimonials">
+<div class="testimonials" style="display: none;">
     <div class="container">
         <h3 style="background-color: rgba(255,111,18,0.87);width: 100%;height: 47px;vertical-align: center;font-weight: bolder;font-family: 黑体">
             作家介绍</h3>
@@ -635,6 +431,31 @@
 </script>
 
 
+<script type="application/x-javascript"> addEventListener("load", function () {
+    setTimeout(hideURLbar, 0);
+}, false);
+
+function hideURLbar() {
+    window.scrollTo(0, 1);
+}
+</script>
+<script>
+    $(document).ready(function () {
+        $(".megamenu").megamenu();
+    });
+    jQuery(document).ready(function ($) {
+        $('#etalage').etalage({
+            thumb_image_width: 300,
+            thumb_image_height: 400,
+            source_image_width: 800,
+            source_image_height: 1000,
+            show_hint: true,
+            click_callback: function (image_anchor, instance_id) {
+                alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');
+            }
+        });
+    });
+</script>
 <!-- script-for-nav -->
 <script>
     $("span.menu").click(function () {

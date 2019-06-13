@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jz1501.chenhc.diploma.tfbook.dao.OrderFlowDao">
+
+
+    <insert id="addNewOrderFlow" parameterType="OrderFlow">
+          insert into tf_flow(id,flow_num,order_num,book_id,pay_amount,pay_method,buy_count,create_time)
+          values(#{flowId},#{flowNum},#{orderNum},#{bookId,jdbcType=VARCHAR},#{payAmount},#{payMethod},#{buyCount,jdbcType=NUMERIC},#{createTime})
+    </insert>
+
+    <resultMap id="order_flow_all" type="OrderFlow">
+        <id property="flowId" column="id"/>
+        <result property="flowNum" column="flow_num"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="payAmount" column="pay_amount"/>
+        <result property="payMethod" column="pay_method"/>
+        <result property="buyCount" column="buy_count"/>
+        <result property="createTime" column="create_time"/>
+        <association property="order" javaType="Order">
+            <id property="orderId" column="id"/>
+            <result property="orderNumber" column="order_id"/>
+            <result property="totalPrice" column="total_price"/>
+            <result property="addrName" column="addr_name"/>
+            <result property="receiveName" column="receive_name"/>
+            <result property="receiveTel" column="receive_tel"/>
+            <result property="createTime" column="create_time"/>
+            <result property="status" column="status"/>
+            <result property="itemCount" column="item_count"/>
+            <result property="bookName" column="book_name"/>
+            <result property="bookPrice" column="book_price"/>
+            <result property="itemLittlePrice" column="item_little_price"/>
+            <result property="userId" column="user_id"/>
+            <result property="addressId" column="address_id"/>
+            <result property="bookId" column="book_id"/>
+        </association>
+    </resultMap>
+
+    <select id="queryAllFlowByAdmin" resultMap="order_flow_all">
+        /* select f.id flowId,f.flow_num flowNum,f.order_num orderNum,f.pay_amount payAmount,f.pay_method payMethod,
+        f.buy_count buyCount,f.create_time createTime,o.id orderId,o.order_id orderNumber,
+        o.total_price totalPrice,o.addr_name addrName,o.receive_name receiveName,o.receive_tel receiveTel,o.status
+        status
+        from tf_flow f join tf_order o on f.order_num = o.order_id*/
+        select f.id,f.flow_num,f.order_num,f.pay_amount,f.pay_method,
+        f.buy_count,f.create_time,o.id,o.order_id,
+        o.total_price ,o.addr_name,o.receive_name,o.receive_tel,o.status
+        from tf_flow f join tf_order o on f.order_num = o.order_id
+        <if test="orderNumber!=null">
+            and f.order_num=#{orderNumber}
+        </if>
+        order by f.create_time desc
+        limit #{index},#{row}
+    </select>
+
+    <select id="selectFLowTotalCountBySearch" resultType="Integer" parameterType="String">
+        select count(1) from tf_flow f join tf_order o on f.order_num = o.order_id where  order_id=#{orderNumber}
+    </select>
+    <select id="selectFLowsTotalCount" resultType="Integer">
+        select count(1) from tf_flow f join tf_order o on f.order_num = o.order_id
+    </select>
+
+
+</mapper>

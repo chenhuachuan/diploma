@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -30,7 +31,7 @@ public class BookServiceImpl implements BookService {
         Object books = memCachedClient.get(key);
         if (books == null) {
             books = bookMapper.selectBookByPublishTime();
-            memCachedClient.add(key, books);
+            memCachedClient.add(key, books, 60 * 60 * 24 * 7);
         }
         return (List<Book>) books;
     }
@@ -43,9 +44,14 @@ public class BookServiceImpl implements BookService {
         Object books = memCachedClient.get(key);
         if (books == null) {
             books = bookMapper.selectBookByPublishTimeTwo();
-            memCachedClient.add(key, books);
+            memCachedClient.add(key, books, 60 * 60 * 24 * 7);
         }
         return (List<Book>) books;
+    }
+
+    @Override
+    public List<Book> newBookShelvesBG() {
+        return bookMapper.selectBookByPublishTimeBG();
     }
 
     @Override
@@ -56,7 +62,7 @@ public class BookServiceImpl implements BookService {
         Object books = memCachedClient.get(key);
         if (books == null) {
             books = bookMapper.selectBookByRecommend();
-            memCachedClient.add(key, books);
+            memCachedClient.add(key, books, 60 * 60 * 24 * 7);
         }
         return (List<Book>) books;
     }
@@ -69,14 +75,14 @@ public class BookServiceImpl implements BookService {
         Object books = memCachedClient.get(key);
         if (books == null) {
             books = bookMapper.selectBookByRecommend();
-            memCachedClient.add(key, books);
+            memCachedClient.add(key, books, 60 * 60 * 24 * 7);
         }
         return (List<Book>) books;
     }
 
     @Override
     public List<Book> sellHotBooks() {
-        String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
+     /*   String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
         String method = Thread.currentThread().getStackTrace()[1].getMethodName();
         String key = clazz + ":" + method;
         Object books = memCachedClient.get(key);
@@ -84,12 +90,16 @@ public class BookServiceImpl implements BookService {
             books = bookMapper.selectBooksBySaleCount();
             memCachedClient.add(key, books);
         }
-        return (List<Book>) books;
+         return (List<Book>) books;
+        */
+
+        List<Book> books = bookMapper.selectBooksBySaleCount();
+        return books;
     }
 
     @Override
     public List<Book> todaysPriceBooks() {
-        String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
+     /*   String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
         String method = Thread.currentThread().getStackTrace()[1].getMethodName();
         String key = clazz + ":" + method;
         Object books = memCachedClient.get(key);
@@ -97,7 +107,9 @@ public class BookServiceImpl implements BookService {
             books = bookMapper.selectBooksBySpecialPrice();
             memCachedClient.add(key, books);
         }
-        return (List<Book>) books;
+        return (List<Book>) books;*/
+        List<Book> books = bookMapper.selectBooksBySpecialPrice();
+        return books;
     }
 
     /**
@@ -179,7 +191,7 @@ public class BookServiceImpl implements BookService {
      */
     @Override
     public Book queryBookDetailsByBookId(String bookId) {
-        String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
+       /* String clazz = Thread.currentThread().getStackTrace()[1].getClassName();
         String method = Thread.currentThread().getStackTrace()[1].getMethodName();
         String key = clazz + ":" + method + ":bookId:" + bookId;
         Object book = memCachedClient.get(key);
@@ -187,7 +199,9 @@ public class BookServiceImpl implements BookService {
             book = bookMapper.selectBookDetailsByBookid(bookId);
             memCachedClient.add(key, book);
         }
-        return (Book) book;
+        return (Book) book;*/
+        Book book = bookMapper.selectBookDetailsByBookid(bookId);
+        return book;
     }
 
     /**
@@ -210,7 +224,6 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 模糊查询
-     *
      * @param search
      * @return
      */
@@ -222,7 +235,6 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 模糊搜索 首页 ——排序 ——分页
-     *
      * @param pageIndex
      * @param pageSize
      * @param search
@@ -238,7 +250,6 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 首页搜索 总页数
-     *
      * @param pageSize
      * @param search
      * @return
@@ -259,7 +270,6 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 首页搜索下 ：总条数
-     *
      * @param search
      * @return
      */
@@ -271,7 +281,6 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 在分类中搜索 排序 分页
-     *
      * @param parSortId  在哪个分类栏里
      * @param sonSortId
      * @param granSortId
@@ -290,7 +299,6 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 分类栏  总页数
-     *
      * @param parSortId
      * @param sonSortId
      * @param granSortId
@@ -314,7 +322,6 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 总条数
-     *
      * @param parSortId
      * @param sonSortId
      * @param granSortId
@@ -329,11 +336,20 @@ public class BookServiceImpl implements BookService {
 
     //bg
 
+    @Override
+    public List<Book> queryAllBooksInfo(Integer row, Integer page, String bookName) {
+        Integer index = (page - 1) * row;
+        String searchFlag = null;
+        if (bookName != null) {
+            searchFlag = "%" + bookName + "%";
+        }
+        return bookMapper.selectAllBooksInfo(row, index, searchFlag);
+    }
 
     @Override
-    public List<Book> queryAllBooksInfo(Integer row, Integer page) {
-        Integer index = (page - 1) * row;
-        return bookMapper.selectAllBooksInfo(row, index);
+    public Integer queryTotalCountBySearch(String bookName) {
+        String searchFlag = "%" + bookName + "%";
+        return bookMapper.selectTotalCountBySearch(searchFlag);
     }
 
     @Override
@@ -344,24 +360,29 @@ public class BookServiceImpl implements BookService {
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     @Override
     public void addNewBook(Book book) {
+        String bookId = UUID.randomUUID().toString().replace("-", "");
+        book.setBookId(bookId);
         bookMapper.addNewBook(book);
+        memCachedClient.flushAll();
     }
+
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public void updateBookInfo(Book book) {
-        bookMapper.updateBookInfo(book);
+        bookMapper.updateBook_DaoInfo(book);
+        memCachedClient.flushAll();
     }
 
     /**
      * 图书下架
-     *
      * @param bookId
      */
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public void updateBookStatus(String bookId) {
-        bookMapper.updateBookStatus(bookId);
+    public void updateBookStatus(String bookId, String status) {
+        bookMapper.updateBookStatus_xia(bookId, status);
+        memCachedClient.flushAll();
     }
 
     //所有图书信息  展示

@@ -35,16 +35,15 @@ public class AlipayController {
 
     /**
      * 支付宝快捷支付接口 沙箱版
-     *
      * @return
      * @throws Exception
      */
-//    @RequestMapping(value = "/goAlipay", produces = "text/html; charset=UTF-8")
-//
     @RequestMapping("/goAlipay")
     @ResponseBody
     public String goAlipay(String orderId, HttpServletRequest request, HttpServletRequest response) throws Exception {
+        System.out.println("------------goAlipay---------------");
         Order orderInfo = orderService.getOrderInfoById(orderId);
+        System.out.println("------------" + orderInfo + "------------");
         //获得初始化的AlipayClient
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id, AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key, AlipayConfig.sign_type);
 
@@ -61,6 +60,7 @@ public class AlipayController {
         String subject = orderInfo.getBookName();
         //商品描述，可空
         String body = "用户订购商品个数：" + orderInfo.getItemCount();
+
 
         // 该笔订单允许的最晚付款时间，逾期将关闭交易。取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。 该参数数值不接受小数点， 如 1.5h，可转换为 90m。
         String timeout_express = "1c";
@@ -82,6 +82,7 @@ public class AlipayController {
     @RequestMapping("/alipayOrder")
     public Object alipayIumpSum(Model model, String payables, String subject, String body, HttpServletResponse response)
             throws Exception {
+        System.out.println("----------------alipayOrder-------------------------");
         // 获得初始化的AlipayClient
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id,
                 AlipayConfig.merchant_private_key, "json", AlipayConfig.charset,
@@ -110,7 +111,6 @@ public class AlipayController {
 
     /**
      * p2p后台返回的操作
-     *
      * @param response，request
      * @return void
      * @throws Exception

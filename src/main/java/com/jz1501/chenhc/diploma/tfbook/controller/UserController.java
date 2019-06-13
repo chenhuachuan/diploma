@@ -1,10 +1,11 @@
 package com.jz1501.chenhc.diploma.tfbook.controller;
 
-import com.jz1501.chenhc.diploma.tfbook.entity.User;
-import com.jz1501.chenhc.diploma.tfbook.entity.WishList;
+import com.jz1501.chenhc.diploma.tfbook.entity.*;
+import com.jz1501.chenhc.diploma.tfbook.service.AddressService;
+import com.jz1501.chenhc.diploma.tfbook.service.CascadingService;
 import com.jz1501.chenhc.diploma.tfbook.service.UserService;
 import com.jz1501.chenhc.diploma.tfbook.service.WishListService;
-import com.jz1501.chenhc.diploma.tfbook.util.TimeFormatUtil;
+import com.whalin.MemCached.MemCachedClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +31,12 @@ public class UserController extends PropertiesEditor {
     private UserService userService;
     @Autowired
     private WishListService wishListService;
-
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private CascadingService cascadingService;
+    @Autowired
+    private MemCachedClient memCachedClient;
     /**
      * 用户注册
      *
@@ -51,6 +57,7 @@ public class UserController extends PropertiesEditor {
     }
 
     @RequestMapping("/adminRegist")
+    @ResponseBody
     public String adminRegist(@RequestParam("adminName") String adminName,
                               @RequestParam("password") String password,
                               @RequestParam("email") String email) {
@@ -86,10 +93,15 @@ public class UserController extends PropertiesEditor {
         if (email_exist) {
             //邮箱存在
             User dbUser = userService.login(email, password);
+            if ("0".equals(dbUser.getStatus())) {
+                session.setAttribute("loginErrorInfo", "账号被禁用，请联系管理员！");
+                return "redirect:/pages/login.jsp";
+            }
             if (dbUser != null) {
                 Object forceLoginFlag = session.getAttribute("forceLogin");
                 Object wish_To_login = session.getAttribute("wish_To_login");
                 Object order_To_login = session.getAttribute("order_To_login");
+                Object center_To_login = session.getAttribute("center_To_login");
 
                 session.setAttribute("CurrentUser", dbUser);
                 session.setAttribute("wishFlag", "loginsuccess");
@@ -102,6 +114,9 @@ public class UserController extends PropertiesEditor {
                 } else if ("toOrderList".equals(order_To_login)) {
                     //我的订单
                     return "forward:/cart/purchase/userOrderListInfo.do";
+                } else if ("to_peraonal_center".equals(center_To_login)) {
+                    //个人中心
+                    return "forward:/user/person/personalCenter.do";
                 } else {
                     session.setAttribute("loginErrorInfo", "登录成功！");
                     return "forward:/pages/home.jsp";//去首页
@@ -123,6 +138,7 @@ public class UserController extends PropertiesEditor {
         User admin = userService.adminLogin(adminName, password);
         if (admin != null) {
             session.setAttribute("CurrentAdmin", admin);
+            session.setAttribute("admin_login_time", new Date());
             System.out.println("----admin_login-----");
             return "login_success";//redirect:/bgpages/main.jsp
         } else {
@@ -135,32 +151,46 @@ public class UserController extends PropertiesEditor {
 
     @RequestMapping(value = "/logout")
     public String userLogOut(HttpSession session) {
-//        session.removeAttribute("CurrentUser");
-//        session.removeAttribute("loginErrorInfo");
-//        session.removeAttribute("forceLogin");
-//        session.removeAttribute("wish_To_login");
-//        session.removeAttribute("wishFlag");
-//        session.removeAttribute("check_admin_status");
-//        session.removeAttribute("CurrentAdmin");
-        session.invalidate();//清除所有
+        session.removeAttribute("CurrentUser");
+        session.removeAttribute("loginErrorInfo");
+        session.removeAttribute("forceLogin");
+        session.removeAttribute("wish_To_login");
+        session.removeAttribute("wishFlag");
+        session.removeAttribute("showCart");
+        session.removeAttribute("checkOrder");
+        session.removeAttribute("totalMoney");
+        session.removeAttribute("perMoney");
+        session.removeAttribute("OrderInfo");
+
+        session.removeAttribute("AddressInfo");
+        session.removeAttribute("totalCartCount");
+        session.removeAttribute("findPwdStatus");
+        session.removeAttribute("loginFlag");
+        memCachedClient.flushAll();
+        //session.invalidate();//清除所有
         return "redirect:/pages/home.jsp";
     }
 
     @RequestMapping(value = "/logout_admin")
     @ResponseBody
     public String AdminLogOut(HttpSession session) {
-//        session.removeAttribute("CurrentUser");
-//        session.removeAttribute("loginErrorInfo");
-//        session.removeAttribute("forceLogin");
-//        session.removeAttribute("wish_To_login");
-//        session.removeAttribute("wishFlag");
-//        session.removeAttribute("check_admin_status");
-//        session.removeAttribute("CurrentAdmin");
-        session.invalidate();//清除所有  bgpages/main.jsp
+        session.removeAttribute("bg_hotBooks1");
+        session.removeAttribute("newBookShelvesBG");
+        session.removeAttribute("orderCount");
+        session.removeAttribute("userCount");
+        session.removeAttribute("recordCount");
+        session.removeAttribute("orderInfoStaties");
+        session.removeAttribute("booksInfoStaties");
+        session.removeAttribute("userInfoStaties");
+        session.removeAttribute("CurrentAdmin");
+        session.removeAttribute("admin_login_time");
+        memCachedClient.flushAll();
+        //session.invalidate();//清除所有  bgpages/main.jsp
         return "success_logout";
     }
 
     @RequestMapping("/emailExists")
+    @ResponseBody
     public String checkEmailExists(String email) {
         Boolean emailIsExist = userService.emailIsExists(email);
         if (emailIsExist) {
@@ -170,10 +200,22 @@ public class UserController extends PropertiesEditor {
         }
     }
 
+    @RequestMapping("/findUserPdw")
+    public String findUserPdw(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session) {
+        User user = userService.selectUserByEmail(email);
+        try {
+            userService.findOrUpdatePwd(user.getUserId(), password);
+            session.setAttribute("findPwdStatus", "success");
+            return "redirect:/pages/login.jsp";
+        } catch (Exception e) {
+            session.setAttribute("findPwdStatus", "fail");
+            return "redirect:/pages/login.jsp";
+        }
+    }
+
 
     /**
      * 个人收藏
-     *
      * @return
      */
     @RequestMapping("/person/favoriteBooks")
@@ -225,24 +267,139 @@ public class UserController extends PropertiesEditor {
 
     @RequestMapping("/queryUsersBySearch_bg")
     @ResponseBody
-    public Map<String, Object> queryAllUserBySearchBg(Integer rows, Integer page,
-                                                      String search, String fromDateStr, String toDateStr) {
+    public Map<String, Object> queryAllUserBySearchBg(Integer rows, Integer page, String search) {
         Map<String, Object> map = new HashMap<String, Object>();
-        Date fromDate = null;
-        Date toDate = null;
-        if (fromDateStr != null) {
-            fromDate = TimeFormatUtil.toUtilDate(fromDateStr);
+        Integer totalCount = 1;
+        List<User> users = null;
+        if (search == null) {
+            totalCount = userService.queryUserTotalCount();
+            users = userService.queryUsersBySearch(rows, page, "");
+        } else {
+            totalCount = userService.queryUsersBySearchTotalCount(search);
+            users = userService.queryUsersBySearch(rows, page, search);
         }
-        if (toDateStr != null) {
-            toDate = TimeFormatUtil.toUtilDate(toDateStr);
-        }
-        Integer totalCount = userService.queryUsersBySearchTotalCount(rows, page, search, fromDate, toDate);
-        List<User> users = userService.queryUsersBySearch(rows, page, search, fromDate, toDate);
+
         map.put("total", totalCount);
         map.put("rows", users);
         return map;
     }
 
+    //禁用
+    @RequestMapping("/forbidCurrentUser")
+    @ResponseBody
+    public String forbidCurrentUser(String userId, String status) {
+        System.out.println("------forbidCurrentUser--" + userId + "------------" + status + "-----------");
+        try {
+            userService.forbidUser(userId, status);
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "fail";
+        }
+    }
+
+    /**
+     * 个人中心
+     *
+     * @return
+     */
+    @RequestMapping("/person/personalCenter")
+    public String personalCenter(HttpSession session, Model model) {
+        User currentUser = (User) session.getAttribute("CurrentUser");
+        User userInfo = userService.selectUserByEmail(currentUser.getEmail());
+        //地址信息
+        List<Address> categoryAddr = addressService.queryAddressByUserId(currentUser.getUserId());
+        model.addAttribute("allAddrSort", categoryAddr);
+        model.addAttribute("userInfo_p", userInfo);
+        return "forward:/pages/personalCenter.jsp";
+    }
+
+    @RequestMapping("/updateUserInfo")
+    public String updateUserInfo(User user, HttpSession session) {
+        User currentUser = (User) session.getAttribute("CurrentUser");
+        user.setUserId(currentUser.getUserId());
+        try {
+            userService.modifyUserInfo(user);
+            System.out.println("__________修改用户信息成功:" + user);
+        } catch (Exception e) {
+            System.out.println("__________修改用户信息失败:" + user);
+            throw new RuntimeException("修改用户信息失败");
+        }
+        return "forward:/user/person/personalCenter.do";
+    }
+
+
+    /**
+     * 根据地址昵称查询一条地址
+     *
+     * @param nickAddrId
+     * @param session
+     * @return
+     */
+    @RequestMapping("/queryOneAddress")
+    @ResponseBody
+    public Address queryOneAddressByNickId(String nickAddrId, HttpSession session) {
+        User currentUser = (User) session.getAttribute("CurrentUser");
+        Address addresses = addressService.queryAddressById(currentUser.getUserId(), nickAddrId);
+        return addresses;
+    }
+
+    //修改收货地址
+    @RequestMapping("/person/showOrUpdateAddress")
+    public String addAddressOrUpdateAddress(Address address, HttpSession session) {
+        User currentUser = (User) session.getAttribute("CurrentUser");
+        //根据这两个id查数据库，匹配各个字段是否和数据库一致
+        Address completeAddress = getCompleteAddress(address);//去掉页面的其他符号
+        Address dbAddress = addressService.queryAddressById(address.getUserId(), completeAddress.getNickAddrId());
+
+        //判断地址是否是新地址
+        if (completeAddress.getAddressId() == "" && "new".equals(completeAddress.getNickAddrId())) {
+            //新地址  入库
+            if (completeAddress.getNickAddrName() == "" || "".equals(completeAddress.getNickAddrName())) {
+                completeAddress.setNickAddrName("地址:" + completeAddress.getProvNameAddr());//地址别名：
+            }
+            completeAddress.setNickAddrId("");
+            completeAddress.setUserId(currentUser.getUserId());
+            addressService.addNewAddress(address);
+            System.out.println("__________新地址入库成功:" + address);
+            return "forward:/user/person/personalCenter.do";
+        } else if (!completeAddress.equals(dbAddress)) {
+            //修改了地址  入库
+            addressService.modifyAddress(address);
+            System.out.println("__________修改地址成功:" + address);
+            return "forward:/user/person/personalCenter.do";
+        } else {
+            System.out.println("__________无操作:" + address);
+            return "forward:/user/person/personalCenter.do";
+        }
+    }
+
+    //去掉地址中的,
+    private Address getCompleteAddress(Address address) {
+        String nickAddrId = "";
+        String nickAddrs[] = address.getNickAddrId().split(",");
+        if (nickAddrs.length > 0) {
+            nickAddrId = nickAddrs[0] != "" ? nickAddrs[0] : nickAddrs[1];
+        }
+
+        address.setNickAddrId(nickAddrId);
+        address.setNickAddrName(address.getNickAddrName().replace(",", ""));
+        address.setProvNameAddr(address.getProvNameAddr().replace(",", ""));
+        address.setCityNameAddr(address.getCityNameAddr().replace(",", ""));
+        address.setAreaNameAddr(address.getAreaNameAddr().replace(",", ""));
+
+        if (address.getAddressId() == "") {
+            //旧地址
+            Province province = cascadingService.queryProvNameByCode(address.getProvNameAddr());
+            City city = cascadingService.queryCityNameByCode(address.getCityNameAddr());
+            Area area = cascadingService.queryAreaNameByCode(address.getAreaNameAddr());
+
+            address.setProvNameAddr(province.getProvName());
+            address.setCityNameAddr(city.getCityName());
+            address.setAreaNameAddr(area.getAreaName());
+        }
+        return address;
+    }
 
 
 }

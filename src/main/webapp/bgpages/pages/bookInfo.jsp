@@ -1,18 +1,18 @@
 <%@page isELIgnored="false" pageEncoding="UTF-8" contentType="text/html; UTF-8" %>
 <div class="row clearfix">
     <div class="col-md-12 column">
-        <form class="navbar-form navbar-left" role="search">
+
+        <form class="navbar-form" role="search" id="searchBook_data">
             <div class="form-group">
-                图书名称：<input type="text" class="form-control" name="search" style="width:240px"/>
-                开始时间：<input class="easyui-datetimebox" name="createTime"
-                            data-options="required:true,showSeconds:true" value="" style="width:200px;height: 32px;">
-                至：<input class="easyui-datetimebox" name="createTime"
-                         data-options="required:true,showSeconds:true" value="" style="width:200px;height: 32px;">
+                图书名称：<input type="text" class="form-control" id="bookName" style="width:240px;height: 30px"/>
             </div>
-            <button type="submit" class="btn btn-default">查询</button>
+            <button type="button" onclick="doSearchBooks()" class="btn btn-default" style="height: 30px">查询</button>
+            <button type="button" onclick="czSearchData()" class="btn btn-default" style="height: 30px">重置</button>
         </form>
-        <table class="easyui-datagrid" id="book_info_grid" style="width:2200px;height:650px"
-               data-options="url:'${pageContext.request.contextPath}/book/allBooksInfo.do',fitColumns:false,singleSelect:true,loadMsg:'正在加载...',
+
+        <table class="easyui-datagrid" id="book_info_grid" style="width:2200px;height:580px"
+               data-options="url:'${pageContext.request.contextPath}/book/allBooksInfo.do',
+               fitColumns:false,singleSelect:true,loadMsg:'正在加载...',
                rownumbers:true,
                pagination:true,
                pageNumber:0,
@@ -39,30 +39,15 @@
                             width:100,
                             height:30,
                             handler:deleteOneBookDialog
+                        },{
+                            iconCls: 'icon-add',
+                            text:'上架',
+                            width:100,
+                            height:30,
+                            handler:dkakaOneBookDialog
                         }]
 
                 ">
-            <thead>
-            <tr>
-                <th data-options="field:'bookId',width:50,hidden:'true'">编码</th>
-                <th data-options="field:'bookName',width:120,align:'center'">图书名称</th>
-                <th data-options="field:'sortName',width:100,align:'both'">所属分类</th>
-                <th data-options="field:'author',width:120,align:'both'">作者</th>
-                <th data-options="field:'publishCompany',width:150,align:'both'">出版社</th>
-                <th data-options="field:'publishTime',width:120,align:'both'">出版时间</th>
-                <th data-options="field:'wordCount',width:60,align:'both'">字数</th>
-                <th data-options="field:'pageCount',width:60,align:'both'">页数</th>
-                <th data-options="field:'kaiBen',width:60,align:'both'">开本</th>
-                <th data-options="field:'repertory',width:60,align:'both'">库存</th>
-                <th data-options="field:'bookPrice',width:60,align:'both'">价格</th>
-                <th data-options="field:'originalPrice',width:60,align:'both'">原价</th>
-                <th data-options="field:'isbn',width:100,align:'both'">ISBN</th>
-                <th data-options="field:'saleCount',width:60,align:'both'">销售量</th>
-                <th data-options="field:'imgUrl',width:150,align:'both'">图书图片</th>
-                <th data-options="field:'bookIntro',width:500,align:'both'">图书介绍</th>
-                <th data-options="field:'commend',width:500,align:'both'">编辑推荐</th>
-            </tr>
-            </thead>
         </table>
     </div>
 </div>
@@ -72,9 +57,21 @@
 
 
 <script>
-    var selectRowData;
+    var selectRowData, $bookDetail_form_id;
     $('#book_info_grid').datagrid({
         columns: [[
+            {
+                title: '状态', field: 'status', width: 120, align: 'center',
+                formatter: function (value, row, index) {
+                    if (value == '1') {
+                        return "<font color='green'>已上架</font>";
+                    } else if (value == '0') {
+                        return "<font color='red'>已下架</font>";
+                    } else {
+                        return "data error ";
+                    }
+                }
+            },
             {title: '图书名称', field: 'bookName', width: 120, align: 'center'},
             {
                 field: 'sortName', title: '所属分类', width: 120,
@@ -89,9 +86,9 @@
             {title: '作者', field: 'author', width: 100, align: 'center'},
             {title: '出版社', field: 'publishCompany', width: 150, align: 'center'},
             {
-                title: '出版时间', field: 'publishTime', width: 100, align: 'center',
+                title: '出版时间', field: 'publishTime', width: 150, align: 'center',
                 formatter: function (value, row, index) {
-                    var unixTimestamp = new Date(value);
+                    var unixTimestamp = new Date(row.publishTime);
                     return unixTimestamp.toLocaleString();
                 }
             },
@@ -103,11 +100,38 @@
             {title: '原价', field: 'originalPrice', width: 60, align: 'center'},
             {title: 'ISBN', field: 'isbn', width: 80, align: 'center'},
             {title: '销售量', field: 'saleCount', width: 60, align: 'center'},
-            {title: '图书图片', field: 'imgUrl', width: 120, align: 'center'},
+            {title: '图书图片', field: 'imgUrl', width: 190, align: 'center'},
             {title: '图书介绍', field: 'bookIntro', width: 500, align: 'center'},
             {title: '编辑推荐', field: 'commend', width: 550, align: 'center'},
         ]]
     });
+
+    $('#book_info_grid').datagrid({
+        toolbar: '#searchBook_data'
+    });
+
+    //图书搜索
+    function doSearchBooks() {
+        var search = $('#bookName').val();
+        if (search == '') {
+            $('#book_info_grid').datagrid('load', {
+                row: 10,
+                page: 1
+            });
+        }
+        else {
+            $('#book_info_grid').datagrid('load', {
+                bookName: $('#bookName').val(),
+                row: 10,
+                page: 1
+            });
+        }
+    }
+
+    //重置
+    function czSearchData() {
+        $("#bookName").val("");
+    }
 
     function addOneBookDialog() {
         $("#add_new_book_dialogid").dialog({
@@ -118,28 +142,13 @@
             cache: false,
             modal: true,
             href: '../bgpages/js/pagejs/addnewbook.jsp?type=add',
+            //href: '../bgpages/js/pagejs/addFile.jsp',
             buttons: [{
                 text: '确定',
                 width: 70,
                 height: 30,
                 iconCls: 'icon-save',
-                handler: function () {
-                    $("#bookDetail_form").form('submit', {
-                        url: '',
-                        onSubmit: function () {
-                            var valid = $("#bookDetail_form").form('validate');
-                            if (valid) {
-                                //提交
-                                alert("提交");
-                            } else {
-                                $.messager.alert('我的消息', '存在未完成项，请检查！', 'warning');
-                            }
-                        },
-                        success: function (data) {
-                            alert(data)
-                        }
-                    });
-                }
+                handler: addNewBook_button_submit
             }, {
                 text: '取消',
                 width: 70,
@@ -169,19 +178,18 @@
             $("#add_new_book_dialogid").dialog({
                 title: '编辑',
                 width: 850,
-                height: 650,
+                height: 720,
                 closed: false,
                 cache: false,
                 modal: true,
-                href: '../bgpages/js/pagejs/addnewbook.jsp?type=edit',
+                //href: '../bgpages/js/pagejs/addnewbook.jsp?type=edit',
+                href: '${pageContext.request.contextPath}/book/bookDetail_M_CNG_001.do?bookId=' + row.bookId,
                 buttons: [{
                     text: '确定',
                     width: 60,
                     height: 30,
                     iconCls: 'icon-save',
-                    handler: function () {
-
-                    }
+                    handler: modifyBookInfoCNG_CHC
                 }, {
                     text: '取消',
                     width: 60,
@@ -200,6 +208,10 @@
     //删除
     function deleteOneBookDialog() {
         var row = $("#book_info_grid").datagrid('getSelected');
+        if (row.status == '0') {
+            $.messager.alert('提示', '该图书已经下架了！', 'info');
+            return;
+        }
         if (row == null) {
             $.messager.alert('提示', '请选中一条数据！', 'info');
         } else {
@@ -207,12 +219,13 @@
                 if (r) {
                     // 退出操作;
                     $.ajax({
-                        url: '${pageContext.request.contextPath}/book/deleteBook.do',
+                        url: '${pageContext.request.contextPath}/book/modifyBookState_CNG_CHC.do?status=0&bookId=' + row.bookId,
                         type: 'post',
-                        dataType: 'json',
+                        dataType: 'text',
                         success: function (data) {
                             if (data == "success") {
                                 $.messager.alert('提示', '该图书已下架！', 'info');
+                                $("#book_info_grid").datagrid('reload');
                             } else {
                                 $.messager.alert('提示', '失败！', 'danger');
                             }
@@ -223,5 +236,126 @@
         }
     }
 
+    //上架
+    function dkakaOneBookDialog() {
+        var row = $("#book_info_grid").datagrid('getSelected');
+        if (row.status == '1') {
+            $.messager.alert('提示', '该图书已经上架了！', 'info');
+            return;
+        }
+        if (row == null) {
+            $.messager.alert('提示', '请选中一条数据！', 'info');
+        } else {
+            $.messager.confirm('提示', '您想要重新上架该图书吗？', function (r) {
+                if (r) {
+                    // 退出操作;
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/book/modifyBookState_CNG_CHC.do?status=1&bookId=' + row.bookId,
+                        type: 'post',
+                        dataType: 'text',
+                        success: function (data) {
+                            if (data == "success") {
+                                $.messager.alert('提示', '该图书已上架！', 'info');
+                                $("#book_info_grid").datagrid('reload');
+                            } else {
+                                $.messager.alert('提示', '失败！', 'danger');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    //添加新书：
+    function addNewBook_button_submit() {
+        var imageddd = $("#add_imgUrl").val();
+        var valid = $("#bookDetail_form_id").form('validate');
+        if (!valid) {
+            $.messager.alert('我的消息', '存在未完成项，请检查！', 'warning');
+            return valid;
+        } else if (imageddd == "") {
+            $.messager.alert('我的消息', '请选择需要上传的图片！', 'warning');
+            return;
+        } else {
+            $('#bookDetail_form_id').form('submit', {
+                url: '${pageContext.request.contextPath}/book/addOneNewBook_CNG_001',
+                onSubmit: function () {
+                },
+                success: function (data) {
+                    $.messager.alert('我的消息', '保存成功！', 'info');
+                    $("#add_new_book_dialogid").dialog('close');
+                    $("#book_info_grid").datagrid('reload');
+                }
+            });
+        }
+    }
+
+    //修改
+    function modifyBookInfoCNG_CHC() {
+        $.messager.confirm('提示', '确定修改？', function (r) {
+            if (r) {
+                $('#modify_book_info').form('submit', {
+                    url: '${pageContext.request.contextPath}/book/modifyOneBook_CNG_001',
+                    onSubmit: function () {
+                        var valid = $("#modify_book_info").form('validate');
+                        if (!valid) {
+                            $.messager.alert('我的消息', '存在未完成项，请检查！', 'warning');
+                        }
+                        return valid;
+                    },
+                    success: function (data) {
+                        $.messager.alert('我的消息', '保存成功！', 'info');
+                        $("#add_new_book_dialogid").dialog('close');
+                        $("#book_info_grid").datagrid('reload');
+                    }
+                });
+            }
+        });
+
+    }
+
 
 </script>
+
+
+<%--
+  var bookName = $("#add_bookName").val();
+        var author = $("#add_author").val();
+        var wordCount = $("#add_wordCount").val();
+        var pageCount = $("#add_pageCount").val();
+        var publishCompany = $("#add_publishCompany").val();
+        var kaiBen = $("#add_kaiBen").val();
+        var repertory = $("#add_repertory").val();
+        var bookPrice = $("#add_bookPrice").val();
+        var originalPrice = $("#add_originalPrice").val();
+        var isbn = $("#add_isbn").val();
+        var sortId = $("#sortId_id").val();
+        //var imgUrl = $("#add_imgUrl").getValue();
+        //var imgUrl = $("#add_imgUrl").filebox('getText');
+        var bookIntro = $("#add_bookIntro").val();
+        var commend = $("#add_commend").val();
+        var publishTime = $("#publishTime_id").val();
+        var jsonData={
+            "bookId":"",
+            "bookName":bookName,
+            "author":author,
+            "wordCount":parseInt(wordCount),
+            "pageCount":parseInt(pageCount),
+            "publishCompany":publishCompany,
+            "kaiBen":kaiBen,
+            "repertory":parseInt(repertory),
+            "bookPrice":parseFloat(bookPrice),
+            "originalPrice":parseFloat(originalPrice),
+            "isbn":isbn,
+            "sortId":sortId,
+            //"imgUrl":"",
+            "bookIntro":bookIntro,
+            "commend":commend,
+            "publishTime":new Date(publishTime),
+            "status":"1",
+            "saleCount":0,
+        };
+        console.log(jsonData);
+
+--%>

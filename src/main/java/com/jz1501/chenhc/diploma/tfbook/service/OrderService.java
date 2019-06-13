@@ -35,4 +35,19 @@ public interface OrderService {
 
     public Map<String, OrderItem> queryOrderDetailInfoByOrderNumber(String orderNumber);
 
+    //bg
+    public List<Order> queryAllOrdersByAdmin(Integer rows, Integer page, String orderNumber);
+
+    public Integer selectOrdersTotalCountBySearch(String orderNumber);
+
+    public Integer selectOrdersTotalCount();
+
+    public Order queryOneOrderDetail(String orderId);
+
+    public void adminDeleteOrderInfo(String orderNumber);
+
+    public void adminDeliverOrder(String orderNumber);
+
+    public void modifyOrderStatus_cancel(String orderNumber);
+
 }

@@ -47,8 +47,6 @@ public class ShoppingCartController {
     public String addToCart(String bookId, Integer purCount, HttpSession session) {
         //获取购物车
         Map<String, OrderItem> showCartMap = (Map) session.getAttribute("showCart");
-        //获取恢复区中的   订单项
-        //Map<String, OrderItem> delCartMap = (Map) session.getAttribute("delCart");
 
         if (showCartMap == null) {
             showCartMap = new HashMap<String, OrderItem>();
@@ -166,7 +164,8 @@ public class ShoppingCartController {
      * @return
      */
     @RequestMapping("/purchase/checkOrder")
-    public String checkoutOrder(String bookId, Integer purCount, HttpSession session) {
+    public String checkoutOrder(String bookId, Integer purCount,
+                                HttpSession session) {
         if (bookId != null && purCount != null) {
             OrderItem buynowItem = new OrderItem();
             Map<String, OrderItem> showCartMap = new HashMap<String, OrderItem>();
@@ -175,7 +174,8 @@ public class ShoppingCartController {
             buynowItem.setCount(purCount);
             buynowItem.setLittleCount(purCount * dbBook.getBookPrice());
             Double totalMoney = dbBook.getBookPrice() * purCount;
-            Double perMoney = (dbBook.getOriginalPrice() - dbBook.getBookPrice()) * purCount;
+            Double perMoney =
+                    (dbBook.getOriginalPrice() - dbBook.getBookPrice()) * purCount;
 
             showCartMap.put(dbBook.getBookId(), buynowItem);
             //存入session
@@ -185,7 +185,8 @@ public class ShoppingCartController {
             //优惠价
             session.setAttribute("perMoney", perMoney);
         } else {
-            Map<String, OrderItem> showCartMap = (Map) session.getAttribute("showCart");
+            Map<String, OrderItem> showCartMap =
+                    (Map) session.getAttribute("showCart");
             //存入session
             session.setAttribute("checkOrder", showCartMap);
             //计算总金额

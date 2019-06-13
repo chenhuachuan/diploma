@@ -5,7 +5,7 @@
               style="margin-top: 10px">
             <div class="form-group-separator"></div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">用户名</label>
+                <label class="col-sm-3 control-label">账号</label>
                 <div class="col-sm-5">
                     <input class="easyui-textbox" id="adminName" type="text" name="adminName" style="width: 260px;"
                            data-options="required:true"/>
@@ -113,6 +113,7 @@
                             timeout: 2000,
                             showType: 'show'
                         });
+
                         setTimeout(function () {  //使用  setTimeout（）方法设定定时2000毫秒
                             window.location.reload();//页面刷新
                         }, 1500);
@@ -153,7 +154,7 @@
                         $("#sysman_login_regist_dialog").dialog("close");
                         $.messager.show({
                             title: '我的消息',
-                            msg: '注册成功 ',
+                            msg: '注册成功,请登录',
                             timeout: 2000,
                             showType: 'show'
                         });
@@ -171,14 +172,18 @@
                     }
                 },
                 error: function (data) {
-                    alert(data);
+                    $.messager.show({
+                        title: '我的消息',
+                        msg: '系统维护，请联系管理员',
+                        timeout: 1000,
+                        showType: 'show'
+                    });
+                    $("#sysman_login_regist_dialog").dialog("close");
                 }
             });
         } else {
             $.messager.alert('我的消息', '存在未完成项，请检查！', 'warning');
         }
-
-
     }
 
     $.extend($.fn.validatebox.defaults.rules, {

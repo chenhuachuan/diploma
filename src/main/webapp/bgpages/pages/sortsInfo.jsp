@@ -3,7 +3,7 @@
     <div class="col-md-12 column">
         <div class="col-md-6 column">
             <table class="easyui-datagrid" id="sort_datagrid_one" style="width:600px;height:450px"
-                   data-options="url:'${pageContext.request.contextPath}/category/all_category_name_json.do',
+                   data-options="url:'${pageContext.request.contextPath}/category/all_category_name_json1.do',
                    fitColumns:true,singleSelect:true,resizeHandle:'right',loadMsg:'正在加载...', rownumbers:true,
                                 striped:true,
                    toolbar: [{
@@ -36,42 +36,6 @@
                     <th data-options="field:'time',width:100">创建时间</th>
                 </tr>
                 </thead>
-                <%--   <tbody>
-                     <tr>
-                         <td>
-                             1
-                         </td>
-                         <td>
-                             TB - Monthly
-                         </td>
-                         <td>
-                             01/04/2012
-                         </td>
-                         <td>
-                             Default
-                         </td>
-                         <td>
-                             01/04/2012
-                         </td>
-                     </tr>
-                     <tr>
-                         <td>
-                             1
-                         </td>
-                         <td>
-                             TB - Monthly
-                         </td>
-                         <td>
-                             01/04/2012
-                         </td>
-                         <td>
-                             Default
-                         </td>
-                         <td>
-                             01/04/2012
-                         </td>
-                     </tr>
-                     </tbody>--%>
             </table>
         </div>
         <div class="col-md-6 column">
@@ -93,7 +57,7 @@
                 title: '分类级别', field: 'sortLevel', width: 100, align: 'center',
                 formatter: function (value, row, index) {
                     var curId = row.sortId;
-                    if (curId < 10) {
+                    if (curId < 10 || row.parentId == 0) {
                         return "一级";
                     } else if (curId >= 10 && curId < 33) {
                         return "二级";
@@ -118,7 +82,7 @@
         $("#add_new_sort_dialogid").dialog({
             title: '添加新类别',
             width: 450,
-            height: 280,
+            height: 380,
             closed: false,
             cache: false,
             modal: true,
@@ -129,7 +93,62 @@
                 height: 30,
                 iconCls: 'icon-save',
                 handler: function () {
+                    var sort_name = $("#sort_name_id").val();
+                    var pardd = 0;
+                    var sordd1 = $("#sortName").val();//一级
+                    var sordd2 = $("#sortName2").val();//二级
+                    var sortLevel = $("#sortLevel").val();//等级
+                    var isfvalidate = $("#sortDetail_form").form('validate');
+                    if (sortLevel == 1) {
+                        $("#sortName").combobox({disabled: true});
+                        $("#sortName2").combobox({disabled: true});
+                        if (sort_name == "") {
+                            $("#error_tips_div").css("display", "");
+                            return;
+                        }
 
+                    }
+                    if (sortLevel == 2) {
+                        $("#sortName2").combobox({disabled: true});
+                        $("#sortName").combobox({disabled: false});
+                        if (sort_name == "" || sordd1 == "") {
+                            $("#error_tips_div").css("display", "");
+                            return;
+                        }
+                    }
+                    if (sortLevel == 3) {
+                        $("#sortName2").combobox({disabled: false});
+                        $("#sortName").combobox({disabled: false});
+                        if (sort_name == "" || sordd1 == "" || sordd2 == "") {
+                            $("#error_tips_div").css("display", "");
+                            return;
+                        }
+                    }
+                    if (isfvalidate) {
+                        $("#error_tips_div").css("display", "none");
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/category/add_newSort_CNG_001.do',
+                            type: 'post',
+                            data: {
+                                "sortName": sort_name,
+                                "sortOne": pardd,
+                                "sortTwo": sordd1,
+                                "sortThree": sordd2
+                            },
+                            dataType: 'text',
+                            success: function (data) {
+                                if (data == "success") {
+                                    $.messager.alert('提示', '添加成功！', 'info');
+                                } else {
+                                    $.messager.alert('提示', '失败！', 'danger');
+                                }
+                            }
+                        });
+                        $("#add_new_sort_dialogid").dialog('close');
+                    } else {
+                        $("#error_tips_div").css("display", "");
+                        return;
+                    }
                 }
             }, {
                 text: '取消',
@@ -158,7 +177,7 @@
             $("#add_new_sort_dialogid").dialog({
                 title: '编辑',
                 width: 450,
-                height: 280,
+                height: 380,
                 closed: false,
                 cache: false,
                 modal: true,
@@ -169,7 +188,46 @@
                     height: 30,
                     iconCls: 'icon-save',
                     handler: function () {
-
+                        var sort_name = $("#sort_name_id").val();
+                        var parentId = $("#hidde_parentdI_m").val();
+                        var sortId = $("#hidde_sortId_m").val();
+                        var sordd1 = $("#sortName").val();//一级
+                        var sordd2 = $("#sortName2").val();//二级
+                        var sortLevel = $("#sortLevel").val(), sdd = "";//等级
+                        if (sort_name == "") {
+                            $("#error_tips_div").css("display", "");
+                            return;
+                        } else {
+                            if (sortLevel == 1) {
+                                sdd = 0;
+                            }
+                            if (sortLevel == 2 || sortLevel == 3) {
+                                sdd = "";
+                            }
+                            $("#error_tips_div").css("display", "none");
+                            $.ajax({
+                                url: '${pageContext.request.contextPath}/category/modifydOneSort_CNG_001.do',
+                                type: 'post',
+                                data: {
+                                    "sortDB": sdd,
+                                    "sortId": sortId,
+                                    "sortName": sort_name,
+                                    "parentId": parentId,
+                                    "sortOne": sordd1,
+                                    "sortTwo": sordd2
+                                },
+                                dataType: 'text',
+                                success: function (data) {
+                                    if (data == "success") {
+                                        $.messager.alert('提示', '修改成功！', 'info');
+                                        $("#add_new_sort_dialogid").dialog('close');
+                                        $('#sort_datagrid_one').datagrid('reload');
+                                    } else {
+                                        $.messager.alert('提示', '失败！', 'danger');
+                                    }
+                                }
+                            });
+                        }
                     }
                 }, {
                     text: '取消',
@@ -196,17 +254,22 @@
                 if (r) {
                     // 退出操作;
                     $.ajax({
-                        url: '${pageContext.request.contextPath}/category/.do',
+                        url: '${pageContext.request.contextPath}/category/deleteOneSort_CNG_001.do',
                         type: 'post',
-                        dataType: 'json',
+                        data: {
+                            "sortId": row.sortId
+                        },
+                        dataType: 'text',
                         success: function (data) {
                             if (data == "success") {
                                 $.messager.alert('提示', '删除成功！', 'info');
+                                $('#sort_datagrid_one').datagrid('reload');
                             } else {
                                 $.messager.alert('提示', '失败！', 'danger');
                             }
                         }
                     });
+                    $('#sort_datagrid_one').datagrid('reload');
                 }
             });
         }

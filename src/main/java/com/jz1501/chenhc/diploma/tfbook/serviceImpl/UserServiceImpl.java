@@ -3,7 +3,6 @@ package com.jz1501.chenhc.diploma.tfbook.serviceImpl;
 import com.jz1501.chenhc.diploma.tfbook.dao.UserMapper;
 import com.jz1501.chenhc.diploma.tfbook.entity.User;
 import com.jz1501.chenhc.diploma.tfbook.service.UserService;
-import com.jz1501.chenhc.diploma.tfbook.util.TimeFormatUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ public class UserServiceImpl implements UserService {
         user.setUserId(userId);
         user.setSalt(salt);
         user.setPassword(password);
-        user.setStatus("1");
+        user.setStatus("1");//普通用户
         user.setRegistTime(new Date());
         userMapper.insertIntoUser(user);
     }
@@ -45,7 +44,7 @@ public class UserServiceImpl implements UserService {
         user.setUserId(userId);
         user.setSalt(salt);
         user.setPassword(password);
-        user.setStatus("88");
+        user.setStatus("88");//超级管理员
         user.setRegistTime(new Date());
         user.setNickName("超级管理员");
         userMapper.insertIntoUser(user);
@@ -86,6 +85,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public void findOrUpdatePwd(String userId, String password) {
+        String salt = DigestUtils.md5Hex(password);
+        String password_ = DigestUtils.md5Hex(password + salt);
+        userMapper.findOrUpdatePwd(userId, password_, salt);
+    }
+
+    @Override
     public List<User> queryAllUsersInfo(Integer row, Integer page) {
         Integer index = (page - 1) * row;
         return userMapper.selectAllUsersInfo(row, index);
@@ -97,17 +104,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> queryUsersBySearch(Integer row, Integer page, String search, Date fromDate, Date toDate) {
+    public List<User> queryUsersBySearch(Integer row, Integer page, String search) {
         Integer index = (page - 1) * row;
         String searchFlag = "%" + search + "%";
-
-        return userMapper.selectUsersBySearch(row, index, searchFlag, (fromDate == null) ? null : TimeFormatUtil.toSqlDate(fromDate), (toDate == null) ? null : TimeFormatUtil.toSqlDate(toDate));
+        return userMapper.selectUsersBySearch(row, index, searchFlag);
     }
 
     @Override
-    public Integer queryUsersBySearchTotalCount(Integer row, Integer page, String search, Date fromDate, Date toDate) {
-        Integer index = (page - 1) * row;
+    public Integer queryUsersBySearchTotalCount(String search) {
         String searchFlag = "%" + search + "%";
-        return userMapper.selectTotalCountBySearchBg(row, index, searchFlag, (fromDate == null) ? null : TimeFormatUtil.toSqlDate(fromDate), (toDate == null) ? null : TimeFormatUtil.toSqlDate(toDate));
+        return userMapper.selectTotalCountBySearchBg(searchFlag);
+    }
+
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public void modifyUserInfo(User user) {
+        userMapper.updateUserInfo(user);
+    }
+
+    @Override
+    public User selectUserByEmail(String email) {
+        return userMapper.selectByEmail(email);
+    }
+
+
+    @Override
+    public void forbidUser(String userId, String status) {
+        userMapper.updateUserStatus(userId, status);
     }
 }

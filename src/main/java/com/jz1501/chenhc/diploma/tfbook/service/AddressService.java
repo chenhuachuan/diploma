@@ -14,4 +14,5 @@ public interface AddressService {
 
     void modifyAddress(Address address);
 
+    Address queryAddressById(String addressId);
 }

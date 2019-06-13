@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jz1501.chenhc.diploma.tfbook.dao.BorDao">
+
+    <select id="selectTotalUserOrderRecore" resultType="Bor">
+		select u.totalUser,o.totalOrder,f.totalRecord from
+        (select count(1) totalUser from tf_user  where status!='88') u,
+        (select count(1) totalOrder from tf_order where status!='20')o,
+        (select count(1) totalRecord from tf_flow ) f
+    </select>
+
+    <select id="selectTotalUsers" resultType="Integer">
+        select count(1) totalUser from tf_user  where status!='88'
+    </select>
+    <select id="selectTotalOrders" resultType="Integer">
+        select count(1) totalOrder from tf_order where status!='20'
+    </select>
+    <select id="selectTotalRecord" resultType="Integer">
+        select count(1) totalRecord from tf_flow
+    </select>
+
+    <select id="selectDealInfoStaties" resultType="Bor">
+				select o.dealMoney,c.orderCount,s.dealSuccess,f.dealFail,k.tkMoney from
+				(select sum(total_price) dealMoney from tf_order where status!='10')o,
+				(select count(1) orderCount from tf_order ) c,
+				(select count(1) dealSuccess from tf_order where status not in ('10','60')) s,
+				(select count(1) dealFail from tf_order where status in ('10','60'))f,
+				(select sum(total_price) tkMoney from tf_order where status='60') k
+    </select>
+
+    <!--订单信息统计-->
+    <select id="selectOrderStaties" resultType="Bor">
+        select o1.wcl,o2.dfh,o3.dfk,o4.ycj,o5.ysc from
+        (select count(1) wcl from tf_order where status='40')o1,
+        (select count(1) dfh from tf_order where status='20')o2,
+        (select count(1) dfk from tf_order where status='10')o3,
+        (select count(1) ycj from tf_order where status='60')o4,
+        (select count(1) ysc from tf_order where status='30')o5
+    </select>
+
+    <!--图书信息统计-->
+    <select id="selectBooksInfoStaties" resultType="Bor">
+        select b1.tuzs,b2.sjts,b3.xjts,b4.rxts,b5.jjts from
+            (select count(1) tuzs from tf_book )b1,
+            (select count(1) sjts from tf_book where status='1')b2,
+            (select count(1) xjts from tf_book where status='0')b3,
+            (select count(1) rxts from tf_book where sale_count>2)b4,
+            (select count(1) jjts from tf_book where (original_price-book_price)>3)b5
+    </select>
+
+    <!--用户数统计-->
+    <select id="selectUsersStaties" resultType="Bor">
+        select u1.yhs totalUser,u2.gly totalAdmin from
+        (select count(1)yhs from tf_user where status='1')u1,
+        (select count(1)gly from tf_user where status='88')u2
+    </select>
+</mapper>

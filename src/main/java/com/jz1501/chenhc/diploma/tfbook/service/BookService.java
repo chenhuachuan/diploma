@@ -11,6 +11,8 @@ public interface BookService {
 
     public List<Book> newBookShelvesTwo();
 
+    public List<Book> newBookShelvesBG();
+
     //编辑推荐
     public List<Book> editorRecommend();
 
@@ -99,15 +101,18 @@ public interface BookService {
 
     //bg
 
-    public List<Book> queryAllBooksInfo(Integer row, Integer page);
+    public List<Book> queryAllBooksInfo(Integer row, Integer page, String bookName);
 
+    public Integer queryTotalCountBySearch(String bookName);
     public Integer queryTotalCount();
 
+    //新书添加
     public void addNewBook(Book book);
 
+    //修改
     public void updateBookInfo(Book book);
 
-    public void updateBookStatus(String bookId);
+    public void updateBookStatus(String bookId, String status);
 
     //每页多少条，第几页
     public List<Book> queryAllBooksByPage(Integer rows, Integer page);

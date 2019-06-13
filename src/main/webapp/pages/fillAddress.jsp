@@ -40,14 +40,11 @@
                 source_image_height: 1000,
                 show_hint: true,
                 click_callback: function (image_anchor, instance_id) {
-                    //alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');
                 }
             });
 
         });
     </script>
-    <!-- etale -->
-
 </head>
 <body>
 
@@ -57,7 +54,8 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo.png" alt=""/></a>
+                    <a href="${pageContext.request.contextPath}/pages/home.jsp"><img
+                            src="${pageContext.request.contextPath}/image/lb/logo_v3.jpg" alt=""/></a>
                 </div>
                 <%-- user login and regsit jsp--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -67,14 +65,12 @@
     </div>
 </div>
 
-<!-- megamenu -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/pages/js/megamenu.js"></script>
 <script>
     $(document).ready(function () {
         $(".megamenu").megamenu();
     });
 </script>
-<!-- megamenu -->
 
 <%--分类导航--%>
 <div class="head-bann" id="page_load_contrller_buy_div">
@@ -283,9 +279,6 @@
             $("#tipsDiv").show().attr("class", "alert alert-danger").html("请填写完整地址信息");
         }
     }
-
-    //document.getElementById('address_form').submit();return false
-
 
     //提交form表单检查
     function checkFormAddr() {

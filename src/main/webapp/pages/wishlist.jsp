@@ -40,7 +40,6 @@
                 source_image_height: 1000,
                 show_hint: true,
                 click_callback: function (image_anchor, instance_id) {
-                    //alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');
                 }
             });
         });
@@ -55,7 +54,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo_v3.jpg" alt=""/></a>
                 </div>
                 <%-- 登录注册--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -98,14 +97,8 @@
         <div class="shoping_bag1">
             <c:forEach items="${wishBooks}" var="wishlist">
                 <div class="shoping_right">
-                        <%--
-                        shoping_right
-                        <p style="font-size: medium">加入购物车</p>
-                        <a href="#"><span style="font-size:medium">加入购物车 </span></a>
-                        --%>
                     <a class="show1"
                        href="${pageContext.request.contextPath}/cart/addToCart.do?bookId=${wishlist.bookId}">加入购物车</a>
-                        <%-- <button type="submit" style="margin-top: 60px;" class="btn btn-info">加入购物车</button>--%>
                 </div>
 
                 <div class="shoping_left"><%--shoping_left--%>
@@ -122,11 +115,6 @@
                             <span style="font-size: small">&nbsp;${wishlist.book.bookIntro}</span>
                         </div>
                     <ul class="s_icons">
-                            <%--  <li><a href="#"><img src="${pageContext.request.contextPath}/pages/images/s_icon1.png" alt=""></a></li>
-                            <li><a href="#"><img src="${pageContext.request.contextPath}/pages/images/s_icon2.png" alt=""></a></li>
-                            ${pageContext.request.contextPath}/user/person/removeWishBook.do?collectId=${wishlist.collectId}
-                            class="btn btn-primary btn-lg" data-toggle="delWishBook" data-target="#delWishBook"
-                            --%>
                         <li><a href="javascript:void(0)" onclick="showDeleteModel()">
                             <img src="${pageContext.request.contextPath}/pages/images/s_icon3.png" alt=""></a></li>
                         <!-- 模态框（Modal） -->

@@ -8,14 +8,18 @@ import com.jz1501.chenhc.diploma.tfbook.util.TimeFormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.io.File;
+import java.util.*;
 
 @Controller
 @RequestMapping("/book")
@@ -175,7 +179,7 @@ public class BookController {
         model.addAttribute("sellHotBooks", sellHotBooks);
         model.addAttribute("secondTags", secondTags);
         model.addAttribute("tadaysBooks", tadaysBooks);
-        model.addAttribute("booksCount", booksCount);
+        model.addAttribute("booksCount", booksCount);//总数
         model.addAttribute("secondPage_books", books);
         model.addAttribute("currentPage", currentPage);//当前页
         model.addAttribute("totalPages", totalPages);//总页数
@@ -189,7 +193,6 @@ public class BookController {
     //三级页面
     /**
      * 查询图书详情
-     *
      * @param bookId
      * @param model
      * @return
@@ -234,21 +237,25 @@ public class BookController {
 
     @RequestMapping("/allBooksInfo")
     @ResponseBody
-    public Map<String, Object> queryAllBooksInfoByPage(Integer rows, Integer page) {
+    public Map<String, Object> queryAllBooksInfoByPage(Integer rows, Integer page, String bookName) {
         Map<String, Object> map = new HashMap<String, Object>();
-        Integer totalCount = bookService.queryTotalCount();
-
-        List<Book> books = bookService.queryAllBooksInfo(rows, page);
+        Integer totalCount = 1;
+        if (bookName == null) {
+            totalCount = bookService.queryTotalCount();
+        } else {
+            totalCount = bookService.queryTotalCountBySearch(bookName);
+        }
+        List<Book> books = bookService.queryAllBooksInfo(rows, page, bookName);
         map.put("total", totalCount);
         map.put("rows", books);
         return map;
     }
 
-    @RequestMapping("/deleteBook")
+    @RequestMapping("/modifyBookState_CNG_CHC")
     @ResponseBody
-    public String updateBookStatus(String bookId) {
+    public String updateBookStatus(String status, String bookId) {
         try {
-            bookService.updateBookStatus(bookId);
+            bookService.updateBookStatus(bookId, status);
             return "success";
         } catch (Exception e) {
             e.printStackTrace();
@@ -296,7 +303,93 @@ public class BookController {
     }
 
 
+    @RequestMapping("/bookDetail_M_CNG_001")
+    public String queryBookDetaiCNG_001d(String bookId, Model model) {
+        Book book = bookService.queryBookDetailsByBookId(bookId);
+        //图书信息
+        model.addAttribute("book_deta", book);
+        return "forward:/bgpages/js/pagejs/modifybook.jsp";
+    }
 
+
+    @RequestMapping(value = "/addOneNewBook_CNG_001", method = RequestMethod.POST)
+    @ResponseBody
+    public String addOneBook00100(@RequestParam(value = "imgUrl", required = false) MultipartFile imgUrl, @Valid Book book, BindingResult bindingResult, HttpServletRequest request, HttpSession session) {
+        String message = null;
+        try {
+            //获得图片保存的路径
+            String realPath = session.getServletContext().getRealPath("/image/books");
+            //System.out.println("图片保存路径："+realPath);
+            //定义文件名
+            String fileName = null;
+            if (!imgUrl.isEmpty()) {
+                //生成UUID作为文件的名称
+                String uuidName = UUID.randomUUID().toString().replace("-", "");
+                //获得文件后缀名
+                String suffixName = imgUrl.getOriginalFilename();
+                fileName = uuidName + "_" + suffixName;
+                //文件保存路径
+                imgUrl.transferTo(new File(realPath + "/" + fileName));
+            }
+            //把图片的相对路径保存到数据库  /image/books/18_ja.jpg
+            book.setImgUrl("/image/books/" + fileName);
+            //System.out.println("表单BOOK："+book);
+            //插入数据库
+            bookService.addNewBook(book);
+            System.out.println("____addNewBook_____\t:" + book);
+            return "success";
+        } catch (Exception e) {
+            message = e.getMessage();
+            System.out.println("message:" + message);
+            return "fail";
+        }
+        //return "redirect:/bgpages/main.jsp";
+    }
+
+    @RequestMapping("/modifyOneBook_CNG_001")
+    @ResponseBody
+    public String modifyOnessadsfweBook_CNG_001(@RequestParam(value = "imgUrl", required = false) MultipartFile imgUrl, @Valid Book book, BindingResult bindingResult, HttpServletRequest request, HttpSession session) {
+        String message = null;
+        try {
+            //获得图片保存的路径
+            String realPath = session.getServletContext().getRealPath("/image/books");
+            //System.out.println("图片保存路径："+realPath);
+            //定义文件名
+            String fileName = null;
+            if (!imgUrl.isEmpty()) {
+                //生成UUID作为文件的名称
+                String uuidName = UUID.randomUUID().toString().replace("-", "");
+                //获得文件后缀名
+                String suffixName = imgUrl.getOriginalFilename();
+                fileName = uuidName + suffixName;
+                //文件保存路径
+                imgUrl.transferTo(new File(realPath + "/" + fileName));
+            }
+            //把图片的相对路径保存到数据库
+            if (imgUrl.isEmpty()) {
+                book.setImgUrl("");
+            } else {
+                book.setImgUrl("/image/books/" + fileName);
+            }
+
+            System.out.println("修改的book:\t" + book);
+            //插入数据库
+            bookService.updateBookInfo(book);
+
+            return "success";
+        } catch (Exception e) {
+            message = e.getMessage();
+            System.out.println("修改：\t" + message);
+            return "fail";
+        }
+    }
+
+    //homepage.jsp
+    @RequestMapping("/")
+    public String queryHotBooksInBg(HttpSession session) {
+
+        return "";
+    }
 
 
 

@@ -6,7 +6,6 @@
     <title>所有图书</title>
 <body>
 
-
 <div class="row clearfix">
     <div class="detailb_main">
         <div class="col-md-12 column">
@@ -14,7 +13,8 @@
                 <c:forEach items="${books}" var="book">
                     <div class="showgrid_son_of_6" style="margin-top: 15px">
                         <div class="son_content_box">
-                            <img alt="300x200" src="${pageContext.request.contextPath}/${book.imgUrl}"/>
+                            <img alt="300x200" src="${pageContext.request.contextPath}/${book.imgUrl}"
+                                 style="width:180px;height:200px;"/>
                             <div class="caption">
                                 <center>
                                     <h4>${book.bookName}</h4>
@@ -23,127 +23,17 @@
                                 <p style="text-align: center">
                                     <a class="btn btn-primary" onclick="openBookDetailDialog('${book.bookId}')"
                                        style="width: 60px" href="javascript:void(0)">详情</a>
-                                    <a class="btn btn-primary" onclick="soldOutBook('${book.bookId}')"
-                                       style="width: 60px" href="javascript:void(0)">下架</a>
+                                    <c:if test="${book.status=='1'}">
+                                        <a class="btn btn-primary" onclick="soldOutBook('${book.bookId}')"
+                                           style="width: 60px" href="javascript:void(0)"><font color="#daa520">下架</font></a>
+                                    </c:if>
+                                    <c:if test="${book.status=='0'}">
+                                        <a class="btn btn-primary" onclick="noSoldOutBook('${book.bookId}')"
+                                           style="width: 60px" href="javascript:void(0)">上架</a>
+                                    </c:if>
                                 </p>
                             </div>
                         </div>
-
-                            <%--   <div class="col-md-6 column">
-                                   <div class="row">
-                                       <div class="col-md-4">
-                                           <div class="thumbnail">
-                                               <img alt="300x200" src="${pageContext.request.contextPath}/${book.imgUrl}" />
-                                               <div class="caption">
-                                                   <h4>
-                                                       ${book.bookName}
-                                                   </h4>
-                                                   <p>
-                                                       ${book.author}
-                                                   </p>
-                                                   <p style="text-align: center">
-                                                       <a class="btn btn-primary" href="#">详情</a>
-                                                       <a class="btn btn-primary" href="#">操作</a>
-                                                   </p>
-                                               </div>
-                                           </div>
-                                       </div>
-                                  &lt;%&ndash;     <div class="col-md-4">
-                                           <div class="thumbnail">
-                                               <img alt="300x200" src="${pageContext.request.contextPath}/${book.imgUrl}" />
-                                               <div class="caption">
-                                                   <h4>
-                                                           ${book.bookName}
-                                                   </h4>
-                                                   <p>
-                                                           ${book.author}
-                                                   </p>
-                                                   <p style="text-align: center">
-                                                       <a class="btn btn-primary" href="#">详情</a>
-                                                       <a class="btn btn-primary" href="#">操作</a>
-                                                   </p>
-                                               </div>
-                                           </div>
-                                       </div>
-                                       <div class="col-md-4">
-                                           <div class="thumbnail">
-                                               <img alt="300x200" src="${pageContext.request.contextPath}/${book.imgUrl}" />
-                                               <div class="caption">
-                                                   <h4>
-                                                           ${book.bookName}
-                                                   </h4>
-                                                   <p>
-                                                           ${book.author}
-                                                   </p>
-                                                   <p style="text-align: center">
-                                                       <a class="btn btn-primary" href="#">详情</a>
-                                                       <a class="btn btn-primary" href="#">操作</a>
-                                                   </p>
-                                               </div>
-                                           </div>
-                                       </div>&ndash;%&gt;
-                                   </div>
-                               </div>
-
-                               --%>
-
-                            <%--   <div class="col-md-6 column">
-                                   <div class="row">
-                                       <div class="col-md-4">
-                                           <div class="thumbnail">
-                                               <img alt="300x200" src="${pageContext.request.contextPath}/${book.imgUrl}" />
-                                               <div class="caption">
-                                                   <h4>
-                                                           ${book.bookName}
-                                                   </h4>
-                                                   <p>
-                                                           ${book.author}
-                                                   </p>
-                                                   <p style="text-align: center">
-                                                       <a class="btn btn-primary" href="#">详情</a>
-                                                       <a class="btn btn-primary" href="#">操作</a>
-                                                   </p>
-                                               </div>
-                                           </div>
-                                       </div>
-                                       <div class="col-md-4">
-                                           <div class="thumbnail">
-                                               <img alt="300x200" src="${pageContext.request.contextPath}/${book.imgUrl}" />
-                                               <div class="caption">
-                                                   <h4>
-                                                           ${book.bookName}
-                                                   </h4>
-                                                   <p>
-                                                           ${book.author}
-                                                   </p>
-                                                   <p style="text-align: center">
-                                                       <a class="btn btn-primary" href="#">详情</a>
-                                                       <a class="btn btn-primary" href="#">操作</a>
-                                                   </p>
-                                               </div>
-                                           </div>
-                                       </div>
-                                       <div class="col-md-4">
-                                           <div class="thumbnail">
-                                               <img alt="300x200" src="${pageContext.request.contextPath}/${book.imgUrl}" />
-                                               <div class="caption">
-                                                   <h4>
-                                                           ${book.bookName}
-                                                   </h4>
-                                                   <p>
-                                                           ${book.author}
-                                                   </p>
-                                                   <p style="text-align: center">
-                                                       <a class="btn btn-primary" href="#">详情</a>
-                                                       <a class="btn btn-primary" href="#">操作</a>
-                                                   </p>
-                                               </div>
-                                           </div>
-                                       </div>
-                                   </div>
-                               </div>
-
-                               --%>
                     </div>
                 </c:forEach>
             </div>
@@ -232,14 +122,32 @@
         });
     }
 
-    //下架
-    function soldOutBook() {
+    function noSoldOutBook(bookId) {
         $.messager.confirm('提示', '是否确定下架该商品？', function (r) {
             if (r) {
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/',
+                    url: '${pageContext.request.contextPath}/book/modifyBookState_CNG_CHC.do?status=1&bookId=' + bookId,
                     type: 'post',
-                    dataType: 'json',
+                    dataType: 'text',
+                    success: function (data) {
+                        if (data == "success") {
+                            $.messager.alert('成功', '该商品已下架！', 'info');
+                        } else {
+                            $.messager.alert('提示', '失败！', 'danger');
+                        }
+                    }
+                });
+            }
+        });
+    }
+    //下架
+    function soldOutBook(bookId) {
+        $.messager.confirm('提示', '是否确定下架该商品？', function (r) {
+            if (r) {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/book/modifyBookState_CNG_CHC.do?status=0&bookId=' + bookId,
+                    type: 'post',
+                    dataType: 'text',
                     success: function (data) {
                         if (data == "success") {
                             $.messager.alert('成功', '该商品已下架！', 'info');

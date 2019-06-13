@@ -39,9 +39,21 @@ public interface CategoryMapper {
 
     //修改分类名
 
-
     public List<Sort> selectAllSort();
 
+    public List<Sort> selectAllParentSort();
+
+    public List<Sort> selectAllSonSortByParentId(Integer sortId);
+
+
+    //
+    public Integer getCurntSortId();
+
+    public void addNewSort_CNG_001(Sort sort);
+
+    public void updateOneSortInfo_CNG_001(Sort sort);
+
+    public void deleteOneSortInfo_CNG_001(Integer sortId);
 
 
 

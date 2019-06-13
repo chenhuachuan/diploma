@@ -174,5 +174,36 @@
     <select id="selectAllSort" resultMap="parent_level">
         select id pid,sort_name pname,sort_count pcount,parent_id ppid from tf_sort where sort_name!=''
     </select>
+    <!--一级-->
+    <select id="selectAllParentSort" resultType="Sort">
+        select id sortId,sort_name sortName,sort_count sortCount,parent_id parentId from tf_sort where sort_name!='' and parent_id='0'
+    </select>
+    <!--二级-->
+    <select id="selectAllSonSortByParentId" parameterType="Integer" resultType="Sort">
+        select id sortId,sort_name sortName,sort_count sortCount,parent_id parentId from tf_sort where parent_id=#{sortId} and sort_name!=''
+    </select>
+
+    <select id="getCurntSortId" resultType="Integer">
+        SELECT id FROM tf_sort order by id desc limit 0,1
+    </select>
+    <insert id="addNewSort_CNG_001" parameterType="Sort">
+        insert into tf_sort values(#{sortId},#{sortName},#{sortCount},#{parentId})
+    </insert>
+    <update id="updateOneSortInfo_CNG_001" parameterType="Sort">
+        update tf_sort
+        <trim prefix="set" suffixOverrides=",">
+            <if test="sortName!=null and sortName!=''">
+                sort_name=#{sortName},
+            </if>
+            <if test="parentId!=null and parentId!=''">
+                parent_id=#{parentId}
+            </if>
+        </trim>
+        where id=#{sortId}
+    </update>
+    <delete id="deleteOneSortInfo_CNG_001" parameterType="Integer">
+        delete from tf_sort where id=#{sortId}
+    </delete>
+
 
 </mapper>

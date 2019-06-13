@@ -1,6 +1,7 @@
 package com.jz1501.chenhc.diploma.tfbook.dao;
 
 import com.jz1501.chenhc.diploma.tfbook.entity.Order;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,4 +26,23 @@ public interface OrderDao {
     public void deleteOrderInfoByOrderNumber(String orderNumber);
 
     public Order selectOrderInfoByOrderNumber(String orderNumber);
+
+    //取消订单
+    public void updateOrderStatus_cancel(String orderNumber);
+
+    //bg
+    public List<Order> selectAllOrdersByAdmin(@Param("row") Integer row, @Param("index") Integer index, @Param("orderNumber") String orderNumber);
+
+    public Integer selectOrderInfoCount();
+
+    public Integer selectOrderInfoCountBySearch(String orderNumber);
+
+    public Order selectOneOrderByNumber(String orderId);
+
+    //管理员删除
+    public void updateStatusByAdmin(String orderNumber);
+
+    public void updateStatusDeliver(String orderNumber);
+
+
 }

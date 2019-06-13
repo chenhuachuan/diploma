@@ -32,5 +32,17 @@ public interface CategoryService {
 
     public List<Sort> queryAllSort();
 
+    public List<Sort> queryAllParentSort();
+
+    public List<Sort> queryAllSonSortByParentId(Integer sortId);
+
+    //sort
+    public Integer getSortPkNumber();
+
+    public void addNewSort_CNG_Ser(Sort sort);
+
+    public void updateOneSortInfo_CNG_Ser(Sort sort);
+
+    public void deleteOneSortInfo_CNG_Ser(Integer sortId);
 
 }

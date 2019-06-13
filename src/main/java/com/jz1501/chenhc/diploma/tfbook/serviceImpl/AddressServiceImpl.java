@@ -41,4 +41,9 @@ public class AddressServiceImpl implements AddressService {
     public void modifyAddress(Address address) {
         addressDao.updateOldAddress(address);
     }
+
+    @Override
+    public Address queryAddressById(String addressId) {
+        return addressDao.selectOneAddressByID(addressId);
+    }
 }

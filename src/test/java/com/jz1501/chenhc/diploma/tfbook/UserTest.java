@@ -1,9 +1,6 @@
 package com.jz1501.chenhc.diploma.tfbook;
 
-import com.jz1501.chenhc.diploma.tfbook.entity.Address;
-import com.jz1501.chenhc.diploma.tfbook.entity.Book;
-import com.jz1501.chenhc.diploma.tfbook.entity.Sort;
-import com.jz1501.chenhc.diploma.tfbook.entity.WishList;
+import com.jz1501.chenhc.diploma.tfbook.entity.*;
 import com.jz1501.chenhc.diploma.tfbook.service.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
@@ -29,10 +26,39 @@ public class UserTest extends TestTfBookDemo {
     private WishListService wishListService;
     @Autowired
     private AddressService addressService;
-
-
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private CascadingService cascadingService;
+    @Autowired
+    private OrderFlowService orderFlowService;
+    @Autowired
+    private BorService borService;
+
+    @Test
+    public void test22d() {
+        //Integer row, Integer page, String search, Date fromDate, Date toDate
+        List<Sort> sorts = categoryService.queryAllSonSortByParentId(1);
+        for (Sort sort : sorts) {
+            System.out.println(sort);
+        }
+    }
+
+    @Test
+    public void test222d() {
+        Bor bor = borService.queryDealInfoStaties();
+        System.out.println(bor);
+    }
+
+    @Test
+    public void test2d() {
+        List<OrderFlow> orderFlows = orderFlowService.queryAllFlowByAdmin(10, 1, "");
+        for (OrderFlow orderFlow : orderFlows) {
+            System.out.println(orderFlow.getOrderNum());
+        }
+
+    }
+
 
     @Test
     public void test() throws ParseException {
@@ -132,8 +158,9 @@ public class UserTest extends TestTfBookDemo {
 
     @Test
     public void getUUID() {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
             System.out.println(UUID.randomUUID().toString().replace("-", ""));
+            System.out.println("------------------------------");
 
         }
     }

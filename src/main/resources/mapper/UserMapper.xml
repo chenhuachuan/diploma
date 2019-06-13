@@ -3,23 +3,44 @@
 <mapper namespace="com.jz1501.chenhc.diploma.tfbook.dao.UserMapper">
 
     <insert id="insertIntoUser" parameterType="com.jz1501.chenhc.diploma.tfbook.entity.User">
-        insert into tf_user values(#{userId},#{userName},#{password},#{email},#{salt},#{status},#{registTime},#{sex},#{birthdate},#{phone},#{nickName})
+        insert into tf_user(id,user_name,password,email,salt,status,regist_time,sex,birth_date,phone,nick_name)
+        values(#{userId},#{userName},#{password},#{email},#{salt},#{status},#{registTime},#{sex},#{birthdate},#{phone},#{nickName})
     </insert>
 
     <select id="selectByNameAndPassword" resultType="User">
-        SELECT id as userId,user_name as userName,nick_name as nickName,password,email from tf_user where email=#{email} and password=#{password}
+        SELECT id as userId,user_name as userName,nick_name as nickName,password,email,sex,birth_date as
+        birthdate,phone,status from tf_user where email=#{email} and password=#{password} and status!='88'
+    </select>
+    <select id="selectByEmail" resultType="User">
+        SELECT id as userId,user_name as userName,nick_name as nickName,password,email,sex,regist_time as
+        registTime,birth_date as birthdate,phone,status from tf_user where email=#{email} and status!='88'
     </select>
 
     <select id="selectAdminLogin" resultType="User">
-        SELECT id as userId,user_name as userName,nick_name as nickName,password,email from tf_user where user_name=#{adminName} and password=#{password}
+        SELECT id as userId,user_name as userName,nick_name as nickName,password,email from tf_user where
+        user_name=#{adminName} and password=#{password} and status!='1'
     </select>
 
     <select id="examineEmailExistOrNot" parameterType="String" resultType="String">
-        select email from tf_user where email=#{email}
+        select email from tf_user where email=#{email} and status!='88'
     </select>
 
+    <update id="findOrUpdatePwd">
+        update tf_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="password!=null and password!=''">
+                password=#{password},
+            </if>
+            <if test="salt!=null and salt!=''">
+                salt=#{salt}
+            </if>
+        </trim>
+        where id=#{userId}
+    </update>
+
+
     <select id="examinePhoneNumExist" parameterType="String" resultType="String">
-        select phone from tf_user where phone=#{phone}
+        select phone from tf_user where phone=#{phone} and status!='88'
     </select>
 
     <select id="selectAllUsersInfo" resultType="User">
@@ -67,49 +88,60 @@
         select id userId,user_name userName,password,email,sex,salt,status,birth_date birthdate,regist_time
         registTime,phone,nick_name nickName
         from tf_user where status!='88'
-        <if test="search!=null and search!=''">
-            user_name like #{search}
-        </if>
-        <if test="fromDate!=null and fromDate!='' and search!=null">
-            <![CDATA[
-                  and regist_time >= #{fromDate}
-                 ]]>
-        </if>
-        <if test="fromDate!=null and fromDate!='' and search==null">
-            <![CDATA[
-                  regist_time >= #{fromDate}
-                 ]]>
-        </if>
-        <if test="toDate!=null and toDate!='' and fromDate!=null">
-            <![CDATA[ and regist_time < #{toDate} ]]>
-        </if>
-        <if test="toDate!=null and toDate!='' and fromDate==null">
-            <![CDATA[ regist_time < #{toDate} ]]>
+        <if test="search!=null">
+            and user_name like #{search}
         </if>
         limit #{index},#{row}
     </select>
-    <select id="selectTotalCountBySearchBg" resultType="Integer">
+    <select id="selectTotalCountBySearchBg" resultType="Integer" parameterType="String">
         select count(1)
         from tf_user where status!='88'
-        <if test="search!=null and search!=''">
-            user_name like #{search}
-        </if>
-        <if test="fromDate!=null and fromDate!='' and search!=null">
-            <![CDATA[
-                  and regist_time >= #{fromDate}
-                 ]]>
-        </if>
-        <if test="fromDate!=null and fromDate!='' and search==null">
-            <![CDATA[
-                  regist_time >= #{fromDate}
-                 ]]>
-        </if>
-        <if test="toDate!=null and toDate!='' and fromDate!=null">
-            <![CDATA[ and regist_time < #{toDate} ]]>
-        </if>
-        <if test="toDate!=null and toDate!='' and fromDate==null">
-            <![CDATA[ regist_time < #{toDate} ]]>
-        </if>
+        and user_name like #{search}
     </select>
 
+    <update id="updateUserInfo" parameterType="User">
+        update tf_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName!=null and userName!=''">
+                user_name=#{userName},
+            </if>
+            <if test="nickName!=null and nickName!=''">
+                nick_name=#{nickName},
+            </if>
+            <if test="email!=null and email!=''">
+                email=#{email},
+            </if>
+            <if test="sex!=null and sex!=''">
+                sex=#{sex},
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone=#{phone},
+            </if>
+        </trim>
+        where id=#{userId}
+
+    </update>
+
+    <update id="updateUserStatus">
+        update tf_user set status=#{status} where id=#{userId}
+    </update>
+
+
 </mapper>
+        <!--
+                <if test="fromDate!=null and fromDate!='' and search!=null">
+                    <![CDATA[
+                          and regist_time >= #{fromDate}
+                         ]]>
+                </if>
+                <if test="fromDate!=null and fromDate!='' and search==null">
+                    <![CDATA[
+                          regist_time >= #{fromDate}
+                         ]]>
+                </if>
+                <if test="toDate!=null and toDate!='' and fromDate!=null">
+                    <![CDATA[ and regist_time < #{toDate} ]]>
+                </if>
+                <if test="toDate!=null and toDate!='' and fromDate==null">
+                    <![CDATA[ regist_time < #{toDate} ]]>
+                </if>-->

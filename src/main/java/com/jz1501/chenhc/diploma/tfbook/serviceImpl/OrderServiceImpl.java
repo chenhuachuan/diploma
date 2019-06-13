@@ -101,42 +101,42 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+
+    //            booksItemCount=OI.getCount()+"";
+//            bookNames= OI.getBook().getBookName();
+//            booksLittlePrice=OI.getLittleCount()+"";
+//            booksPrice=OI.getBook().getBookPrice()+"";
+    //获取当前用户
+    //HttpSession session = ServletActionContext.getRequest().getSession(true);
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public void addNewOrder() {
-        //获取当前用户
-        //HttpSession session = ServletActionContext.getRequest().getSession(true);
         User curUser = (User) session.getAttribute("CurrentUser");
         //获得购物车信息
         Map<String, OrderItem> showCartMap = (Map) session.getAttribute("OrderInfo");
         Address addressInfo = (Address) session.getAttribute("AddressInfo");//地址信息
         Double totalMoney = (Double) session.getAttribute("totalMoney");
-
         //购买信息
         String booksItemCount = "", bookNames = "", booksLittlePrice = "", booksPrice = "", bookIds = "";
         for (String key : showCartMap.keySet()) {
-            OrderItem OI = showCartMap.get(key);//  itemId,bookId,orderId,count,littleCount.
-
-//            booksItemCount=OI.getCount()+"";
-//            bookNames= OI.getBook().getBookName();
-//            booksLittlePrice=OI.getLittleCount()+"";
-//            booksPrice=OI.getBook().getBookPrice()+"";
-
+            OrderItem OI = showCartMap.get(key);
             booksItemCount += OI.getBook().getBookName() + ":" + OI.getCount() + "本  ";
             bookNames += OI.getBook().getBookName() + "  ";
             booksLittlePrice += OI.getBook().getBookName() + "_小计:" + OI.getLittleCount() + "元  ";
             booksPrice += OI.getBook().getBookName() + ":" + OI.getBook().getBookPrice() + "元  ";
             bookIds += OI.getBookId() + ",";
-
             //查询库存
             Book book = bookMapper.selectBookDetailsByBookid(OI.getBookId());
             //修改库存
             if (book.getRepertory() >= OI.getCount()) {
                 bookMapper.updateBookCountBeforePurchase((book.getRepertory() - OI.getCount()), book.getBookId());
+                //修改销售量
+                bookMapper.updateBookSaleCountBeforePurchase((book.getSaleCount() + OI.getCount()), book.getBookId());
                 //插入订单项表： 未完成
             } else {
                 throw new RuntimeException("repertory is not enough!");
             }
+
         }
         Order order = new Order();
         order.setOrderId(UUID.randomUUID().toString().replace("-", ""));//主键
@@ -213,7 +213,6 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 订单详情
-     *
      * @param orderNumber
      * @return
      */
@@ -243,5 +242,45 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order queryOrderInfoById(String orderNumber) {
         return orderDao.selectOrderInfoByOrderNumber(orderNumber);
+    }
+
+    //bg
+    @Override
+    public List<Order> queryAllOrdersByAdmin(Integer rows, Integer page, String orderNumber) {
+        Integer index = (page - 1) * rows;
+        return orderDao.selectAllOrdersByAdmin(rows, index, orderNumber);
+    }
+
+    @Override
+    public Integer selectOrdersTotalCount() {
+        return orderDao.selectOrderInfoCount();
+    }
+
+    @Override
+    public Integer selectOrdersTotalCountBySearch(String orderNumber) {
+        return orderDao.selectOrderInfoCountBySearch(orderNumber);
+    }
+
+
+    @Override
+    public Order queryOneOrderDetail(String orderId) {
+        Order order = orderDao.selectOneOrderByNumber(orderId);
+        return order;
+    }
+
+    @Override
+    public void adminDeleteOrderInfo(String orderNumber) {
+        orderDao.updateStatusByAdmin(orderNumber);
+    }
+
+    @Override
+    public void adminDeliverOrder(String orderNumber) {
+        orderDao.updateStatusDeliver(orderNumber);
+    }
+
+    //取消订单
+    @Override
+    public void modifyOrderStatus_cancel(String orderNumber) {
+        orderDao.updateOrderStatus_cancel(orderNumber);
     }
 }

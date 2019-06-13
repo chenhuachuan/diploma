@@ -14,7 +14,7 @@ public class Order implements Serializable {
     private String receiveTel;//电话
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-    private String status;
+    private String status; //10:代付款，20：已付款 30：用户删除订单 40：发货  50:已发货  60：取消订单
     private String itemCount;//每本数量
     private String bookName;//图书名
     private String bookPrice;//图书价格
@@ -22,6 +22,16 @@ public class Order implements Serializable {
     private String userId;
     private String addressId;
     private String bookId;
+
+   /* private List<Book> booklist;//图书
+
+    public List<Book> getBooklist() {
+        return booklist;
+    }
+
+    public void setBooklist(List<Book> booklist) {
+        this.booklist = booklist;
+    }*/
 
     public String getBookId() {
         return bookId;

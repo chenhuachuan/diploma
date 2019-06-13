@@ -56,7 +56,8 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo.png" alt=""/></a>
+                    <a href="${pageContext.request.contextPath}/pages/home.jsp"><img
+                            src="${pageContext.request.contextPath}/image/lb/logo_v3.jpg" alt=""/></a>
                 </div>
                 <%-- 登录注册 jsp--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -93,22 +94,8 @@
 <div class="container">
     <div class="main">
         <%--确认订单--%>
-
-        <%--   <div class="shoping_bag1">
-               <h3><img src="${pageContext.request.contextPath}/pages/images/small.jpg">确认订单</h3><br/>
-               <div class="shoping_left">
-                   <div style="margin-left: 120px;">
-                       <address style="font-size:large">
-                           <strong>收货人：风清扬 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong>18754219658<br>
-                           <strong>收货地址：北京市北京通州马驹桥xxx街道七号楼3层</strong><br>
-                           <br>
-                       </address>
-                   </div>
-               </div>
-               <div class="clearfix"></div>
-           </div>--%>
         <div style="width:100%;height: 140px;">
-            <h3><img src="${pageContext.request.contextPath}/pages/images/small.jpg">确认订单及地址</h3><br/>
+            <h3><img src="${pageContext.request.contextPath}/image/lb/loc.jpg">确认订单及地址</h3><br/>
 
             <div class="shoping_bag1">
                 <div class="shoping_left">
@@ -143,7 +130,7 @@
                 <c:set var="totalPurchaseCount" value="${totalPurchaseCount+map.value.count}"></c:set>
                 <div class="shoping_left">
                     <div class="shoping1_of_1">
-                        <img src="${pageContext.request.contextPath}${map.value.book.imgUrl}" class="img-responsive"
+                        <img src="${pageContext.request.contextPath}/${map.value.book.imgUrl}" class="img-responsive"
                              alt=""/>
                     </div>
                     <div class="shoping1_of_2">

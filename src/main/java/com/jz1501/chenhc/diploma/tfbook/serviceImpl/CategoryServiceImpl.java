@@ -6,6 +6,7 @@ import com.jz1501.chenhc.diploma.tfbook.service.CategoryService;
 import com.whalin.MemCached.MemCachedClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -154,5 +155,41 @@ public class CategoryServiceImpl implements CategoryService {
             memCachedClient.add(key, sorts);
         }
         return (List<Sort>) sorts;
+    }
+
+    @Override
+    public List<Sort> queryAllParentSort() {
+        return categoryMapper.selectAllParentSort();
+    }
+
+    @Override
+    public List<Sort> queryAllSonSortByParentId(Integer sortId) {
+        return categoryMapper.selectAllSonSortByParentId(sortId);
+    }
+
+    @Override
+    public Integer getSortPkNumber() {
+        return categoryMapper.getCurntSortId();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public void addNewSort_CNG_Ser(Sort sort) {
+        categoryMapper.addNewSort_CNG_001(sort);
+        memCachedClient.flushAll();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public void updateOneSortInfo_CNG_Ser(Sort sort) {
+        categoryMapper.updateOneSortInfo_CNG_001(sort);
+        memCachedClient.flushAll();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public void deleteOneSortInfo_CNG_Ser(Integer sortId) {
+        categoryMapper.deleteOneSortInfo_CNG_001(sortId);
+        memCachedClient.flushAll();
     }
 }

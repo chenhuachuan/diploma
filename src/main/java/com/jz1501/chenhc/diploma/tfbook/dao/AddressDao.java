@@ -17,4 +17,6 @@ public interface AddressDao {
     //修改d
     public void updateOldAddress(Address address);
 
+    public Address selectOneAddressByID(String addressId);
+
 }

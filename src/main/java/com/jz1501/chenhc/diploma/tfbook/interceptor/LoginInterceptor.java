@@ -25,18 +25,24 @@ public class LoginInterceptor implements HandlerInterceptor {
         String ClazzName = o.toString();
         String[] strs = ClazzName.split(" ");
         String methodName = strs[2];
+
         String str1 = "com.jz1501.chenhc.diploma.tfbook.controller.UserController.myFavoriteBooks(javax.servlet.http.HttpSession,org.springframework.ui.Model)";
         String str2 = "com.jz1501.chenhc.diploma.tfbook.controller.ShoppingCartController.checkoutOrder(javax.servlet.http.HttpSession)";
         String str3 = "com.jz1501.chenhc.diploma.tfbook.controller.ShoppingCartController.checkoutOrder(java.lang.String,java.lang.Integer,javax.servlet.http.HttpSession)";
         String str4 = "com.jz1501.chenhc.diploma.tfbook.controller.UserController.addBookToWishList(java.lang.String,javax.servlet.http.HttpSession)";
         String str5 = "com.jz1501.chenhc.diploma.tfbook.controller.ShoppingCartController.queryUserOrderInfo(org.springframework.ui.Model,javax.servlet.http.HttpSession)";
+        String str6 = "com.jz1501.chenhc.diploma.tfbook.controller.UserController.personalCenter(javax.servlet.http.HttpSession,org.springframework.ui.Model)";
         if (str2.equals(methodName) || str3.equals(methodName)) {
             access = "checkorder";
         } else if (str1.equals(methodName) || str4.equals(methodName)) {
             access = "wish";
         } else if (str5.equals(methodName)) {
             access = "orderlist";
+        } else if (str6.equals(methodName)) {
+            access = "personalCenter";
         }
+
+        System.out.println(access);
         //获取session
         HttpSession session = request.getSession(true);
         Object loginFlag = session.getAttribute("CurrentUser");
@@ -56,6 +62,11 @@ public class LoginInterceptor implements HandlerInterceptor {
             } else if ("orderlist".equals(access)) {
                 //终止请求，并重定向到登录界面
                 session.setAttribute("order_To_login", "toOrderList");
+                response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
+                return false;
+            } else if ("personalCenter".equals(access)) {
+                //终止请求，并重定向到登录界面
+                session.setAttribute("center_To_login", "to_peraonal_center");
                 response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
                 return false;
             } else {

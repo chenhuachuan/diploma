@@ -34,7 +34,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo_v3.jpg" alt=""/></a>
                 </div>
                 <%-- 登录注册--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -69,7 +69,7 @@
             <div class="shoping_bag1">
                 <div class="shoping_left">
                     <div class="shoping1_of_1">
-                        <img src="${pageContext.request.contextPath}${map.value.book.imgUrl}" class="img-responsive"
+                        <img src="${pageContext.request.contextPath}/${map.value.book.imgUrl}" class="img-responsive"
                              alt=""/>
                     </div>
                     <div class="shoping1_of_2">
@@ -137,27 +137,6 @@
             <div class="clearfix"></div>
         </div>
 
-        <%--    <div class="shoping_bag1">
-                <div class="shoping_left">
-                    <h2><a href="#"><img src="../pages/images/gift.jpg">服务</a> <span>&lt;%&ndash;￥. 25&ndash;%&gt;</span></h2>
-                </div>
-                <div class="shoping_right">
-                    <p>快递 &nbsp;<a href="#">free</a>&nbsp;<span> ￥ 0</span></p>
-                    <p>其他 &nbsp;<span> ￥ 0</span></p>
-                    <p>小计 &nbsp;<span> ￥ 0</span></p>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="shoping_bag1">
-                <div class="shoping_left">
-                    <h2><a href="#"><img src="../pages/images/login.jpg">使用 </a> <span> 优惠券</span></h2>
-                </div>
-                <div class="shoping_right">
-                    <p>优惠券 &nbsp;<span class="color"> ￥ 0</span></p>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            --%>
         <div class="shoping_bag2">
             <div class="shoping_left">
                 <%-- <a class="btn1" href="${pageContext.request.contextPath}/cart/purchase/fillReceiveAddress.do">确认订单</a>&nbsp;&nbsp;&nbsp;&nbsp;--%>

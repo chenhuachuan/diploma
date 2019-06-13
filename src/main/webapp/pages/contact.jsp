@@ -81,15 +81,12 @@
     </script>
 </div>
 
-<!-- script-for-nav -->
 <script>
     $("span.menu").click(function () {
         $(".head-nav ul").slideToggle(300, function () {
-            // Animation complete.
         });
     });
 </script>
-<!-- script-for-nav -->
 
 <div class="banner1">
     <div class="container">
@@ -99,7 +96,7 @@
 <!-- header -->
 <!-- content -->
 <div class="container"
-     style="background-color: rgba(245,255,246,0.87)/*background-image: url('../image/beauty/bg8.jpg');background-repeat: no-repeat;*/">
+     style="background-color: rgba(210,206,231,0.63)/*background-image: url('../image/beauty/bg8.jpg');background-repeat: no-repeat;*/">
     <div class="main">
         <div class="contact">
             <div class="contact_info">
@@ -112,7 +109,7 @@
                 </div>
             </div>
             <div class="col-md-6 pull-left">
-                <div class="contact-form" style="background-color: rgba(170,207,255,0.87);">
+                <div class="contact-form" style="background-color: rgba(191,231,222,0.63);">
                     <h2 class="col-md-offset-1">请邮箱联系我</h2>
                 <form method="post" action="contact-post.html">
                     <div class="col-md-offset-1">

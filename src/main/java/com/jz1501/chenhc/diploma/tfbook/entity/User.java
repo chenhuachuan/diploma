@@ -1,5 +1,7 @@
 package com.jz1501.chenhc.diploma.tfbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,6 +13,7 @@ public class User implements Serializable {
     private String email;
     private String salt;
     private String status;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date registTime;
     private String sex;
     private Date birthdate;
@@ -64,6 +67,7 @@ public class User implements Serializable {
         return "User{" +
                 "userId='" + userId + '\'' +
                 ", userName='" + userName + '\'' +
+                ", nickName='" + nickName + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", salt='" + salt + '\'' +
@@ -72,6 +76,7 @@ public class User implements Serializable {
                 ", sex='" + sex + '\'' +
                 ", birthdate=" + birthdate +
                 ", phone='" + phone + '\'' +
+                ", address=" + address +
                 '}';
     }
 

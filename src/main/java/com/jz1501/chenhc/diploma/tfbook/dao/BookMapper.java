@@ -12,6 +12,8 @@ public interface BookMapper {
 
     public List<Book> selectBookByPublishTimeTwo();
 
+    public List<Book> selectBookByPublishTimeBG();
+
     //编辑推荐啊
     public List<Book> selectBookByRecommend();
 
@@ -95,15 +97,17 @@ public interface BookMapper {
 
 
     //bg
-    public List<Book> selectAllBooksInfo(@Param("row") Integer row, @Param("index") Integer index);
+    //, @Param("startDate")Date startDate, @Param("endDate")Date endDate
+    public List<Book> selectAllBooksInfo(@Param("row") Integer row, @Param("index") Integer index, @Param("bookName") String bookName);
 
+    public Integer selectTotalCountBySearch(String bookName);
     public Integer selectTotalCount();
 
     public void addNewBook(Book book);
 
-    public void updateBookInfo(Book book);
+    public void updateBook_DaoInfo(Book book);
 
-    public void updateBookStatus(String bookId);
+    public void updateBookStatus_xia(@Param("bookId") String bookId, @Param("status") String status);
 
     public Integer selectBookTotalCount();
 

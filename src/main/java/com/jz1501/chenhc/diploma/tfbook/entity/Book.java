@@ -1,6 +1,6 @@
 package com.jz1501.chenhc.diploma.tfbook.entity;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,7 +11,7 @@ public class Book implements Serializable {
     private Integer sortId;
     private String author;
     private String publishCompany;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date publishTime;
     private Integer wordCount;
     private Integer pageCount;
@@ -24,7 +24,7 @@ public class Book implements Serializable {
     private String imgUrl;
     private String bookIntro;
     private String commend;
-    private String status;
+    private String status;///000:下架
 
     public String getStatus() {
         return status;
@@ -246,5 +246,6 @@ public class Book implements Serializable {
         this.bookIntro = bookIntro;
         this.commend = commend;
     }
+
 }
 

@@ -57,7 +57,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo_v3.jpg" alt=""/></a>
                 </div>
                 <%-- 登录注册 jsp--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -96,7 +96,7 @@
         <div>
             <jsp:include page="../pay/paynow.jsp"/>
         </div>
-        <div class="shoping_bag2">
+        <div class="shoping_bag2" style="display: none;">
             <div class="shoping_left" style="display: none">
                 <a class="btn1" href="${pageContext.request.contextPath}/pages/home.jsp">返回首页</a>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
@@ -113,7 +113,8 @@
                             <div class="product-desc">
                                 <div class="product-img">
                                     <a href="">
-                                        <img src="..${book.imgUrl}" class="img-responsive"
+                                        <img src="${pageContext.request.contextPath}/${book.imgUrl}"
+                                             class="img-responsive"
                                              style="width: 130px;height: 130px;" alt=""/></a>
                                 </div>
                                 <div class="prod1-desc">

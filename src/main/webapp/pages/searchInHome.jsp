@@ -69,7 +69,7 @@
         <div class="container">
             <div class="header_top">
                 <div class="logo">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo.png" alt=""/></a>
+                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/image/lb/logo_v3.jpg" alt=""/></a>
                 </div>
                 <%-- user login and regsit jsp--%>
                 <%@include file="innerpage/login_regist.jsp" %>
@@ -128,25 +128,27 @@
             </div>
             <div>
                 <%--根据用户选择排序--%>
-                <ul class="w_nav" style="font-size: medium">
-                    <li>综合排序 :</li>
-                    <li><a class="active"
-                           href="${pageContext.request.contextPath}/book/searchBooksInHome.do?searchFlag=${searchFlag}&sortFlag=pop">销量</a>
-                    </li>
-                    |
-                    <li>
-                        <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?searchFlag=${searchFlag}&sortFlag=new">最新</a>
-                    </li>
-                    |
-                    <li>
-                        <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?searchFlag=${searchFlag}&sortFlag=discount">优惠价</a>
-                    </li>
-                    |
-                    <li>
-                        <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?searchFlag=${searchFlag}&sortFlag=price">价格</a>
-                    </li>
-                    <div class="clear"></div>
-                </ul>
+                <c:if test="${totalCount!=0}">
+                    <ul class="w_nav" style="font-size: medium">
+                        <li>综合排序 :</li>
+                        <li><a class="active"
+                               href="${pageContext.request.contextPath}/book/searchBooksInHome.do?searchFlag=${searchFlag}&sortFlag=pop">销量</a>
+                        </li>
+                        |
+                        <li>
+                            <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?searchFlag=${searchFlag}&sortFlag=new">最新</a>
+                        </li>
+                        |
+                        <li>
+                            <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?searchFlag=${searchFlag}&sortFlag=discount">优惠价</a>
+                        </li>
+                        |
+                        <li>
+                            <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?searchFlag=${searchFlag}&sortFlag=price">价格</a>
+                        </li>
+                        <div class="clear"></div>
+                    </ul>
+                </c:if>
                 <div class="clearfix"></div>
             </div>
             <%--搜索结果--%>
@@ -156,7 +158,7 @@
                         <div class="content_box">
                             <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${book.bookId}">
                                 <div class="view view-fifth">
-                                    <img src="${pageContext.request.contextPath}${book.imgUrl}" class="img-responsive"
+                                    <img src="${pageContext.request.contextPath}/${book.imgUrl}" class="img-responsive"
                                          alt=""/>
                                     <div class="mask">
                                         <div class="info">Quick View</div>
@@ -195,64 +197,66 @@
                 </c:forEach>
             </div>
             <%--分页信息--%>
-            <div class="col-lg-12" style="padding-top: 30px;text-align: center;">
-                <ul class="pagination pagination-lg">
-                    <%--上一页--%>
-                    <c:if test="${currentPage<=1}">
-                        <li class="disabled"><a href="#">&laquo;</a></li>
-                    </c:if>
-                    <c:if test="${currentPage>1}">
-                        <li>
-                            <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?currentPage=${currentPage-1}&searchFlag=${searchFlag}&sortFlag=${sortFlag}">&laquo;</a>
-                        </li>
-                    </c:if>
-                    <c:if test="${totalPages>2}">
-                        <c:forEach begin="1" step="1" end="${totalPages-1}" varStatus="statusA">
-                            <li
-                                    <c:if test="${currentPage==statusA.index}">
-                                        class="active"
-                                    </c:if>
-                            >
-                                <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?currentPage=${statusA.index+1}&searchFlag=${searchFlag}&sortFlag=${sortFlag}">${statusA.index}</a>
+            <c:if test="${totalCount!=0}">
+                <div class="col-lg-12" style="padding-top: 30px;text-align: center;">
+                    <ul class="pagination pagination-lg">
+                            <%--上一页--%>
+                        <c:if test="${currentPage<=1}">
+                            <li class="disabled"><a href="#">&laquo;</a></li>
+                        </c:if>
+                        <c:if test="${currentPage>1}">
+                            <li>
+                                <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?currentPage=${currentPage-1}&searchFlag=${searchFlag}&sortFlag=${sortFlag}">&laquo;</a>
                             </li>
-                        </c:forEach>
-                    </c:if>
+                        </c:if>
+                        <c:if test="${totalPages>2}">
+                            <c:forEach begin="1" step="1" end="${totalPages-1}" varStatus="statusA">
+                                <li
+                                        <c:if test="${currentPage==statusA.index}">
+                                            class="active"
+                                        </c:if>
+                                >
+                                    <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?currentPage=${statusA.index}&searchFlag=${searchFlag}&sortFlag=${sortFlag}">${statusA.index}</a>
+                                </li>
+                            </c:forEach>
+                        </c:if>
 
-                    <c:if test="${totalPages<=2}">
-                        <c:forEach begin="1" step="1" end="${totalPages}" varStatus="statusA">
-                            <li
-                                    <c:if test="${currentPage==statusA.index}">
-                                        class="active"
-                                    </c:if>
-                            >
-                                <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?currentPage=${statusA.index+1}&&searchFlag=${searchFlag}&sortFlag=${sortFlag}">${statusA.index}</a>
-                            </li>
-                        </c:forEach>
-                    </c:if>
-                    <li class="disabled"><a>...</a></li>
-                    <%--总页数--%>
-                    <li
-                            <c:if test="${currentPage==totalPages}">
-                                class="active"
-                            </c:if>
-                    >
-                        <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?currentPage=${totalPages}&searchFlag=${searchFlag}&sortFlag=${sortFlag}">${totalPages}</a>
-                    </li>
-
-                    <%--下一页--%>
-                    <c:if test="${currentPage<totalPages}">
-                        <li>
-                            <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?currentPage=${currentPage+1}&searchFlag=${searchFlag}&sortFlag=${sortFlag}">&raquo;</a>
+                        <c:if test="${totalPages<=2}">
+                            <c:forEach begin="1" step="1" end="${totalPages}" varStatus="statusA">
+                                <li
+                                        <c:if test="${currentPage==statusA.index}">
+                                            class="active"
+                                        </c:if>
+                                >
+                                    <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?currentPage=${statusA.index+1}&&searchFlag=${searchFlag}&sortFlag=${sortFlag}">${statusA.index}</a>
+                                </li>
+                            </c:forEach>
+                        </c:if>
+                        <li class="disabled"><a>...</a></li>
+                            <%--总页数--%>
+                        <li
+                                <c:if test="${currentPage==totalPages}">
+                                    class="active"
+                                </c:if>
+                        >
+                            <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?currentPage=${totalPages}&searchFlag=${searchFlag}&sortFlag=${sortFlag}">${totalPages}</a>
                         </li>
-                    </c:if>
-                    <c:if test="${currentPage==totalPages}">
-                        <li class="disabled"><a>&raquo;</a></li>
-                    </c:if>
-                    <c:if test="${totalPages==0}">
-                        <li class="disabled"><a>&raquo;</a></li>
-                    </c:if>
-                </ul>
-            </div>
+
+                            <%--下一页--%>
+                        <c:if test="${currentPage<totalPages}">
+                            <li>
+                                <a href="${pageContext.request.contextPath}/book/searchBooksInHome.do?currentPage=${currentPage+1}&searchFlag=${searchFlag}&sortFlag=${sortFlag}">&raquo;</a>
+                            </li>
+                        </c:if>
+                        <c:if test="${currentPage==totalPages}">
+                            <li class="disabled"><a>&raquo;</a></li>
+                        </c:if>
+                        <c:if test="${totalPages==0}">
+                            <li class="disabled"><a>&raquo;</a></li>
+                        </c:if>
+                    </ul>
+                </div>
+            </c:if>
             <div class="clearfix"></div>
 
         </div>
@@ -280,7 +284,8 @@
                                     <li>
                                         <div class="tittle">
                                             <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${tbook.bookId}">
-                                                <img src="..${tbook.imgUrl}" class="img-responsive" alt=""/>
+                                                <img src="${pageContext.request.contextPath}/${tbook.imgUrl}"
+                                                     class="img-responsive" alt=""/>
                                             </a><br/>
                                             <center>
                                                 <a href="${pageContext.request.contextPath}/book/bookDetails.do?bookId=${tbook.bookId}">
@@ -297,36 +302,6 @@
                                     </li>
                                 </c:forEach>
 
-                                <%-- <li>
-                                     <div class="tittle">
-                                         <img src="images/shoe.jpg" class="img-responsive" alt=""/>
-                                         <h6>Item Title Here</h6>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <a class="show1" href="#">SHOW ME MORE</a>
-                                     </div>
-                                 </li>
-                                 <li>
-                                     <div class="tittle">
-                                         <img src="images/shoe.jpg" class="img-responsive" alt=""/>
-                                         <h6>Item Title Here</h6>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <a class="show1" href="#">SHOW ME MORE</a>
-                                     </div>
-                                 </li>
-                                 <li>
-                                     <div class="tittle">
-                                         <img src="images/shoe.jpg" class="img-responsive" alt=""/>
-                                         <h6>Item Title Here</h6>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <p>Lorem ipsum dolor sit amet,</p>
-                                         <a class="show1" href="#">SHOW ME MORE</a>
-                                     </div>
-                                 </li>--%>
                             </ul>
                         </div>
 

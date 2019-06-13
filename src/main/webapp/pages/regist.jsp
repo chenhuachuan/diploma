@@ -31,7 +31,6 @@
     <script src="js/jquery.etalage.min.js"></script>
     <script>
         jQuery(document).ready(function ($) {
-
             $('#etalage').etalage({
                 thumb_image_width: 300,
                 thumb_image_height: 400,
@@ -39,7 +38,6 @@
                 source_image_height: 1200,
                 show_hint: true,
                 click_callback: function (image_anchor, instance_id) {
-                    //alert('Callback example:\nYou clicked on an image with the anchor: "'+image_anchor+'"\n(in Etalage instance: "'+instance_id+'")');
                 }
             });
 
@@ -84,7 +82,7 @@
 <!-- header -->
 <!-- content -->
 <div class="container">
-    <div class="main" style="background-image: url('../image/beauty/bg8.jpg');background-repeat: no-repeat">
+    <div class="main" style="background-color: rgba(210,206,231,0.63);">
         <!-- start registration -->
         <div class="registration" style="text-align: center">
             <div class="registration_left" style="background-color: rgba(170,207,255,0.87);">
@@ -273,6 +271,7 @@
                 success: function (result) {
                     if (result == "yes") {
                         $("#tipsDiv").show().attr("class", "alert alert-danger").empty().html("此邮箱已经被注册");
+                        $("#rg_email").val("");
                     } else {
                         $("#tipsDiv").show().attr("class", "alert alert-success").empty().html("此邮箱可使用");
                     }
@@ -298,7 +297,6 @@
 
 </script>
 
-<!-- script-for-nav -->
 <script>
     $("span.menu").click(function () {
         $(".head-nav ul").slideToggle(300, function () {
@@ -306,6 +304,5 @@
         });
     });
 </script>
-<!-- script-for-nav -->
 </body>
 </html>

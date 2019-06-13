@@ -51,4 +51,42 @@
         from tf_order where order_id=#{orderNumber}
     </select>
 
+
+    <!--bg-->
+    <select id="selectAllOrdersByAdmin" resultMap="order_all_colnum">
+        select
+        id,order_id,total_price,addr_name,receive_name,receive_tel,create_time,status,user_id,address_id,item_count,book_name,item_little_price,book_price,book_id
+        from tf_order where status!='40'
+        <if test="orderNumber!=null">
+            and order_id=#{orderNumber}
+        </if>
+        limit #{index},#{row}
+    </select>
+
+    <select id="selectOrderInfoCountBySearch" resultType="Integer" parameterType="String">
+        select count(1) from tf_order where status!='40' and order_id=#{orderNumber}
+    </select>
+    <select id="selectOrderInfoCount" resultType="Integer">
+        select count(1) from tf_order where status!='40'
+    </select>
+
+    <select id="selectOneOrderByNumber" parameterType="String" resultMap="order_all_colnum">
+        select id,order_id,total_price,addr_name,receive_name,receive_tel,create_time,status,user_id,address_id,item_count,book_name,item_little_price,book_price,book_id
+        from tf_order where id=#{orderId}
+    </select>
+
+
+    <update id="updateStatusByAdmin" parameterType="String">
+        update tf_order set status="40" where order_id=#{orderNumber}
+    </update>
+
+    <update id="updateOrderStatus_cancel" parameterType="String">
+        update tf_order set status="60" where order_id=#{orderNumber}
+    </update>
+
+    <update id="updateStatusDeliver" parameterType="String">
+        update tf_order set status="50" where order_id=#{orderNumber}
+    </update>
+
+
 </mapper>

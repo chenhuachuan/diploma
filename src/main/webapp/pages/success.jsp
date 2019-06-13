@@ -84,12 +84,6 @@
 </div>
 <!-- header end -->
 
-<div class="banner1">
-    <div class="container">
-
-    </div>
-</div>
-
 <%@ page import="com.alipay.api.internal.util.AlipaySignature" %>
 <%@ page import="com.jz1501.chenhc.diploma.tfbook.util.AlipayConfig" %>
 <%@ page import="java.util.HashMap" %>
@@ -111,37 +105,39 @@
         valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
         params.put(name, valueStr);
     }
-
     boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.alipay_public_key, AlipayConfig.charset, AlipayConfig.sign_type); //调用SDK验证签名
 
-//    if(signVerified) {
-//        //商户订单号
-//        String orderNumber = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
-//        //out.println("out_trade_no:"+out_trade_no);
-//        OrderService os=new OrderServiceImpl();
-//        os.modifyOrderStatus(orderNumber);
-//
-//
-//
-//    }else{
-//        response.sendRedirect(request.getContextPath() + "/pages/home.jsp");
-//    }
-    //——请在这里编写您的程序（以下代码仅作参考）——
-//    if(signVerified) {
-//        //商户订单号
-//        String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
-//
-//        //支付宝交易号
-//        String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
-//
-//        //付款金额
-//        String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"),"UTF-8");
-//
-//        out.println("trade_no:"+trade_no+"<br/>out_trade_no:"+out_trade_no+"<br/>total_amount:"+total_amount);
-//    }else {
-//        out.println("验签失败");
-//    }
-    //——请在这里编写您的程序（以上代码仅作参考）——
+    if (signVerified) {
+        System.out.println("---------------seccess_URL----TRADE_success----------");
+
+        //商户订单号
+        String orderNumber = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"), "UTF-8");
+        String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"), "UTF-8");
+
+        System.out.println("订单号：" + orderNumber);
+        System.out.println("交易号：" + trade_no);
+        response.sendRedirect(request.getContextPath() + "/order/modifyOrderStauts.do?orderNumber=" + orderNumber + "&flowNumber=" + trade_no);
+
+
+        /*if (trade_status.equals("TRADE_FINISHED")) {
+
+            System.out.println("---------------Notify_URL----TRADE_FINISHED----------");
+
+        } else if (trade_status.equals("TRADE_SUCCESS")) {
+            System.out.println("---------------Notify_URL----TRADE_SUCCESS----------");
+            //商户订单号
+            String orderNumber = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
+            String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"), "UTF-8");
+
+            System.out.println("订单号："+orderNumber);
+            System.out.println("交易号："+trade_no);
+            response.sendRedirect(request.getContextPath() + "/order/modifyOrderStauts.do?orderNumber="+orderNumber+"&flowNumber="+trade_no);
+        }*/
+    } else {
+        System.out.println("---------------seccess_URL----TRADE_fail----------");
+        response.sendRedirect(request.getContextPath() + "/pages/home.jsp");
+    }
+
 %>
 <!-- header -->
 <div class="container">
@@ -209,13 +205,15 @@
         <div class="shoping_bag2">
             <div class="shoping_left">
                 <a class="btn1" href="${pageContext.request.contextPath}/pages/home.jsp">返回首页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a class="btn1" href="${pageContext.request.contextPath}/order/cancelOrder.do?orderNumber="
+                   +${sessionScope.UserOrderInfo.orderNumber}>取消订单</a>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="clearfix"></div>
         </div>
         <%--
                 <div class="details">
                     <div class="container">--%>
-        <div class="details">
+        <div class="details" style="display:none">
             <div style="width:100%;height: auto;">
                 <h3><img src="${pageContext.request.contextPath}/image/lb/success1.jpg">为您推荐</h3><br/>
             </div>
@@ -226,7 +224,7 @@
                             <div class="product-desc">
                                 <div class="product-img">
                                     <a href="">
-                                        <img src="..${book.imgUrl}" class="img-responsive"
+                                        <img src="../${book.imgUrl}" class="img-responsive"
                                              style="width: 130px;height: 130px;" alt=""/></a>
                                 </div>
                                 <div class="prod1-desc">

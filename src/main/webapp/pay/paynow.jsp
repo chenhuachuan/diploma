@@ -239,8 +239,8 @@
                     <a class="btn1" name="submit" href="javascript:void(0)"
                        onclick="document.getElementById('submit_form_pay').submit();return false"
                     >付款</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a class="btn1" name="submit2" href="javascript:void(0)"
-                       onclick="onCancelOrder()">取消订单</a>
+                    <a class="btn1" name="submit2" href="${pageContext.request.contextPath}/pages/home.jsp"
+                    >取消支付</a>
                     <dd id="btn-dd">
                         <span class="note-help">如果您点击“付款”按钮，即表示您同意该次的执行操作。</span>
                     </dd>
@@ -273,8 +273,6 @@
 
     GetDateNow();
 
-    function onCancelOrder() {
-        alert(1);
-    }
+
 </script>
 </html>

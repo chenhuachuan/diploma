@@ -1,13 +1,14 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page isELIgnored="false" pageEncoding="UTF-8" contentType="text/html; UTF-8" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--商城信息--%>
 <div class="inner-block">
     <!--用户，订单，信息-->
     <div class="market-updates">
         <div class="col-md-4 market-update-gd" style="height: 80px">
-            <div class="market-update-block clr-block-1" style="height: 120px;">
+            <div class="market-update-block clr-block-1" onclick="userInfoList()" style="height: 120px;">
                 <div class="col-md-6 market-update-left">
-                    <h3>83</h3>
+                    <h3>${sessionScope.userCount}</h3>
                     <h4>商城用户</h4>
                     <p>Shopping Users</p>
                 </div>
@@ -20,9 +21,9 @@
             </div>
         </div>
         <div class="col-md-4 market-update-gd" style="height: 80px">
-            <div class="market-update-block clr-block-2" style="height: 120px;">
+            <div class="market-update-block clr-block-2" onclick="addOrderManager()" style="height: 120px;">
                 <div class="col-md-6 market-update-left">
-                    <h3>135</h3>
+                    <h3>${sessionScope.orderCount}</h3>
                     <h4>商城订单</h4>
                     <p>Shopping Orders</p>
                 </div>
@@ -33,9 +34,9 @@
             </div>
         </div>
         <div class="col-md-4 market-update-gd" style="height: 80px">
-            <div class="market-update-block clr-block-3" style="height: 120px;">
+            <div class="market-update-block clr-block-3" onclick="addOrderRecordInfo()" style="height: 120px;">
                 <div class="col-md-6 market-update-left">
-                    <h3>233</h3>
+                    <h3>${sessionScope.recordCount}</h3>
                     <h4>交易记录</h4>
                     <p>Trading Record</p>
                 </div>
@@ -67,7 +68,7 @@
                                         未处理订单：
                                     </td>
                                     <td width="50px">
-                                        21
+                                        ${sessionScope.orderInfoStaties.wcl}
                                     </td>
                                 </tr>
                                 <tr>
@@ -75,7 +76,7 @@
                                         代发货订单：
                                     </td>
                                     <td width="50px">
-                                        1
+                                        ${sessionScope.orderInfoStaties.dfh}
                                     </td>
                                 </tr>
                                 <tr class="error">
@@ -83,7 +84,7 @@
                                         待结算订单
                                     </td>
                                     <td width="50px">
-                                        0
+                                        ${sessionScope.orderInfoStaties.dfk}
                                     </td>
                                 </tr>
                                 <tr class="warning">
@@ -91,15 +92,15 @@
                                         已经成交订单
                                     </td>
                                     <td width="50px">
-                                        33
+                                        ${sessionScope.orderInfoStaties.ycj}
                                     </td>
                                 </tr>
                                 <tr class="warning">
                                     <td width="50px">
-                                        交易取消
+                                        用户已删除
                                     </td>
                                     <td width="50px">
-                                        3
+                                        ${sessionScope.orderInfoStaties.ysc}
                                     </td>
                                 </tr>
                                 </tbody>
@@ -120,7 +121,7 @@
                                         图书总数：
                                     </td>
                                     <td>
-                                        233
+                                        ${sessionScope.booksInfoStaties.tuzs}
                                     </td>
                                 </tr>
                                 <tr class="success">
@@ -128,7 +129,7 @@
                                         上架图书：
                                     </td>
                                     <td>
-                                        233
+                                        ${sessionScope.booksInfoStaties.sjts}
                                     </td>
                                 </tr>
                                 <tr class="error">
@@ -136,7 +137,7 @@
                                         下架图书
                                     </td>
                                     <td>
-                                        2
+                                        ${sessionScope.booksInfoStaties.xjts}
                                     </td>
                                 </tr>
                                 <tr class="warning">
@@ -144,7 +145,7 @@
                                         热销图书
                                     </td>
                                     <td>
-                                        2
+                                        ${sessionScope.booksInfoStaties.rxts}
                                     </td>
                                 </tr>
                                 <tr class="warning">
@@ -152,7 +153,7 @@
                                         好评图书
                                     </td>
                                     <td>
-                                        2
+                                        ${sessionScope.booksInfoStaties.jjts}
                                     </td>
                                 </tr>
                                 </tbody>
@@ -177,15 +178,15 @@
                                         用户登录数：
                                     </td>
                                     <td>
-                                        1223
+                                        ${sessionScope.userInfoStaties.totalUser}
                                     </td>
                                 </tr>
                                 <tr class="success">
                                     <td>
-                                        注册会员数：
+                                        系统管理员：
                                     </td>
                                     <td>
-                                        332
+                                        ${sessionScope.userInfoStaties.totalAdmin}
                                     </td>
                                 </tr>
                                 </tbody>
@@ -206,13 +207,13 @@
                                     <div>
                                         <ol style="padding-left: 20px;">
                                             <li>
-                                                绿皮书电影上映获得好评
+                                                您有两个新订单，请及时处理。
                                             </li>
                                             <li>
-                                                复仇者联盟4票房大卖
+                                                XX图书在最近两个月位居销售榜首。
                                             </li>
                                             <li>
-                                                如何拯救一个傻逼
+                                                暂无更多消息
                                             </li>
                                         </ol>
                                     </div>
@@ -229,186 +230,105 @@
         <div class="col-md-12 column" style="margin-top: 25px">
             <div class="row clearfix">
                 <div class="col-md-6 column">
+                    <span style="font-size: medium;color:rgba(231,70,102,0.99)">热销图书</span>
                     <table class="table">
                         <thead>
-                        <tr>
+                        <tr class="info">
                             <th>
                                 编号
                             </th>
                             <th>
-                                产品
+                                图书名称
                             </th>
                             <th>
-                                交付时间
+                                库存
                             </th>
                             <th>
-                                状态
+                                销量
+                            </th>
+                            <th>
+                                上架时间
                             </th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                01/04/2012
-                            </td>
-                            <td>
-                                Default
-                            </td>
-                        </tr>
-                        <tr class="success">
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                01/04/2012
-                            </td>
-                            <td>
-                                Approved
-                            </td>
-                        </tr>
-                        <tr class="error">
-                            <td>
-                                2
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                02/04/2012
-                            </td>
-                            <td>
-                                Declined
-                            </td>
-                        </tr>
-                        <tr class="warning">
-                            <td>
-                                3
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                03/04/2012
-                            </td>
-                            <td>
-                                Pending
-                            </td>
-                        </tr>
-                        <tr class="info">
-                            <td>
-                                4
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                04/04/2012
-                            </td>
-                            <td>
-                                Call in to confirm
-                            </td>
-                        </tr>
+                        <c:forEach items="${sessionScope.bg_hotBooks1}" var="ht_book" varStatus="ind">
+                            <tr class="warning">
+                                <td>
+                                        ${ind.index+1}
+                                </td>
+                                <td>
+                                        ${ht_book.bookName}
+                                </td>
+                                <td>
+                                        ${ht_book.repertory}
+                                </td>
+                                <td>
+                                        ${ht_book.saleCount}
+                                </td>
+                                <td>
+                                    <fmt:formatDate value="${ht_book.publishTime}"
+                                                    pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate>
+                                </td>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
                 </div>
                 <div class="col-md-6 column">
+                    <span style="font-size: medium;color: #2aabd2">最新图书</span>
                     <table class="table">
                         <thead>
-                        <tr>
+                        <tr class="info">
                             <th>
                                 编号
                             </th>
                             <th>
-                                产品
+                                图书名称
                             </th>
                             <th>
-                                交付时间
+                                库存
+                            </th>
+                            <th>
+                                销量
                             </th>
                             <th>
                                 状态
                             </th>
+                            <th>
+                                上架时间
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                01/04/2012
-                            </td>
-                            <td>
-                                Default
-                            </td>
-                        </tr>
-                        <tr class="success">
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                01/04/2012
-                            </td>
-                            <td>
-                                Approved
-                            </td>
-                        </tr>
-                        <tr class="error">
-                            <td>
-                                2
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                02/04/2012
-                            </td>
-                            <td>
-                                Declined
-                            </td>
-                        </tr>
-                        <tr class="warning">
-                            <td>
-                                3
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                03/04/2012
-                            </td>
-                            <td>
-                                Pending
-                            </td>
-                        </tr>
-                        <tr class="info">
-                            <td>
-                                4
-                            </td>
-                            <td>
-                                TB - Monthly
-                            </td>
-                            <td>
-                                04/04/2012
-                            </td>
-                            <td>
-                                Call in to confirm
-                            </td>
-                        </tr>
+                        <c:forEach items="${sessionScope.newBookShelvesBG}" var="nw_book" varStatus="ind1">
+                            <tr class="warning">
+                                <td>
+                                        ${ind1.index+1}
+                                </td>
+                                <td>
+                                        ${nw_book.bookName}
+                                </td>
+                                <td>
+                                        ${nw_book.repertory}
+                                </td>
+                                <td>
+                                        ${nw_book.saleCount}
+                                </td>
+                                <td>
+                                    <c:if test="${nw_book.status=='0'}">
+                                        已下架
+                                    </c:if>
+                                    <c:if test="${nw_book.status=='1'}">
+                                        已上架
+                                    </c:if>
+                                </td>
+                                <td>
+                                    <fmt:formatDate value="${nw_book.publishTime}"
+                                                    pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate>
+                                </td>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
                 </div>
@@ -438,20 +358,21 @@
 </div>
 
 <script>
+
     var dom = document.getElementById("container");
     var myChart = echarts.init(dom);
     var app = {};
     option = null;
     option = {
         title: {
-            text: '某地区蒸发量和降水量',
-            subtext: '纯属虚构'
+            text: '年度销售概览',
+            subtext: 'TFBOOK'
         },
         tooltip: {
             trigger: 'axis'
         },
         legend: {
-            data: ['蒸发量', '降水量']
+            data: ['销售量', '系统库存']
         },
         toolbox: {
             show: true,
@@ -476,9 +397,9 @@
         ],
         series: [
             {
-                name: '蒸发量',
+                name: '销售量',
                 type: 'bar',
-                data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+                data: [32, 63, 47, 23, 121, 76, 135, 162, 211, 78, 64, 133],
                 markPoint: {
                     data: [
                         {type: 'max', name: '最大值'},
@@ -492,13 +413,13 @@
                 }
             },
             {
-                name: '降水量',
+                name: '系统库存',
                 type: 'bar',
-                data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+                data: [66, 73, 67, 43, 171, 86, 185, 222, 256, 108, 121, 203],
                 markPoint: {
                     data: [
-                        {name: '年最高', value: 182.2, xAxis: 7, yAxis: 183},
-                        {name: '年最低', value: 2.3, xAxis: 11, yAxis: 3}
+                        {name: '年最高', value: 185, xAxis: 7, yAxis: 183},
+                        {name: '年最低', value: 43, xAxis: 11, yAxis: 3}
                     ]
                 },
                 markLine: {
@@ -519,7 +440,7 @@
     var myChart = echarts.init(dom);
     var app = {};
     option = null;
-    app.title = '环形图';
+    app.title = 'TFBOOK销量一览';
 
     option = {
         tooltip: {
@@ -529,11 +450,11 @@
         legend: {
             orient: 'vertical',
             x: 'left',
-            data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+            data: ['小说', '人文社科', '经典名著', '科技文学', '其他']
         },
         series: [
             {
-                name: '访问来源',
+                name: '销量情况',
                 type: 'pie',
                 radius: ['50%', '70%'],
                 avoidLabelOverlap: false,
@@ -556,11 +477,11 @@
                     }
                 },
                 data: [
-                    {value: 335, name: '直接访问'},
-                    {value: 310, name: '邮件营销'},
-                    {value: 234, name: '联盟广告'},
-                    {value: 135, name: '视频广告'},
-                    {value: 1548, name: '搜索引擎'}
+                    {value: 1335, name: '小说'},
+                    {value: 310, name: '人文社科'},
+                    {value: 234, name: '经典名著'},
+                    {value: 135, name: '科技文学'},
+                    {value: 548, name: '其他'}
                 ]
             }
         ]

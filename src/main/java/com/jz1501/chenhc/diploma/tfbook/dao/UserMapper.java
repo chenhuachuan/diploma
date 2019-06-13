@@ -28,18 +28,24 @@ public interface UserMapper {
 
     public String examineEmailExistOrNot(String email);
 
+    public void findOrUpdatePwd(@Param("userId") String userId, @Param("password") String password, @Param("salt") String salt);
+
+
     public String examinePhoneNumExist(String phone);
 
+    public void updateUserInfo(User user);
+
+    public User selectByEmail(String email);
 
     public List<User> selectAllUsersInfo(@Param("row") Integer row, @Param("index") Integer index);
 
     public Integer selectTotalCount();
 
     public List<User> selectUsersBySearch(@Param("row") Integer row, @Param("index") Integer index,
-                                          @Param("search") String search, @Param("fromDate") java.sql.Date fromDate,
-                                          @Param("toDate") java.sql.Date toDate);
+                                          @Param("search") String search);
 
-    public Integer selectTotalCountBySearchBg(@Param("row") Integer row, @Param("index") Integer index,
-                                              @Param("search") String search, @Param("fromDate") java.sql.Date fromDate,
-                                              @Param("toDate") java.sql.Date toDate);
+    public Integer selectTotalCountBySearchBg(String search);
+
+    public void updateUserStatus(@Param("userId") String userId, @Param("status") String status);
+
 }

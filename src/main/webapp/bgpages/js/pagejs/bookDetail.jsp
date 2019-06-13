@@ -4,7 +4,8 @@
 
     <div class="col-sm-12 column">
         <div class="col-sm-4">
-            <img src="${pageContext.request.contextPath}/${bookDetails.imgUrl}" alt="图书详情">
+            <img src="${pageContext.request.contextPath}/${bookDetails.imgUrl}" alt="图书详情"
+                 style="width:200px;height:200px;">
         </div>
 
         <div class="col-sm-8">

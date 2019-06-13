@@ -1,9 +1,11 @@
 package com.jz1501.chenhc.diploma.tfbook.serviceImpl;
 
 import com.jz1501.chenhc.diploma.tfbook.dao.AreaDao;
+import com.jz1501.chenhc.diploma.tfbook.dao.BorDao;
 import com.jz1501.chenhc.diploma.tfbook.dao.CityDao;
 import com.jz1501.chenhc.diploma.tfbook.dao.ProvinceDao;
 import com.jz1501.chenhc.diploma.tfbook.entity.Area;
+import com.jz1501.chenhc.diploma.tfbook.entity.Bor;
 import com.jz1501.chenhc.diploma.tfbook.entity.City;
 import com.jz1501.chenhc.diploma.tfbook.entity.Province;
 import com.jz1501.chenhc.diploma.tfbook.service.CascadingService;
@@ -26,10 +28,11 @@ public class CascadingServiceImpl implements CascadingService {
     private ProvinceDao provinceDao;
     @Autowired
     private MemCachedClient memCachedClient;
+    @Autowired
+    private BorDao borDao;
 
     /**
      * 查询所有省
-     *
      * @return
      */
     @Override
@@ -96,5 +99,10 @@ public class CascadingServiceImpl implements CascadingService {
     @Override
     public Area queryAreaNameByCode(String areaCode) {
         return areaDao.selectAreaNameByCode(areaCode);
+    }
+
+    @Override
+    public Bor queryTotalStaties() {
+        return borDao.selectTotalUserOrderRecore();
     }
 }

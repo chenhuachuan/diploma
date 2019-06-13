@@ -18,8 +18,32 @@ public class OrderFlow implements Serializable {
     private String bookId;
     private Double payAmount;//支付金额
     private String payMethod;//方式
-    private Integer buyCount;//购买数量
+    private String buyCount;//购买数量
     private Date createTime;//创建时间
+    private Order order;
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderFlow{" +
+                "flowId='" + flowId + '\'' +
+                ", flowNum='" + flowNum + '\'' +
+                ", orderNum='" + orderNum + '\'' +
+                ", bookId='" + bookId + '\'' +
+                ", payAmount=" + payAmount +
+                ", payMethod='" + payMethod + '\'' +
+                ", buyCount='" + buyCount + '\'' +
+                ", createTime=" + createTime +
+                ", order=" + order +
+                '}';
+    }
 
     public String getFlowId() {
         return flowId;
@@ -69,11 +93,11 @@ public class OrderFlow implements Serializable {
         this.payMethod = payMethod;
     }
 
-    public Integer getBuyCount() {
+    public String getBuyCount() {
         return buyCount;
     }
 
-    public void setBuyCount(Integer buyCount) {
+    public void setBuyCount(String buyCount) {
         this.buyCount = buyCount;
     }
 

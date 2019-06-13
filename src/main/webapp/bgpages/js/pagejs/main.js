@@ -30,7 +30,28 @@ $(function () {
         str >= 10 ? num = str : num = "0" + str;
         return num;
     }
+
+    var add = descideShowHomePage();
+    if (!add) {
+        sysmanLogin();
+    } else {
+        $("#sysman_login_regist_dialog").dialog('close');
+    }
 })
+
+//判断用户是否登录
+function descideShowHomePage() {
+
+    var islogin = $("#no_understand_not_touch1").val();
+    if (islogin == null || islogin == '') {
+        alert("-----------系统提示：您还没有登录,请先登录-------------");
+        return false;
+    } else {
+        return true;
+    }
+
+}
+
 
 function sysmanLogin() {
     $("#sysman_login_regist_dialog").dialog({
@@ -41,7 +62,7 @@ function sysmanLogin() {
         cache: false,
         modal: true,
         href: '../bgpages/pages/admin.jsp?stype=add',
-        buttons: [{
+        buttons: [/*{
             text: '确定',
             width: 70,
             height: 30,
@@ -63,11 +84,10 @@ function sysmanLogin() {
                     }
                 });
             }
-        }, {
-            text: '取消',
+        }, */{
+            text: '关闭',
             width: 70,
             height: 30,
-            iconCls: 'icon-cancel',
             handler: function () {
                 $("#sysman_login_regist_dialog").dialog('close');
             }
@@ -85,7 +105,7 @@ function sysmanRegist() {
         cache: false,
         modal: true,
         href: '../bgpages/pages/admin.jsp?stype=reg',
-        buttons: [{
+        buttons: [/*{
             text: '确定',
             width: 70,
             height: 30,
@@ -107,11 +127,10 @@ function sysmanRegist() {
                     }
                 });
             }
-        }, {
-            text: '取消',
+        }, */{
+            text: '关闭',
             width: 70,
             height: 30,
-            iconCls: 'icon-cancel',
             handler: function () {
                 $("#sysman_login_regist_dialog").dialog('close');
             }
@@ -154,81 +173,104 @@ function enter_btn_submit() {
 
 //首页
 function pageHome() {
-    var exist = $("#tabs").tabs('exists', "首页");
+    // var exist = $("#tabs").tabs('exists', "首页");
     //选中该选项卡
-    $("#tabs").tabs('select', "首页");
+    $("#tabs").tabs('select', "系统首页");
 }
 
 function addBookSortsTab() {
-    //判断该选项卡是否存在
-    var exx = $("#tabs").tabs('exists', "图书分类");
-    if (!exx) {
-        $("#tabs").tabs('add', {
-            title: "图书分类",
-            iconCls: 'icon-save',
-            closable: true,
-            href: '../bgpages/pages/sortsInfo.jsp',
-        });
+    var isLogin = descideShowHomePage();
+    if (isLogin == true) {
+        //判断该选项卡是否存在
+        var exx = $("#tabs").tabs('exists', "图书分类");
+        if (!exx) {
+            $("#tabs").tabs('add', {
+                title: "图书分类",
+                iconCls: 'icon-save',
+                closable: true,
+                href: '../bgpages/pages/sortsInfo.jsp',
+            });
+        } else {
+            //选中该选项卡
+            $("#tabs").tabs('select', "图书分类");
+        }
     } else {
-        //选中该选项卡
-        $("#tabs").tabs('select', "图书分类");
+        return;
     }
+
 }
 
 //图书信息
 function addBookInfoTab() {
-    //判断该选项卡是否存在
-    var exx = $("#tabs").tabs('exists', "图书信息");
-    if (!exx) {
-        $("#tabs").tabs('add', {
-            title: "图书信息",
-            iconCls: 'icon-save',
-            closable: true,
-            href: '../bgpages/pages/bookInfo.jsp',
-        });
+    var isLogin = descideShowHomePage();
+    if (isLogin == true) {
+        //判断该选项卡是否存在
+        var exx = $("#tabs").tabs('exists', "图书信息");
+        if (!exx) {
+            $("#tabs").tabs('add', {
+                title: "图书信息",
+                iconCls: 'icon-save',
+                closable: true,
+                href: '../bgpages/pages/bookInfo.jsp',
+            });
+        } else {
+            //选中该选项卡
+            $("#tabs").tabs('select', "图书信息");
+        }
     } else {
-        //选中该选项卡
-        $("#tabs").tabs('select', "图书信息");
+        return;
     }
 }
 
 //图书展示
 function addBooksShowTab() {
-    //判断该选项卡是否存在
-    var exx = $("#tabs").tabs('exists', "图书展示");
-    if (!exx) {
-        $("#tabs").tabs('add', {
-            title: "图书展示",
-            iconCls: 'icon-add',
-            closable: true,
-            href: '../bgpages/pages/detail.jsp',
-            //href:'../bgpages/pages/booksShow.jsp',
-        });
+    var isLogin = descideShowHomePage();
+    if (isLogin == true) {
+        //判断该选项卡是否存在
+        var exx = $("#tabs").tabs('exists', "图书展示");
+        if (!exx) {
+            $("#tabs").tabs('add', {
+                title: "图书展示",
+                iconCls: 'icon-add',
+                closable: true,
+                href: '../bgpages/pages/detail.jsp',
+                //href:'../bgpages/pages/booksShow.jsp',
+            });
 
+        } else {
+            //选中该选项卡
+            $("#tabs").tabs('select', "图书展示");
+        }
     } else {
-        //选中该选项卡
-        $("#tabs").tabs('select', "图书展示");
+        return;
     }
 }
 
 //ecahrs图
 function addBooksShoweCharsTab() {
-    //判断该选项卡是否存在
-    var exx = $("#tabs").tabs('exists', "图例展示");
-    if (!exx) {
-        $("#tabs").tabs('add', {
-            title: "图例展示",
-            iconCls: 'icon-save',
-            closable: true,
-            href: '../bgpages/pages/booksEchars.jsp',
-        });
+    var isLogin = descideShowHomePage();
+    if (isLogin == true) {
+        //判断该选项卡是否存在
+        var exx = $("#tabs").tabs('exists', "图例展示");
+        if (!exx) {
+            $("#tabs").tabs('add', {
+                title: "图例展示",
+                iconCls: 'icon-save',
+                closable: true,
+                href: '../bgpages/pages/booksEchars.jsp',
+            });
+        } else {
+            //选中该选项卡
+            $("#tabs").tabs('select', "图例展示");
+        }
     } else {
-        //选中该选项卡
-        $("#tabs").tabs('select', "图例展示");
+        return;
     }
 }
 
 function addBannerImage() {
+    var isLogin = descideShowHomePage();
+    if (isLogin == false) return;
     //判断该选项卡是否存在
     var exx = $("#tabs").tabs('exists', "轮播图管理");
     if (!exx) {
@@ -246,6 +288,8 @@ function addBannerImage() {
 
 //图书图片管理
 function addImageManager() {
+    var isLogin = descideShowHomePage();
+    if (isLogin == false) return;
     //判断该选项卡是否存在
     var exx = $("#tabs").tabs('exists', "图书图片管理");
     if (!exx) {
@@ -263,6 +307,8 @@ function addImageManager() {
 
 //用户列表
 function userInfoList() {
+    var isLogin = descideShowHomePage();
+    if (isLogin == false) return;
     //判断该选项卡是否存在
     var exx = $("#tabs").tabs('exists', "用户列表");
     if (!exx) {
@@ -280,11 +326,13 @@ function userInfoList() {
 
 //用户信息统计展示
 function usersInfoStatitShow() {
+    var isLogin = descideShowHomePage();
+    if (isLogin == false) return;
 //判断该选项卡是否存在
     var exx = $("#tabs").tabs('exists', "用户信息统计展示");
     if (!exx) {
         $("#tabs").tabs('add', {
-            title: "用户统计展示",
+            title: "用户信息统计展示",
             iconCls: 'icon-save',
             closable: true,
             href: '../bgpages/pages/usersInfoEcharsShow.jsp',
@@ -292,5 +340,56 @@ function usersInfoStatitShow() {
     } else {
         //选中该选项卡
         $("#tabs").tabs('select', "用户信息统计展示");
+    }
+}
+
+function addJyInfo() {
+    var isLogin = descideShowHomePage();
+    if (isLogin == false) return;
+    var exx = $("#tabs").tabs('exists', "交易信息");
+    if (!exx) {
+        $("#tabs").tabs('add', {
+            title: "交易信息",
+            iconCls: 'icon-save',
+            closable: true,
+            href: '../bgpages/pages/usersJiaoYiInfo.jsp',
+        });
+    } else {
+        //选中该选项卡
+        $("#tabs").tabs('select', "交易信息");
+    }
+}
+
+function addOrderManager() {
+    var isLogin = descideShowHomePage();
+    if (isLogin == false) return;
+    var exx = $("#tabs").tabs('exists', "订单管理");
+    if (!exx) {
+        $("#tabs").tabs('add', {
+            title: "订单管理",
+            iconCls: 'icon-save',
+            closable: true,
+            href: '../bgpages/pages/usersOrderManager.jsp',
+        });
+    } else {
+        //选中该选项卡
+        $("#tabs").tabs('select', "订单管理");
+    }
+}
+
+function addOrderRecordInfo() {
+    var isLogin = descideShowHomePage();
+    if (isLogin == false) return;
+    var exx = $("#tabs").tabs('exists', "交易记录");
+    if (!exx) {
+        $("#tabs").tabs('add', {
+            title: "交易记录",
+            iconCls: 'icon-save',
+            closable: true,
+            href: '../bgpages/pages/userOrderRecordInfo.jsp',
+        });
+    } else {
+        //选中该选项卡
+        $("#tabs").tabs('select', "交易记录");
     }
 }

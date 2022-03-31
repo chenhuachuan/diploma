@@ -247,7 +247,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>4.3.2.RELEASE</version>
+            <version>5.3.18</version>
         </dependency>
         <!-- jstl标签包，在jsp中使用 -->
         <dependency>
